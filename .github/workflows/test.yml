@@ -9,6 +9,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.2.0
 
+      - name: Move test project to the working directory
+        run: mv test/* .
+
       - name: Use this action
         uses: ./
 
