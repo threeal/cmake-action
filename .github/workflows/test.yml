@@ -17,3 +17,17 @@ jobs:
 
       - name: Run build result
         run: ./build/hello_world
+
+  use-action-with-specified-source-dir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Use this action with specified source directory
+        uses: ./
+        with:
+          source-dir: test
+
+      - name: Run build result
+        run: ./build/hello_world
