@@ -4,12 +4,23 @@ author: Alfi Maulana
 branding:
   color: gray-dark
   icon: terminal
+inputs:
+  source-dir:
+    description: The source directory of CMake project
+    required: false
+    default: .
 runs:
   using: composite
   steps:
+    - name: Process inputs
+      shell: bash
+      run: |
+        CONFIGURE_ARGS="'${{ inputs.source-dir }}' -B build"
+        echo "CMAKE_CONFIGURE_ARGS=$CONFIGURE_ARGS" >> $GITHUB_ENV
+
     - name: Configure CMake
       shell: bash
-      run: cmake . -B build
+      run: cmake ${{ env.CMAKE_CONFIGURE_ARGS }}
 
     - name: Build targets
       shell: bash
