@@ -1,0 +1,16 @@
+name: test
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  use-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.2.0
+
+      - name: Use this action
+        uses: ./
+
+      - name: Run build result
+        run: ./build/hello_world
