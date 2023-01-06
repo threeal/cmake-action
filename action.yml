@@ -1,0 +1,16 @@
+name: CMake Action
+description: Configure and build CMake project
+author: Alfi Maulana
+branding:
+  color: gray-dark
+  icon: terminal
+runs:
+  using: composite
+  steps:
+    - name: Configure CMake
+      shell: bash
+      run: cmake . -B build
+
+    - name: Build targets
+      shell: bash
+      run: cmake --build build
