@@ -31,3 +31,18 @@ jobs:
 
       - name: Run build result
         run: ./build/hello_world
+
+  use-action-with-specified-build-dir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Use this action with specified build directory
+        uses: ./
+        with:
+          source-dir: test
+          build-dir: test/build
+
+      - name: Run build result
+        run: test/build/hello_world
