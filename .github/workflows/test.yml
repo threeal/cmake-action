@@ -46,3 +46,6 @@ jobs:
 
       - name: Run build result
         run: test/build/hello_world
+
+      - name: Check if default build directory is not exist
+        run: test ! -d build
