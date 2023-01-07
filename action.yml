@@ -19,8 +19,8 @@ runs:
     - name: Process inputs
       shell: bash
       run: |
-        CONFIGURE_ARGS="'${{ inputs.source-dir }}' -B '${{ inputs.build-dir }}'"
-        BUILD_ARGS="--build '${{ inputs.build-dir }}'"
+        CONFIGURE_ARGS="${{ inputs.source-dir }} -B ${{ inputs.build-dir }}"
+        BUILD_ARGS="--build ${{ inputs.build-dir }}"
         echo "CMAKE_CONFIGURE_ARGS=$CONFIGURE_ARGS" >> $GITHUB_ENV
         echo "CMAKE_BUILD_ARGS=$BUILD_ARGS" >> $GITHUB_ENV
 
