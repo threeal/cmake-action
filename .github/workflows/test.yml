@@ -4,7 +4,10 @@ on:
   push:
 jobs:
   use-action:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
@@ -16,7 +19,7 @@ jobs:
         uses: ./
 
       - name: Run build result
-        run: build/hello_world
+        run: ${{ matrix.os == 'windows-latest' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
 
   use-action-with-specified-source-dir:
     runs-on: ubuntu-latest
