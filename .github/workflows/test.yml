@@ -19,7 +19,7 @@ jobs:
         uses: ./
 
       - name: Run build result
-        run: build/hello_world
+        run: ${{ matrix.os == 'windows-latest' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
 
   use-action-with-specified-source-dir:
     runs-on: ubuntu-latest
