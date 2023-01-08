@@ -13,6 +13,9 @@ inputs:
     description: The build directory of CMake project
     required: false
     default: build
+  generator:
+    description: The build system generator of the CMake project
+    required: false
   c-compiler:
     description: The preferred executable for compiling C language files
     required: false
@@ -30,6 +33,9 @@ runs:
       run: |
         CONFIGURE_ARGS="${{ inputs.source-dir }} -B ${{ inputs.build-dir }}"
         BUILD_ARGS="--build ${{ inputs.build-dir }}"
+        if [ -n '${{ inputs.generator }}' ]; then
+          CONFIGURE_ARGS="$CONFIGURE_ARGS -G ${{ inputs.generator }}"
+        fi
         if [ -n '${{ inputs.c-compiler }}' ]; then
           CONFIGURE_ARGS="$CONFIGURE_ARGS -D CMAKE_C_COMPILER=${{ inputs.c-compiler }}"
         fi
