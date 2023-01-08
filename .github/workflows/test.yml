@@ -21,27 +21,13 @@ jobs:
       - name: Run build result
         run: ${{ matrix.os == 'windows-latest' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
 
-  use-action-with-specified-source-dir:
+  use-action-with-specified-dir:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
 
-      - name: Use this action with specified source directory
-        uses: ./
-        with:
-          source-dir: test
-
-      - name: Run build result
-        run: build/hello_world
-
-  use-action-with-specified-build-dir:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3.3.0
-
-      - name: Use this action with specified build directory
+      - name: Use this action with specified directory
         uses: ./
         with:
           source-dir: test
@@ -50,7 +36,7 @@ jobs:
       - name: Run build result
         run: test/build/hello_world
 
-      - name: Check if default build directory is not exist
+      - name: Check if the default build directory does not exist
         run: test ! -d build
 
   use-action-with-specified-compiler:
