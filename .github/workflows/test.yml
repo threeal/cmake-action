@@ -53,7 +53,7 @@ jobs:
       - name: Check if default build directory is not exist
         run: test ! -d build
 
-  use-action-with-other-args:
+  use-action-with-additional-args:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
