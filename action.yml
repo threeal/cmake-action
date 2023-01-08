@@ -25,7 +25,7 @@ runs:
         CONFIGURE_ARGS="${{ inputs.source-dir }} -B ${{ inputs.build-dir }}"
         BUILD_ARGS="--build ${{ inputs.build-dir }}"
         if [ -n '${{ inputs.args }}' ]; then
-          CMAKE_CONFIGURE_ARGS="$CMAKE_CONFIGURE_ARGS ${{ inputs.args }}"
+          CONFIGURE_ARGS="$CONFIGURE_ARGS ${{ inputs.args }}"
         fi
         echo "CMAKE_CONFIGURE_ARGS=$CONFIGURE_ARGS" >> $GITHUB_ENV
         echo "CMAKE_BUILD_ARGS=$BUILD_ARGS" >> $GITHUB_ENV
