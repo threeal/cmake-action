@@ -13,6 +13,9 @@ inputs:
     description: The build directory of CMake project
     required: false
     default: build
+  c-compiler:
+    description: Preferred executable for compiling C language files
+    required: false
 runs:
   using: composite
   steps:
@@ -21,6 +24,9 @@ runs:
       run: |
         CONFIGURE_ARGS="${{ inputs.source-dir }} -B ${{ inputs.build-dir }}"
         BUILD_ARGS="--build ${{ inputs.build-dir }}"
+        if [ -n '${{ inputs.c-compiler }}' ]; then
+          CONFIGURE_ARGS="$CONFIGURE_ARGS -D CMAKE_C_COMPILER=${{ inputs.c-compiler }}"
+        fi
         echo "CMAKE_CONFIGURE_ARGS=$CONFIGURE_ARGS" >> $GITHUB_ENV
         echo "CMAKE_BUILD_ARGS=$BUILD_ARGS" >> $GITHUB_ENV
 
