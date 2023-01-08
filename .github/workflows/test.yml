@@ -53,6 +53,22 @@ jobs:
       - name: Check if default build directory is not exist
         run: test ! -d build
 
+  use-action-with-specified-compiler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Use this action with specified compiler
+        uses: ./
+        with:
+          source-dir: test
+          c-compiler: clang
+          cxx-compiler: clang++
+
+      - name: Run build result
+        run: build/hello_world
+
   use-action-with-additional-args:
     runs-on: ubuntu-latest
     steps:
