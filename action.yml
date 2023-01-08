@@ -14,7 +14,10 @@ inputs:
     required: false
     default: build
   c-compiler:
-    description: Preferred executable for compiling C language files
+    description: The preferred executable for compiling C language files
+    required: false
+  args:
+    description: Additional arguments passed during CMake configuration
     required: false
 runs:
   using: composite
@@ -26,6 +29,9 @@ runs:
         BUILD_ARGS="--build ${{ inputs.build-dir }}"
         if [ -n '${{ inputs.c-compiler }}' ]; then
           CONFIGURE_ARGS="$CONFIGURE_ARGS -D CMAKE_C_COMPILER=${{ inputs.c-compiler }}"
+        fi
+        if [ -n '${{ inputs.args }}' ]; then
+          CONFIGURE_ARGS="$CONFIGURE_ARGS ${{ inputs.args }}"
         fi
         echo "CMAKE_CONFIGURE_ARGS=$CONFIGURE_ARGS" >> $GITHUB_ENV
         echo "CMAKE_BUILD_ARGS=$BUILD_ARGS" >> $GITHUB_ENV

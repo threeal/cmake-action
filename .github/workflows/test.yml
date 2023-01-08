@@ -52,3 +52,21 @@ jobs:
 
       - name: Check if default build directory is not exist
         run: test ! -d build
+
+  use-action-with-additional-args:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Use this action with build txt enabled
+        uses: ./
+        with:
+          source-dir: test
+          args: -D BUILD_TXT=ON
+
+      - name: Run build result
+        run: build/hello_world
+
+      - name: Check if the txt result exist
+        run: cat build/hello_world.txt
