@@ -39,8 +39,8 @@ runs:
         if [ -n '${{ inputs.args }}' ]; then
           CONFIGURE_ARGS="$CONFIGURE_ARGS ${{ inputs.args }}"
         fi
-        echo "CMAKE_CONFIGURE_ARGS=$CONFIGURE_ARGS" >> $GITHUB_ENV
-        echo "CMAKE_BUILD_ARGS=$BUILD_ARGS" >> $GITHUB_ENV
+        echo "CMAKE_CONFIGURE_ARGS=${CONFIGURE_ARGS//[$'\t\r\n']}" >> $GITHUB_ENV
+        echo "CMAKE_BUILD_ARGS=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_ENV
 
     - name: Configure CMake
       shell: bash
