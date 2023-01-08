@@ -72,3 +72,21 @@ jobs:
 
       - name: Run build result
         run: build/${{ matrix.lang == 'C' && 'hello_world_c' || 'hello_world' }}
+
+  use-action-with-specified-generator:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Install Ninja
+        run: sudo apt install -y ninja-build
+
+      - name: Use this action with specified generator
+        uses: ./
+        with:
+          source-dir: test
+          generator: Ninja
+
+      - name: Run build result
+        run: build/hello_world
