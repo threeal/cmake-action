@@ -62,6 +62,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
 
+      - name: Use this action with specified invalid compiler
+        id: failed_step
+        continue-on-error: true
+        uses: ./
+        with:
+          source-dir: test
+          c-compiler: ${{ matrix.lang == 'C' && 'invalid' || '' }}
+          cxx-compiler: ${{ matrix.lang == 'CXX' && 'invalid' || '' }}
+
+      - name: Check if previous step is failing
+        run: ${{ steps.failed_step.outcome == 'failure' && 'true' || 'false' }}
+
       - name: Use this action with specified compiler
         uses: ./
         with:
