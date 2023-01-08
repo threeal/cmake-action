@@ -16,6 +16,9 @@ inputs:
   c-compiler:
     description: The preferred executable for compiling C language files
     required: false
+  cxx-compiler:
+    description: The preferred executable for compiling CXX language files
+    required: false
   args:
     description: Additional arguments passed during CMake configuration
     required: false
@@ -29,6 +32,9 @@ runs:
         BUILD_ARGS="--build ${{ inputs.build-dir }}"
         if [ -n '${{ inputs.c-compiler }}' ]; then
           CONFIGURE_ARGS="$CONFIGURE_ARGS -D CMAKE_C_COMPILER=${{ inputs.c-compiler }}"
+        fi
+        if [ -n '${{ inputs.cxx-compiler }}' ]; then
+          CONFIGURE_ARGS="$CONFIGURE_ARGS -D CMAKE_CXX_COMPILER=${{ inputs.cxx-compiler }}"
         fi
         if [ -n '${{ inputs.args }}' ]; then
           CONFIGURE_ARGS="$CONFIGURE_ARGS ${{ inputs.args }}"
