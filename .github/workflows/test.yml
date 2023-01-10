@@ -79,9 +79,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
 
-      - name: Install Ninja
-        run: sudo apt install -y ninja-build
-
       - name: Use this action with specified generator
         uses: ./
         with:
