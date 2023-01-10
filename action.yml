@@ -48,6 +48,16 @@ runs:
         echo "CMAKE_CONFIGURE_ARGS=${CONFIGURE_ARGS//[$'\t\r\n']}" >> $GITHUB_ENV
         echo "CMAKE_BUILD_ARGS=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_ENV
 
+    - name: Install Ninja
+      if: ${{ inputs.generator == 'Ninja' }}
+      shell: bash
+      run: |
+        case "$OSTYPE" in
+          darwin*)  brew install ninja ;;
+          linux*)   sudo apt install -y ninja-build ;;
+          *)        choco install ninja ;;
+        esac
+
     - name: Configure CMake
       shell: bash
       run: cmake ${{ env.CMAKE_CONFIGURE_ARGS }}
