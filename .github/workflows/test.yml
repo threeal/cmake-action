@@ -74,7 +74,10 @@ jobs:
         run: build/${{ matrix.lang == 'C' && 'hello_world_c' || 'hello_world' }}
 
   use-action-with-specified-generator:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0

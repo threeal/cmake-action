@@ -51,7 +51,12 @@ runs:
     - name: Install Ninja
       if: ${{ inputs.generator == 'Ninja' }}
       shell: bash
-      run: sudo apt install -y ninja-build
+      run: |
+        case "$OSTYPE" in
+          darwin*)  brew install ninja ;;
+          linux*)   sudo apt install -y ninja-build ;;
+          *)        choco install ninja ;;
+        esac
 
     - name: Configure CMake
       shell: bash
