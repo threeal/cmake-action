@@ -13,6 +13,9 @@ inputs:
     description: The build directory of CMake project
     required: false
     default: build
+  targets:
+    description: List of build targets
+    required: false
   generator:
     description: The build system generator of the CMake project
     required: false
@@ -33,6 +36,9 @@ runs:
       run: |
         ARGS="${{ inputs.source-dir }} -B ${{ inputs.build-dir }}"
         BUILD_ARGS="--build ${{ inputs.build-dir }}"
+        if [ -n '${{ inputs.targets }}' ]; then
+          BUILD_ARGS="$BUILD_ARGS --target ${{ inputs.targets }}"
+        fi
         if [ -n '${{ inputs.generator }}' ]; then
           ARGS="$ARGS -G ${{ inputs.generator }}"
         fi
