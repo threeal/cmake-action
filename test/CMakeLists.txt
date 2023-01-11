@@ -12,4 +12,5 @@ if(BUILD_CXX)
   add_executable(hello_world hello_world.cpp)
 endif()
 
-add_executable(test EXCLUDE_FROM_ALL test.cpp)
+add_executable(test_c EXCLUDE_FROM_ALL test.c)
+add_executable(test_cpp EXCLUDE_FROM_ALL test.cpp)
