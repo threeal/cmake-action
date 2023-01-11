@@ -67,16 +67,15 @@ jobs:
         uses: ./
         with:
           source-dir: test
+          targets: test_c test_cpp
           c-compiler: clang
           cxx-compiler: clang++
-          args: |
-            -D BUILD_C=ON
-            -D BUILD_CXX=ON
+          args: -D CHECK_USING_CLANG=ON
 
       - name: Run build result
         run: |
-          {{ matrix.os == 'windows-latest' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
-          {{ matrix.os == 'windows-latest' && 'build\Debug\hello_world_c.exe' || 'build/hello_world_c' }}
+          ${{ matrix.os == 'windows-latest' && 'build\Debug\test_c.exe' || 'build/test_c' }}
+          ${{ matrix.os == 'windows-latest' && 'build\Debug\test_cpp.exe' || 'build/test_cpp' }}
 
   use-action-with-specified-generator:
     runs-on: ${{ matrix.os }}
