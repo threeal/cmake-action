@@ -31,21 +31,21 @@ runs:
     - name: Process inputs
       shell: bash
       run: |
-        CONFIGURE_ARGS="${{ inputs.source-dir }} -B ${{ inputs.build-dir }}"
+        ARGS="${{ inputs.source-dir }} -B ${{ inputs.build-dir }}"
         BUILD_ARGS="--build ${{ inputs.build-dir }}"
         if [ -n '${{ inputs.generator }}' ]; then
-          CONFIGURE_ARGS="$CONFIGURE_ARGS -G ${{ inputs.generator }}"
+          ARGS="$ARGS -G ${{ inputs.generator }}"
         fi
         if [ -n '${{ inputs.c-compiler }}' ]; then
-          CONFIGURE_ARGS="$CONFIGURE_ARGS -D CMAKE_C_COMPILER=${{ inputs.c-compiler }}"
+          ARGS="$ARGS -D CMAKE_C_COMPILER=${{ inputs.c-compiler }}"
         fi
         if [ -n '${{ inputs.cxx-compiler }}' ]; then
-          CONFIGURE_ARGS="$CONFIGURE_ARGS -D CMAKE_CXX_COMPILER=${{ inputs.cxx-compiler }}"
+          ARGS="$ARGS -D CMAKE_CXX_COMPILER=${{ inputs.cxx-compiler }}"
         fi
         if [ -n '${{ inputs.args }}' ]; then
-          CONFIGURE_ARGS="$CONFIGURE_ARGS ${{ inputs.args }}"
+          ARGS="$ARGS ${{ inputs.args }}"
         fi
-        echo "CMAKE_CONFIGURE_ARGS=${CONFIGURE_ARGS//[$'\t\r\n']}" >> $GITHUB_ENV
+        echo "CMAKE_ARGS=${ARGS//[$'\t\r\n']}" >> $GITHUB_ENV
         echo "CMAKE_BUILD_ARGS=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_ENV
 
     - name: Install Ninja
@@ -60,7 +60,7 @@ runs:
 
     - name: Configure CMake
       shell: bash
-      run: cmake ${{ env.CMAKE_CONFIGURE_ARGS }}
+      run: cmake ${{ env.CMAKE_ARGS }}
 
     - name: Build targets
       shell: bash
