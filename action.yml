@@ -32,6 +32,7 @@ runs:
   using: composite
   steps:
     - name: Process inputs
+      id: process_inputs
       shell: bash
       run: |
         ARGS="${{ inputs.source-dir }} -B ${{ inputs.build-dir }}"
@@ -51,8 +52,8 @@ runs:
         if [ -n '${{ inputs.args }}' ]; then
           ARGS="$ARGS ${{ inputs.args }}"
         fi
-        echo "CMAKE_ARGS=${ARGS//[$'\t\r\n']}" >> $GITHUB_ENV
-        echo "CMAKE_BUILD_ARGS=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_ENV
+        echo "cmake_args=${ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
+        echo "cmake_build_args=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
 
     - name: Install Ninja
       if: ${{ inputs.generator == 'Ninja' }}
@@ -66,8 +67,8 @@ runs:
 
     - name: Configure CMake
       shell: bash
-      run: cmake ${{ env.CMAKE_ARGS }}
+      run: cmake ${{ steps.process_inputs.outputs.cmake_args }}
 
     - name: Build targets
       shell: bash
-      run: cmake ${{ env.CMAKE_BUILD_ARGS }}
+      run: cmake ${{ steps.process_inputs.outputs.cmake_build_args }}
