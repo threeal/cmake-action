@@ -1,0 +1,16 @@
+#ifdef IS_C
+#include <stdio.h>
+#define PRINT(STR) printf(STR); printf("\n")
+#else
+#include <iostream>
+#define PRINT(STR) std::cout << STR << std::endl
+#endif
+
+int main() {
+#if defined(CHECK_USING_CLANG) && !defined(__clang__)
+  PRINT("compiler is not clang");
+  return 1;
+#endif
+  PRINT("all ok");
+  return 0;
+}

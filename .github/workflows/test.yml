@@ -55,38 +55,26 @@ jobs:
         run: build/test_c && build/test_cpp
 
   use-action-with-specified-compiler:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        lang: [C, CXX]
+        os: [windows-latest, ubuntu-latest, macos-latest]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
-
-      - name: Use this action with specified invalid compiler
-        id: failed_step
-        continue-on-error: true
-        uses: ./
-        with:
-          source-dir: test
-          c-compiler: ${{ matrix.lang == 'C' && 'invalid' || '' }}
-          cxx-compiler: ${{ matrix.lang == 'CXX' && 'invalid' || '' }}
-
-      - name: Check if previous step is failing
-        run: ${{ steps.failed_step.outcome == 'failure' && 'true' || 'false' }}
 
       - name: Use this action with specified compiler
         uses: ./
         with:
           source-dir: test
-          c-compiler: ${{ matrix.lang == 'C' && 'clang' || '' }}
-          cxx-compiler: ${{ matrix.lang == 'CXX' && 'clang++' || '' }}
-          args: |
-            -D BUILD_C=${{ matrix.lang == 'C' && 'ON' || 'OFF' }}
-            -D BUILD_CXX=${{ matrix.lang == 'CXX' && 'ON' || 'OFF' }}
+          targets: test_c test_cpp
+          generator: Ninja
+          c-compiler: clang
+          cxx-compiler: clang++
+          args: -D CHECK_USING_CLANG=ON
 
       - name: Run build result
-        run: build/${{ matrix.lang == 'C' && 'hello_world_c' || 'hello_world' }}
+        run: build/test_c && build/test_cpp
 
   use-action-with-specified-generator:
     runs-on: ${{ matrix.os }}
