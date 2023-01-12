@@ -68,14 +68,13 @@ jobs:
         with:
           source-dir: test
           targets: test_c test_cpp
+          generator: Ninja
           c-compiler: clang
           cxx-compiler: clang++
           args: -D CHECK_USING_CLANG=ON
 
       - name: Run build result
-        run: |
-          ${{ matrix.os == 'windows-latest' && 'build\Debug\test_c.exe' || 'build/test_c' }}
-          ${{ matrix.os == 'windows-latest' && 'build\Debug\test_cpp.exe' || 'build/test_cpp' }}
+        run: build/test_c && build/test_cpp
 
   use-action-with-specified-generator:
     runs-on: ${{ matrix.os }}
