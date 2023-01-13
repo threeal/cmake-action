@@ -23,3 +23,55 @@ For more information, see [action.yml](./action.yml) and [GitHub Actions guide](
 | `c-compiler` | String | Preferred executable for compiling C language files. |
 | `cxx-compiler` | String | Preferred executable for compiling CXX language files. |
 | `args` | Multiple strings | Additional arguments passed during the CMake configuration. Could be specified more than one. Separate each target with a space or a new line. |
+
+### Examples
+
+```yaml
+name: build
+on:
+  push:
+jobs:
+  build-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Configure and build this project
+        uses: threeal/cmake-action@latest
+```
+
+> Note: You can replace `@latest` with any version you like.
+
+#### Using Different Directories
+
+```yaml
+- name: Configure and build this project
+  uses: threeal/cmake-action@latest
+  with:
+    source-dir: submodules
+    build-dir: submodules/build
+```
+
+#### Build Custom Targets
+
+```yaml
+- name: Configure and build this project
+  uses: threeal/cmake-action@latest
+  with:
+    targets: hello_world_test fibonacci_test
+    args: |
+      -DBUILD_TESTING=ON
+      -DCMAKE_CXX_FLAGS='-Werror'
+```
+
+#### Build Using Ninja and Clang
+
+```yaml
+- name: Configure and build this project
+  uses: threeal/cmake-action@latest
+  with:
+    generator: Ninja
+    c-compiler: clang
+    cxx-compiler: clang++
+```
