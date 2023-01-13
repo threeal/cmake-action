@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
 jobs:
-  use-action:
+  default-usage:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
@@ -21,7 +21,7 @@ jobs:
       - name: Run build result
         run: ${{ matrix.os == 'windows' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
 
-  use-action-with-specified-dir:
+  specified-dir-usage:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -39,7 +39,7 @@ jobs:
       - name: Check if the default build directory does not exist
         run: test ! -d build
 
-  use-action-with-specified-compiler:
+  specified-compiler-usage:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
@@ -61,7 +61,7 @@ jobs:
       - name: Run build result
         run: build/test_c && build/test_cpp
 
-  use-action-with-specified-generator:
+  specified-generator-usage:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
