@@ -3,11 +3,11 @@ on:
   workflow_dispatch:
   push:
 jobs:
-  use-action:
-    runs-on: ${{ matrix.os }}
+  default-usage:
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows, ubuntu, macos]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
@@ -19,9 +19,9 @@ jobs:
         uses: ./
 
       - name: Run build result
-        run: ${{ matrix.os == 'windows-latest' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
+        run: ${{ matrix.os == 'windows' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
 
-  use-action-with-specified-dir:
+  specified-dir-usage:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -39,26 +39,11 @@ jobs:
       - name: Check if the default build directory does not exist
         run: test ! -d build
 
-  use-action-with-specified-targets:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3.3.0
-
-      - name: Use this action with specified targets
-        uses: ./
-        with:
-          source-dir: test
-          targets: test_c test_cpp
-
-      - name: Run build result
-        run: build/test_c && build/test_cpp
-
-  use-action-with-specified-compiler:
-    runs-on: ${{ matrix.os }}
+  specified-compiler-usage:
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows, ubuntu, macos]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
@@ -76,11 +61,11 @@ jobs:
       - name: Run build result
         run: build/test_c && build/test_cpp
 
-  use-action-with-specified-generator:
-    runs-on: ${{ matrix.os }}
+  specified-generator-usage:
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows, ubuntu, macos]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
