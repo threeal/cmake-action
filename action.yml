@@ -6,27 +6,27 @@ branding:
   icon: terminal
 inputs:
   source-dir:
-    description: The source directory of CMake project
+    description: Source directory of the CMake project
     required: false
     default: .
   build-dir:
-    description: The build directory of CMake project
+    description: Build directory of the CMake project
     required: false
     default: build
   targets:
     description: List of build targets
     required: false
   generator:
-    description: The build system generator of the CMake project
+    description: Build system generator of the CMake project
     required: false
   c-compiler:
-    description: The preferred executable for compiling C language files
+    description: Preferred executable for compiling C language files
     required: false
   cxx-compiler:
-    description: The preferred executable for compiling CXX language files
+    description: Preferred executable for compiling CXX language files
     required: false
   args:
-    description: Additional arguments passed during CMake configuration
+    description: Additional arguments passed during the CMake configuration
     required: false
 runs:
   using: composite
