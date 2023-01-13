@@ -4,10 +4,10 @@ on:
   push:
 jobs:
   use-action:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows, ubuntu, macos]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
@@ -19,7 +19,7 @@ jobs:
         uses: ./
 
       - name: Run build result
-        run: ${{ matrix.os == 'windows-latest' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
+        run: ${{ matrix.os == 'windows' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
 
   use-action-with-specified-dir:
     runs-on: ubuntu-latest
@@ -40,10 +40,10 @@ jobs:
         run: test ! -d build
 
   use-action-with-specified-compiler:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows, ubuntu, macos]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
@@ -62,10 +62,10 @@ jobs:
         run: build/test_c && build/test_cpp
 
   use-action-with-specified-generator:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows, ubuntu, macos]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
