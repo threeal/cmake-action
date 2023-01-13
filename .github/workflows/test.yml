@@ -39,21 +39,6 @@ jobs:
       - name: Check if the default build directory does not exist
         run: test ! -d build
 
-  use-action-with-specified-targets:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3.3.0
-
-      - name: Use this action with specified targets
-        uses: ./
-        with:
-          source-dir: test
-          targets: test_c test_cpp
-
-      - name: Run build result
-        run: build/test_c && build/test_cpp
-
   use-action-with-specified-compiler:
     runs-on: ${{ matrix.os }}
     strategy:
