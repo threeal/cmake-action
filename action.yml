@@ -23,7 +23,7 @@ inputs:
     description: Preferred executable for compiling C language files
     required: false
   cxx-compiler:
-    description: Preferred executable for compiling CXX language files
+    description: Preferred executable for compiling C++ language files
     required: false
   c-flags:
     description: Additional flags passed when compiling C language files
