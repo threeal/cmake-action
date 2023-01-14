@@ -12,19 +12,21 @@ For more information, see [action.yml](./action.yml) and [GitHub Actions guide](
 
 ### Inputs
 
-> Note: All inputs are optional.
-
 | Name | Value Type | Description |
 | --- | --- | --- |
 | `source-dir` | Path | Source directory of the CMake project. Defaults to current directory. |
 | `build-dir` | Path | Build directory of the CMake project. Defaults to `build` directory in current directory. |
-| `targets` | Multiple strings | List of build targets. Could be specified more than one. Separate each target with a space or a new line. |
+| `targets` | Multiple strings | List of build targets. |
 | `generator` | String | Build system generator of the CMake project. |
 | `c-compiler` | String | Preferred executable for compiling C language files. |
-| `cxx-compiler` | String | Preferred executable for compiling CXX language files. |
-| `c-flags` | Multiple strings | Additional flags passed when compiling C language files. Could be specified more than one. Separate each flag with a space or a new line. |
-| `cxx-flags` | Multiple strings | Additional flags passed when compiling C++ language files. Could be specified more than one. Separate each flag with a space or a new line. |
-| `args` | Multiple strings | Additional arguments passed during the CMake configuration. Could be specified more than one. Separate each target with a space or a new line. |
+| `cxx-compiler` | String | Preferred executable for compiling C++ language files. |
+| `c-flags` | Multiple strings | Additional flags passed when compiling C language files. |
+| `cxx-flags` | Multiple strings | Additional flags passed when compiling C++ language files. |
+| `args` | Multiple strings | Additional arguments passed during the CMake configuration. |
+
+> Note: Multiple strings mean that the input could be specified with more than one value. Separate each value with a space or a new line.
+
+> Note: All inputs are optional.
 
 ### Examples
 
@@ -45,7 +47,7 @@ jobs:
 
 > Note: You can replace `@latest` with any version you like.
 
-#### Using Different Directories
+#### Specify the Source and the Build Directories
 
 ```yaml
 - name: Configure and build this project
@@ -55,19 +57,21 @@ jobs:
     build-dir: submodules/build
 ```
 
-#### Build Custom Targets
+#### Specify the Build Targets and Additional Options
 
 ```yaml
 - name: Configure and build this project
   uses: threeal/cmake-action@latest
   with:
     targets: hello_world_test fibonacci_test
+    c-flags: -Werror
+    cxx-flags: -Werror
     args: |
+      -DCMAKE_BUILD_TYPE=Debug
       -DBUILD_TESTING=ON
-      -DCMAKE_CXX_FLAGS='-Werror'
 ```
 
-#### Build Using Ninja and Clang
+#### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
 - name: Configure and build this project
