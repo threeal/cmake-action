@@ -45,7 +45,7 @@ jobs:
 
 > Note: You can replace `@latest` with any version you like.
 
-#### Using Different Directories
+#### Specify the Source and the Build Directories
 
 ```yaml
 - name: Configure and build this project
@@ -55,19 +55,21 @@ jobs:
     build-dir: submodules/build
 ```
 
-#### Build Custom Targets
+#### Specify the Build Targets and Additional Options
 
 ```yaml
 - name: Configure and build this project
   uses: threeal/cmake-action@latest
   with:
     targets: hello_world_test fibonacci_test
+    c-flags: -Werror
+    cxx-flags: -Werror
     args: |
+      -DCMAKE_BUILD_TYPE=Debug
       -DBUILD_TESTING=ON
-      -DCMAKE_CXX_FLAGS='-Werror'
 ```
 
-#### Build Using Ninja and Clang
+#### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
 - name: Configure and build this project
