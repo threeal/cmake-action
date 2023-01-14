@@ -9,7 +9,7 @@ jobs:
       matrix:
         os: [windows, ubuntu, macos]
     steps:
-      - name: Checkout repository
+      - name: Check out this repository
         uses: actions/checkout@v3.3.0
 
       - name: Move test project to the working directory
@@ -24,10 +24,10 @@ jobs:
   specified-dir-usage:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Check out this repository
         uses: actions/checkout@v3.3.0
 
-      - name: Use this action with specified directory
+      - name: Use this action with specified directories
         uses: ./
         with:
           source-dir: test
@@ -45,10 +45,10 @@ jobs:
       matrix:
         os: [windows, ubuntu, macos]
     steps:
-      - name: Checkout repository
+      - name: Check out this repository
         uses: actions/checkout@v3.3.0
 
-      - name: Use this action with specified compiler
+      - name: Use this action with specified compilers
         uses: ./
         with:
           source-dir: test
@@ -67,10 +67,10 @@ jobs:
       matrix:
         os: [windows, ubuntu, macos]
     steps:
-      - name: Checkout repository
+      - name: Check out this repository
         uses: actions/checkout@v3.3.0
 
-      - name: Use this action with specified generator
+      - name: Use this action with a specified generator
         uses: ./
         with:
           source-dir: test
