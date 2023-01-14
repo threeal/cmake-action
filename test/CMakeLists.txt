@@ -4,8 +4,10 @@ project(test)
 option(CHECK_USING_CLANG "check if target is compiled using Clang" OFF)
 option(CHECK_SURPASS_WARNING "check if target could surpass a compiler warning" OFF)
 
-set(CMAKE_C_FLAGS "-Werror -Wunused-variable ${CMAKE_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "-Werror -Wunused-variable ${CMAKE_CXX_FLAGS}")
+if(CHECK_SURPASS_WARNING)
+  set(CMAKE_C_FLAGS "-Werror -Wunused-variable ${CMAKE_C_FLAGS}")
+  set(CMAKE_CXX_FLAGS "-Werror -Wunused-variable ${CMAKE_CXX_FLAGS}")
+endif()
 
 add_executable(hello_world hello_world.cpp)
 
