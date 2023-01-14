@@ -12,19 +12,21 @@ For more information, see [action.yml](./action.yml) and [GitHub Actions guide](
 
 ### Inputs
 
-> Note: All inputs are optional.
-
 | Name | Value Type | Description |
 | --- | --- | --- |
 | `source-dir` | Path | Source directory of the CMake project. Defaults to current directory. |
 | `build-dir` | Path | Build directory of the CMake project. Defaults to `build` directory in current directory. |
-| `targets` | Multiple strings | List of build targets. Could be specified more than one. Separate each target with a space or a new line. |
+| `targets` | Multiple strings | List of build targets. |
 | `generator` | String | Build system generator of the CMake project. |
 | `c-compiler` | String | Preferred executable for compiling C language files. |
 | `cxx-compiler` | String | Preferred executable for compiling C++ language files. |
-| `c-flags` | Multiple strings | Additional flags passed when compiling C language files. Could be specified more than one. Separate each flag with a space or a new line. |
-| `cxx-flags` | Multiple strings | Additional flags passed when compiling C++ language files. Could be specified more than one. Separate each flag with a space or a new line. |
-| `args` | Multiple strings | Additional arguments passed during the CMake configuration. Could be specified more than one. Separate each target with a space or a new line. |
+| `c-flags` | Multiple strings | Additional flags passed when compiling C language files. |
+| `cxx-flags` | Multiple strings | Additional flags passed when compiling C++ language files. |
+| `args` | Multiple strings | Additional arguments passed during the CMake configuration. |
+
+> Note: Multiple strings mean that the input could be specified with more than one value. Separate each value with a space or a new line.
+
+> Note: All inputs are optional.
 
 ### Examples
 
