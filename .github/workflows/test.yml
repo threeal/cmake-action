@@ -18,7 +18,7 @@ jobs:
       - name: Use this action
         uses: ./
 
-      - name: Run build result
+      - name: Run the build result
         run: ${{ matrix.os == 'windows' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
 
   specified-dir-usage:
@@ -33,7 +33,7 @@ jobs:
           source-dir: test
           build-dir: test/build
 
-      - name: Run build result
+      - name: Run the build result
         run: test/build/hello_world
 
       - name: Check if the default build directory does not exist
@@ -75,7 +75,7 @@ jobs:
           cxx-compiler: clang++
           args: -D CHECK_USING_CLANG=ON
 
-      - name: Run build result
+      - name: Run the build results
         run: build/test_c && build/test_cpp
 
   specified-generator-usage:
@@ -93,5 +93,5 @@ jobs:
           source-dir: test
           generator: Ninja
 
-      - name: Run build result
+      - name: Run the build result
         run: build/hello_world
