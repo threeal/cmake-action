@@ -25,6 +25,12 @@ inputs:
   cxx-compiler:
     description: Preferred executable for compiling CXX language files
     required: false
+  c-flags:
+    description: Additional flags passed when compiling C language files
+    required: false
+  cxx-flags:
+    description: Additional flags passed when compiling C++ language files
+    required: false
   args:
     description: Additional arguments passed during the CMake configuration
     required: false
@@ -48,6 +54,12 @@ runs:
         fi
         if [ -n '${{ inputs.cxx-compiler }}' ]; then
           ARGS="$ARGS -D CMAKE_CXX_COMPILER=${{ inputs.cxx-compiler }}"
+        fi
+        if [ -n '${{ inputs.c-flags }}' ]; then
+          ARGS="$ARGS -D CMAKE_C_FLAGS=${{ inputs.c-flags }}"
+        fi
+        if [ -n '${{ inputs.cxx-flags }}' ]; then
+          ARGS="$ARGS -D CMAKE_CXX_FLAGS=${{ inputs.cxx-flags }}"
         fi
         if [ -n '${{ inputs.args }}' ]; then
           ARGS="$ARGS ${{ inputs.args }}"
