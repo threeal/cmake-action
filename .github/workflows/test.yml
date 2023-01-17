@@ -53,8 +53,8 @@ jobs:
         with:
           source-dir: test
           targets: test_c test_cpp
-          c-flags: ${{ matrix.compiler == 'msvc' && '/w' || '-Wno-unused-variable' }}
-          cxx-flags: ${{ matrix.compiler == 'msvc' && '/w' || '-Wno-unused-variable' }}
+          c-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
+          cxx-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           args: -D CHECK_SURPASS_WARNING=ON
 
       - name: Run the build results
