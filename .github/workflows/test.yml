@@ -58,7 +58,9 @@ jobs:
           args: -D CHECK_SURPASS_WARNING=ON
 
       - name: Run the build results
-        run: build/test_c && build/test_cpp
+        run: |
+          ${{ matrix.compiler == 'msvc' && 'build\Debug\test_c.exe' || 'build/test_c' }}
+          ${{ matrix.compiler == 'msvc' && 'build\Debug\test_cpp.exe' || 'build/test_cpp' }}
 
   specified-compiler-usage:
     runs-on: ${{ matrix.os }}-latest
