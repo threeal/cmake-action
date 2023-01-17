@@ -40,7 +40,10 @@ jobs:
         run: test ! -d build
 
   additional-flags-usage:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
+    strategy:
+      matrix:
+        compiler: [gcc, msvc]
     steps:
       - name: Check out this repository
         uses: actions/checkout@v3.3.0
@@ -50,8 +53,8 @@ jobs:
         with:
           source-dir: test
           targets: test_c test_cpp
-          c-flags: -Wno-unused-variable
-          cxx-flags: -Wno-unused-variable
+          c-flags: ${{ matrix.compiler == 'msvc' && '/w' || '-Wno-unused-variable' }}
+          cxx-flags: ${{ matrix.compiler == 'msvc' && '/w' || '-Wno-unused-variable' }}
           args: -D CHECK_SURPASS_WARNING=ON
 
       - name: Run the build results
