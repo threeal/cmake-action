@@ -41,25 +41,25 @@ runs:
       id: process_inputs
       shell: bash
       run: |
-        ARGS="${{ inputs.source-dir }} -B ${{ inputs.build-dir }}"
-        BUILD_ARGS="--build ${{ inputs.build-dir }}"
+        ARGS="'${{ inputs.source-dir }}' -B '${{ inputs.build-dir }}'"
+        BUILD_ARGS="--build '${{ inputs.build-dir }}'"
         if [ -n '${{ inputs.targets }}' ]; then
           BUILD_ARGS="$BUILD_ARGS --target ${{ inputs.targets }}"
         fi
         if [ -n '${{ inputs.generator }}' ]; then
-          ARGS="$ARGS -G ${{ inputs.generator }}"
+          ARGS="$ARGS -G '${{ inputs.generator }}'"
         fi
         if [ -n '${{ inputs.c-compiler }}' ]; then
-          ARGS="$ARGS -D CMAKE_C_COMPILER=${{ inputs.c-compiler }}"
+          ARGS="$ARGS -D CMAKE_C_COMPILER='${{ inputs.c-compiler }}'"
         fi
         if [ -n '${{ inputs.cxx-compiler }}' ]; then
-          ARGS="$ARGS -D CMAKE_CXX_COMPILER=${{ inputs.cxx-compiler }}"
+          ARGS="$ARGS -D CMAKE_CXX_COMPILER='${{ inputs.cxx-compiler }}'"
         fi
         if [ -n '${{ inputs.c-flags }}' ]; then
-          ARGS="$ARGS -D CMAKE_C_FLAGS=${{ inputs.c-flags }}"
+          ARGS="$ARGS -D CMAKE_C_FLAGS='${{ inputs.c-flags }}'"
         fi
         if [ -n '${{ inputs.cxx-flags }}' ]; then
-          ARGS="$ARGS -D CMAKE_CXX_FLAGS=${{ inputs.cxx-flags }}"
+          ARGS="$ARGS -D CMAKE_CXX_FLAGS='${{ inputs.cxx-flags }}'"
         fi
         if [ -n '${{ inputs.args }}' ]; then
           ARGS="$ARGS ${{ inputs.args }}"
@@ -78,9 +78,9 @@ runs:
         esac
 
     - name: Configure the CMake project
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
       run: cmake ${{ steps.process_inputs.outputs.cmake_args }}
 
     - name: Build targets
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
       run: cmake ${{ steps.process_inputs.outputs.cmake_build_args }}
