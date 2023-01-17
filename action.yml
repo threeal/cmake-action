@@ -78,9 +78,9 @@ runs:
         esac
 
     - name: Configure the CMake project
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
       run: cmake ${{ steps.process_inputs.outputs.cmake_args }}
 
     - name: Build targets
-      shell: bash
+      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
       run: cmake ${{ steps.process_inputs.outputs.cmake_build_args }}
