@@ -52,6 +52,7 @@ jobs:
           targets: test_c test_cpp
           c-flags: -Wno-unused-variable
           cxx-flags: -Wno-unused-variable
+          args: -D CHECK_SURPASS_WARNING=ON
 
       - name: Run the build results
         run: build/test_c && build/test_cpp
