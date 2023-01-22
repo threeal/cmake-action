@@ -56,7 +56,7 @@ jobs:
           c-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           cxx-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           args: -D CHECK_SURPASS_WARNING=ON
-          test-args: -R test
+          test-args: -R test ${{ matrix.compiler == 'msvc' && '-C Debug' || '' }}
 
   specified-compiler-usage:
     runs-on: ${{ matrix.os }}-latest
