@@ -14,7 +14,9 @@ if(CHECK_SURPASS_WARNING)
   endif()
 endif()
 
+enable_testing()
 add_executable(hello_world hello_world.cpp)
+add_test(NAME hello_world COMMAND $<TARGET_FILE:hello_world>)
 
 list(APPEND LANGS c cpp)
 foreach(LANG ${LANGS})

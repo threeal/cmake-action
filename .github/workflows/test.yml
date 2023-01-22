@@ -32,9 +32,7 @@ jobs:
         with:
           source-dir: test
           build-dir: output
-
-      - name: Run the build result
-        run: output/hello_world
+          run_test: true
 
       - name: Check if the default build directory does not exist
         run: test ! -d build && test ! -d test/build
@@ -98,6 +96,4 @@ jobs:
         with:
           source-dir: test
           generator: Ninja
-
-      - name: Run the build result
-        run: test/build/hello_world
+          run-test: true
