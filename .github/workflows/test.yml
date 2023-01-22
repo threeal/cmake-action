@@ -33,6 +33,7 @@ jobs:
           source-dir: test
           build-dir: output
           run-test: true
+          test-args: -R hello_world
 
       - name: Check if the default build directory does not exist
         run: test ! -d build && test ! -d test/build
@@ -55,7 +56,7 @@ jobs:
           c-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           cxx-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           args: -D CHECK_SURPASS_WARNING=ON
-          test-args: -C test -E hello_world
+          test-args: -R test
 
   specified-compiler-usage:
     runs-on: ${{ matrix.os }}-latest
@@ -76,7 +77,7 @@ jobs:
           c-compiler: clang
           cxx-compiler: clang++
           args: -D CHECK_USING_CLANG=ON
-          test-args: -C test -E hello_world
+          test-args: -R test
 
   specified-generator-usage:
     runs-on: ${{ matrix.os }}-latest
@@ -91,5 +92,6 @@ jobs:
         uses: ./
         with:
           source-dir: test
-          generator: Ninja
           run-test: true
+          generator: Ninja
+          test-args: -R hello_world

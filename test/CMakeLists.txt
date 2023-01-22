@@ -28,5 +28,5 @@ foreach(LANG ${LANGS})
     $<$<BOOL:${CHECK_USING_CLANG}>:CHECK_USING_CLANG>
     $<$<BOOL:${CHECK_SURPASS_WARNING}>:CHECK_SURPASS_WARNING>
   )
-  add_test(NAME test_${LANG} CONFIGURATIONS test COMMAND $<TARGET_FILE:test_${LANG}>)
+  add_test(NAME test_${LANG} COMMAND $<TARGET_FILE:test_${LANG}>)
 endforeach()
