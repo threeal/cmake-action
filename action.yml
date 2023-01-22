@@ -14,6 +14,10 @@ inputs:
   targets:
     description: List of build targets
     required: false
+  run-test:
+    description: If enabled, run testing using CTest (true/false)
+    required: false
+    default: false
   generator:
     description: Build system generator of the CMake project
     required: false
@@ -51,8 +55,12 @@ runs:
         fi
         ARGS="'$SOURCE_DIR' -B '$BUILD_DIR'"
         BUILD_ARGS="--build '$BUILD_DIR'"
+        TEST_ARGS=""
         if [ -n '${{ inputs.targets }}' ]; then
           BUILD_ARGS="$BUILD_ARGS --target ${{ inputs.targets }}"
+        fi
+        if [ '${{ inputs.run-test }}' == 'true' ]; then
+          TEST_ARGS="--test-dir '$BUILD_DIR' --output-on-failure --no-tests=error"
         fi
         if [ -n '${{ inputs.generator }}' ]; then
           ARGS="$ARGS -G '${{ inputs.generator }}'"
@@ -74,6 +82,7 @@ runs:
         fi
         echo "cmake_args=${ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
         echo "cmake_build_args=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
+        echo "cmake_test_args=${TEST_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
 
     - name: Install Ninja
       if: ${{ inputs.generator == 'Ninja' }}
@@ -92,3 +101,8 @@ runs:
     - name: Build targets
       shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
       run: cmake ${{ steps.process_inputs.outputs.cmake_build_args }}
+
+    - name: Run tests
+      if: steps.process_inputs.outputs.cmake_test_args != ''
+      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+      run: ctest ${{ steps.process_inputs.outputs.cmake_test_args }}
