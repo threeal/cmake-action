@@ -8,7 +8,6 @@ inputs:
   source-dir:
     description: Source directory of the CMake project
     required: false
-    default: .
   build-dir:
     description: Build directory of the CMake project
     required: false
@@ -41,7 +40,11 @@ runs:
       id: process_inputs
       shell: bash
       run: |
-        ARGS="'${{ inputs.source-dir }}' -B '${{ inputs.build-dir }}'"
+        SOURCE_DIR="."
+        if [ -n '${{ inputs.source-dir }}' ]; then
+          SOURCE_DIR="${{ inputs.source-dir }}"
+        fi
+        ARGS="'$SOURCE_DIR' -B '${{ inputs.build-dir }}'"
         BUILD_ARGS="--build '${{ inputs.build-dir }}'"
         if [ -n '${{ inputs.targets }}' ]; then
           BUILD_ARGS="$BUILD_ARGS --target ${{ inputs.targets }}"
