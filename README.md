@@ -24,6 +24,7 @@ For more information, see [action.yml](./action.yml) and [GitHub Actions guide](
 | `c-flags` | Multiple strings | Additional flags passed when compiling C language files. |
 | `cxx-flags` | Multiple strings | Additional flags passed when compiling C++ language files. |
 | `args` | Multiple strings | Additional arguments passed during the CMake configuration. |
+| `test-args` | Multiple strings | Additional arguments passed during the CTest run. |
 
 > Note: Multiple strings mean that the input could be specified with more than one value. Separate each value with a space or a new line.
 

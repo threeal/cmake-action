@@ -36,6 +36,9 @@ inputs:
   args:
     description: Additional arguments passed during the CMake configuration
     required: false
+  test-args:
+    description: Additional arguments passed during the CTest run
+    required: false
 runs:
   using: composite
   steps:
@@ -79,6 +82,9 @@ runs:
         fi
         if [ -n '${{ inputs.args }}' ]; then
           ARGS="$ARGS ${{ inputs.args }}"
+        fi
+        if [ -n '${{ inputs.test-args }}' ]; then
+          TEST_ARGS="$TEST_ARGS ${{ inputs.test-args }}"
         fi
         echo "cmake_args=${ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
         echo "cmake_build_args=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
