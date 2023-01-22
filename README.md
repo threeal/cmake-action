@@ -17,12 +17,14 @@ For more information, see [action.yml](./action.yml) and [GitHub Actions guide](
 | `source-dir` | Path | Source directory of the CMake project. Defaults to current directory. |
 | `build-dir` | Path | Build directory of the CMake project. Defaults to `build` directory in current directory. |
 | `targets` | Multiple strings | List of build targets. |
+| `run-test` | `true` or `false` | If enabled, run testing using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). Defaults to `false`. |
 | `generator` | String | Build system generator of the CMake project. |
 | `c-compiler` | String | Preferred executable for compiling C language files. |
 | `cxx-compiler` | String | Preferred executable for compiling C++ language files. |
 | `c-flags` | Multiple strings | Additional flags passed when compiling C language files. |
 | `cxx-flags` | Multiple strings | Additional flags passed when compiling C++ language files. |
 | `args` | Multiple strings | Additional arguments passed during the CMake configuration. |
+| `test-args` | Multiple strings | Additional arguments passed during the CTest run. |
 
 > Note: Multiple strings mean that the input could be specified with more than one value. Separate each value with a space or a new line.
 
