@@ -11,7 +11,6 @@ inputs:
   build-dir:
     description: Build directory of the CMake project
     required: false
-    default: build
   targets:
     description: List of build targets
     required: false
@@ -44,8 +43,14 @@ runs:
         if [ -n '${{ inputs.source-dir }}' ]; then
           SOURCE_DIR="${{ inputs.source-dir }}"
         fi
-        ARGS="'$SOURCE_DIR' -B '${{ inputs.build-dir }}'"
-        BUILD_ARGS="--build '${{ inputs.build-dir }}'"
+        BUILD_DIR="build"
+        if [ -n '${{ inputs.build-dir }}' ]; then
+          BUILD_DIR="${{ inputs.build-dir }}"
+        elif [ -n "${{ inputs.source-dir }}" ]; then
+          BUILD_DIR="${{ inputs.source-dir }}/build"
+        fi
+        ARGS="'$SOURCE_DIR' -B '$BUILD_DIR'"
+        BUILD_ARGS="--build '$BUILD_DIR'"
         if [ -n '${{ inputs.targets }}' ]; then
           BUILD_ARGS="$BUILD_ARGS --target ${{ inputs.targets }}"
         fi

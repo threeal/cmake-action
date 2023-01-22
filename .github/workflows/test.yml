@@ -31,13 +31,13 @@ jobs:
         uses: ./
         with:
           source-dir: test
-          build-dir: test/build
+          build-dir: output
 
       - name: Run the build result
-        run: test/build/hello_world
+        run: output/hello_world
 
       - name: Check if the default build directory does not exist
-        run: test ! -d build
+        run: test ! -d build && test ! -d test/build
 
   additional-flags-usage:
     runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
@@ -59,8 +59,8 @@ jobs:
 
       - name: Run the build results
         run: |
-          ${{ matrix.compiler == 'msvc' && 'build\Debug\test_c.exe' || 'build/test_c' }}
-          ${{ matrix.compiler == 'msvc' && 'build\Debug\test_cpp.exe' || 'build/test_cpp' }}
+          ${{ matrix.compiler == 'msvc' && 'test\build\Debug\test_c.exe' || 'test/build/test_c' }}
+          ${{ matrix.compiler == 'msvc' && 'test\build\Debug\test_cpp.exe' || 'test/build/test_cpp' }}
 
   specified-compiler-usage:
     runs-on: ${{ matrix.os }}-latest
@@ -82,7 +82,7 @@ jobs:
           args: -D CHECK_USING_CLANG=ON
 
       - name: Run the build results
-        run: build/test_c && build/test_cpp
+        run: test/build/test_c && test/build/test_cpp
 
   specified-generator-usage:
     runs-on: ${{ matrix.os }}-latest
@@ -100,4 +100,4 @@ jobs:
           generator: Ninja
 
       - name: Run the build result
-        run: build/hello_world
+        run: test/build/hello_world
