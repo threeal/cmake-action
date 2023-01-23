@@ -5,11 +5,18 @@ option(CHECK_USING_CLANG "check if target is compiled using Clang" OFF)
 option(CHECK_SURPASS_WARNING "check if target could surpass a compiler warning" OFF)
 
 if(CHECK_SURPASS_WARNING)
-  set(CMAKE_C_FLAGS "-Werror -Wunused-variable ${CMAKE_C_FLAGS}")
-  set(CMAKE_CXX_FLAGS "-Werror -Wunused-variable ${CMAKE_CXX_FLAGS}")
+  if(MSVC)
+    set(CMAKE_C_FLAGS "/WX /W4 ${CMAKE_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "/WX /W4 ${CMAKE_CXX_FLAGS}")
+  else()
+    set(CMAKE_C_FLAGS "-Werror -Wunused-variable ${CMAKE_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-Werror -Wunused-variable ${CMAKE_CXX_FLAGS}")
+  endif()
 endif()
 
+enable_testing()
 add_executable(hello_world hello_world.cpp)
+add_test(NAME hello_world COMMAND $<TARGET_FILE:hello_world>)
 
 list(APPEND LANGS c cpp)
 foreach(LANG ${LANGS})
@@ -21,4 +28,5 @@ foreach(LANG ${LANGS})
     $<$<BOOL:${CHECK_USING_CLANG}>:CHECK_USING_CLANG>
     $<$<BOOL:${CHECK_SURPASS_WARNING}>:CHECK_SURPASS_WARNING>
   )
+  add_test(NAME test_${LANG} COMMAND $<TARGET_FILE:test_${LANG}>)
 endforeach()
