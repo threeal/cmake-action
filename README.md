@@ -84,6 +84,16 @@ jobs:
       -DBUILD_TESTING=ON
 ```
 
+#### Run Unit Tests After Build
+
+```yaml
+- name: Configure, build, and test this project
+  uses: threeal/cmake-action@latest
+  with:
+    args: -DBUILD_TESTING=ON
+    run-test: true
+```
+
 #### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
