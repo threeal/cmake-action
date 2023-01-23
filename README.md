@@ -67,21 +67,16 @@ jobs:
   uses: threeal/cmake-action@latest
   with:
     source-dir: submodules
-    build-dir: submodules/build
+    build-dir: submodules/out
 ```
 
-#### Specify the Build Targets and Additional Options
+#### Specify the Build Targets
 
 ```yaml
 - name: Configure and build this project
   uses: threeal/cmake-action@latest
   with:
-    targets: hello_world_test fibonacci_test
-    c-flags: -Werror
-    cxx-flags: -Werror
-    args: |
-      -DCMAKE_BUILD_TYPE=Debug
-      -DBUILD_TESTING=ON
+    targets: hello_mars hello_sun
 ```
 
 #### Run Unit Tests After Build
