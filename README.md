@@ -4,7 +4,7 @@
 [![license](https://img.shields.io/github/license/threeal/cmake-action)](./LICENSE)
 [![test status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yml)
 
-Configure and build a [CMake](https://cmake.org/) project on [GitHub Actions](https://github.com/features/actions).
+Configure, build, and test a [CMake](https://cmake.org/) project on [GitHub Actions](https://github.com/features/actions).
 
 ## Usage
 
