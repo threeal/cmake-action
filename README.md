@@ -10,6 +10,13 @@ This action will configure a build environment for your project using the `cmake
   then it will build your project by running a `cmake --build` command,
   and last it could test your project using the `ctest` command.
 
+## Features
+
+- Configure and build a project using the [cmake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
+- Optionally test a project using the [ctest](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
+- Auto-detect and install required dependencies.
+- Specify multiple CMake options directly from the Action inputs.
+
 ## Usage
 
 For more information, see [action.yml](./action.yml) and [GitHub Actions guide](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
