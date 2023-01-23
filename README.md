@@ -26,7 +26,7 @@ For more information, see [action.yml](./action.yml) and [GitHub Actions guide](
 | Name | Value Type | Description |
 | --- | --- | --- |
 | `source-dir` | Path | Source directory of the CMake project. Defaults to current directory. |
-| `build-dir` | Path | Build directory of the CMake project. Defaults to `build` directory in current directory. |
+| `build-dir` | Path | Build directory of the CMake project. Defaults to `build` directory inside the source directory. |
 | `targets` | Multiple strings | List of build targets. |
 | `run-test` | `true` or `false` | If enabled, run testing using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). Defaults to `false`. |
 | `generator` | String | Build system generator of the CMake project. |
