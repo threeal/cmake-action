@@ -5,6 +5,10 @@
 [![test status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yml)
 
 Configure, build, and test a [CMake](https://cmake.org/) project on [GitHub Actions](https://github.com/features/actions).
+Use this action to simplify the workflow run of your CMake project.
+This action will configure a build environment for your project using the `cmake` command,
+  then it will build your project by running a `cmake --build` command,
+  and last it could test your project using the `ctest` command.
 
 ## Usage
 
