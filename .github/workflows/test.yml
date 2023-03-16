@@ -10,7 +10,7 @@ jobs:
         os: [windows, ubuntu, macos]
     steps:
       - name: Check out this repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.4.0
 
       - name: Move test project to the working directory
         run: mv test/* .
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out this repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.4.0
 
       - name: Use this action with specified directories
         uses: ./
@@ -45,7 +45,7 @@ jobs:
         compiler: [gcc, msvc]
     steps:
       - name: Check out this repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.4.0
 
       - name: Use this action with additional compiler flags
         uses: ./
@@ -65,7 +65,7 @@ jobs:
         os: [windows, ubuntu, macos]
     steps:
       - name: Check out this repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.4.0
 
       - name: Use this action with specified compilers
         uses: ./
@@ -86,7 +86,7 @@ jobs:
         os: [windows, ubuntu, macos]
     steps:
       - name: Check out this repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.4.0
 
       - name: Use this action with a specified generator
         uses: ./
