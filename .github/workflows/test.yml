@@ -1,7 +1,9 @@
 name: test
 on:
   workflow_dispatch:
+  pull_request:
   push:
+    branches: [latest, main]
 jobs:
   default-usage:
     runs-on: ${{ matrix.os }}-latest
