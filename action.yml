@@ -81,26 +81,23 @@ runs:
         if [ -n '${{ inputs.args }}' ]; then
           ARGS="$ARGS ${{ inputs.args }}"
         fi
+        echo "cmake_args=${ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
 
-        BUILD_ARGS=""
         if [ '${{ inputs.run-build }}' == 'true' ]; then
           BUILD_ARGS="--build '$BUILD_DIR'"
-        fi
-        if [ -n '${{ inputs.build-args }}' ]; then
-          BUILD_ARGS="$BUILD_ARGS ${{ inputs.build-args }}"
+          if [ -n '${{ inputs.build-args }}' ]; then
+            BUILD_ARGS="$BUILD_ARGS ${{ inputs.build-args }}"
+          fi
+          echo "cmake_build_args=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
         fi
 
-        TEST_ARGS=""
         if [ '${{ inputs.run-test }}' == 'true' ]; then
           TEST_ARGS="--test-dir '$BUILD_DIR' --output-on-failure --no-tests=error"
+          if [ -n '${{ inputs.test-args }}' ]; then
+            TEST_ARGS="$TEST_ARGS ${{ inputs.test-args }}"
+          fi
+          echo "cmake_test_args=${TEST_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
         fi
-        if [ -n '${{ inputs.test-args }}' ]; then
-          TEST_ARGS="$TEST_ARGS ${{ inputs.test-args }}"
-        fi
-
-        echo "cmake_args=${ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
-        echo "cmake_build_args=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
-        echo "cmake_test_args=${TEST_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
 
     - name: Install Ninja
       if: ${{ inputs.generator == 'Ninja' }}
@@ -117,11 +114,11 @@ runs:
       run: cmake ${{ steps.process_inputs.outputs.cmake_args }}
 
     - name: Build targets
-      if: steps.process_inputs.outputs.cmake_build_args != ''
+      if: inputs.run-build != 'false'
       shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
       run: cmake ${{ steps.process_inputs.outputs.cmake_build_args }}
 
     - name: Run tests
-      if: steps.process_inputs.outputs.cmake_test_args != ''
+      if: inputs.run-test != 'false'
       shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
       run: ctest ${{ steps.process_inputs.outputs.cmake_test_args }}
