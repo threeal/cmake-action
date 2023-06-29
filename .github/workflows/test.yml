@@ -11,37 +11,77 @@ jobs:
       matrix:
         os: [windows, ubuntu, macos]
     steps:
-      - name: Check out this repository
+      - name: Checkout the repository
         uses: actions/checkout@v3.5.3
 
-      - name: Move test project to the working directory
+      - name: Move the test project to the working directory
         run: mv test/* .
 
-      - name: Use this action
+      - name: Use the action
         uses: ./
-        with:
-          run-build: true
 
-      - name: Run the build result
-        run: ${{ matrix.os == 'windows' && 'build\Debug\hello_world.exe' || 'build/hello_world' }}
+      - name: Try to test the project
+        id: failed-step
+        continue-on-error: true
+        run: ctest --test-dir build --output-on-failure --no-tests=error
+
+      - name: Check on success
+        if: steps.failed-step.outcome == 'success'
+        run: exit 1
+
+      - name: Build and test the project
+        run: |
+          cmake --build build
+          ctest --test-dir build --output-on-failure --no-tests=error
 
   specified-dir-usage:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out this repository
+      - name: Checkout the repository
         uses: actions/checkout@v3.5.3
 
-      - name: Use this action with specified directories
+      - name: Use the action with specified directories
         uses: ./
         with:
           source-dir: test
           build-dir: output
-          run-build: true
-          run-test: true
-          test-args: -R hello_world
 
       - name: Check if the default build directory does not exist
-        run: test ! -d build && test ! -d test/build
+        shell: bash
+        run: test ! -e build && test ! -e test/build
+
+      - name: Build and test the project
+        run: |
+          cmake --build output
+          ctest --test-dir output --output-on-failure --no-tests=error
+
+  run-build-usage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3.5.3
+
+      - name: Use the action with run build enabled
+        uses: ./
+        with:
+          source-dir: test
+          run-build: true
+
+      - name: Test the project
+        run: ctest --test-dir build --output-on-failure --no-tests=error
+
+  run-test-usage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3.5.3
+
+      - name: Use the action with run test enabled
+        uses: ./
+        with:
+          source-dir: test
+          run-build: true
+          run-test: true
 
   additional-flags-usage:
     runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
