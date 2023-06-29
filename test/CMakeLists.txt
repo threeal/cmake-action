@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 project(test)
 
-option(CHECK_USING_CLANG "check if target is compiled using Clang" OFF)
-option(CHECK_SURPASS_WARNING "check if target could surpass a compiler warning" OFF)
+option(CHECK_USING_CLANG "Check if the target is compiled using Clang" OFF)
+option(CHECK_SURPASS_WARNING "Check if the target could surpass a compiler warning" OFF)
 
 if(CHECK_SURPASS_WARNING)
   if(MSVC)
