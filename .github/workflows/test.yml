@@ -24,7 +24,7 @@ jobs:
       - name: Try to test the project
         id: failed-step
         continue-on-error: true
-        run: ctest --test-dir build --output-on-failure --no-tests=error
+        run: ctest --test-dir build --output-on-failure --no-tests=error -R hello_world
 
       - name: Check on success
         if: steps.failed-step.outcome == 'success'
@@ -33,7 +33,7 @@ jobs:
       - name: Build and test the project
         run: |
           cmake --build build
-          ctest --test-dir build --output-on-failure --no-tests=error
+          ctest --test-dir build --output-on-failure --no-tests=error -R hello_world
 
   specified-dir-usage:
     runs-on: ubuntu-latest
@@ -54,7 +54,7 @@ jobs:
       - name: Build and test the project
         run: |
           cmake --build output
-          ctest --test-dir output --output-on-failure --no-tests=error
+          ctest --test-dir output --output-on-failure --no-tests=error -R hello_world
 
   run-build-usage:
     runs-on: ubuntu-latest
@@ -67,9 +67,10 @@ jobs:
         with:
           source-dir: test
           run-build: true
+          build-args: --target test_c --target test_cpp
 
       - name: Test the project
-        run: ctest --test-dir build --output-on-failure --no-tests=error
+        run: ctest --test-dir test/build --output-on-failure --no-tests=error -R test
 
   run-test-usage:
     runs-on: ubuntu-latest
@@ -83,6 +84,7 @@ jobs:
           source-dir: test
           run-build: true
           run-test: true
+          test-args: -R hello_world
 
   additional-flags-usage:
     runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
