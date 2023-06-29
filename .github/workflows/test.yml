@@ -82,7 +82,6 @@ jobs:
         uses: ./
         with:
           source-dir: test
-          run-build: true
           run-test: true
           test-args: -R hello_world
 

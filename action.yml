@@ -83,7 +83,7 @@ runs:
         fi
         echo "cmake_args=${ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
 
-        if [ '${{ inputs.run-build }}' == 'true' ]; then
+        if [ '${{ inputs.run-build }}' == 'true' ] || [ '${{ inputs.run-test }}' == 'true' ]; then
           BUILD_ARGS="--build '$BUILD_DIR'"
           if [ -n '${{ inputs.build-args }}' ]; then
             BUILD_ARGS="$BUILD_ARGS ${{ inputs.build-args }}"
@@ -114,7 +114,7 @@ runs:
       run: cmake ${{ steps.process_inputs.outputs.cmake_args }}
 
     - name: Build targets
-      if: inputs.run-build != 'false'
+      if: inputs.run-build != 'false' || inputs.run-test != 'false'
       shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
       run: cmake ${{ steps.process_inputs.outputs.cmake_build_args }}
 
