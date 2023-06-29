@@ -14,10 +14,6 @@ inputs:
   targets:
     description: List of build targets
     required: false
-  run-test:
-    description: If enabled, run testing using CTest (true/false)
-    required: false
-    default: false
   generator:
     description: Build system generator of the CMake project
     required: false
@@ -36,6 +32,10 @@ inputs:
   args:
     description: Additional arguments passed during the CMake configuration
     required: false
+  run-test:
+    description: If enabled, run testing using CTest (true/false)
+    required: false
+    default: false
   test-args:
     description: Additional arguments passed during the CTest run
     required: false
@@ -62,9 +62,6 @@ runs:
         if [ -n '${{ inputs.targets }}' ]; then
           BUILD_ARGS="$BUILD_ARGS --target ${{ inputs.targets }}"
         fi
-        if [ '${{ inputs.run-test }}' == 'true' ]; then
-          TEST_ARGS="--test-dir '$BUILD_DIR' --output-on-failure --no-tests=error"
-        fi
         if [ -n '${{ inputs.generator }}' ]; then
           ARGS="$ARGS -G '${{ inputs.generator }}'"
         fi
@@ -82,6 +79,9 @@ runs:
         fi
         if [ -n '${{ inputs.args }}' ]; then
           ARGS="$ARGS ${{ inputs.args }}"
+        fi
+        if [ '${{ inputs.run-test }}' == 'true' ]; then
+          TEST_ARGS="--test-dir '$BUILD_DIR' --output-on-failure --no-tests=error"
         fi
         if [ -n '${{ inputs.test-args }}' ]; then
           TEST_ARGS="$TEST_ARGS ${{ inputs.test-args }}"
