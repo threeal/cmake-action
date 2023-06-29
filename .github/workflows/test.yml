@@ -92,10 +92,10 @@ jobs:
       matrix:
         compiler: [gcc, msvc]
     steps:
-      - name: Check out this repository
+      - name: Checkout the repository
         uses: actions/checkout@v3.5.3
 
-      - name: Use this action with additional compiler flags
+      - name: Use the action with additional compiler flags
         uses: ./
         with:
           source-dir: test
@@ -114,10 +114,10 @@ jobs:
       matrix:
         os: [windows, ubuntu, macos]
     steps:
-      - name: Check out this repository
+      - name: Checkout the repository
         uses: actions/checkout@v3.5.3
 
-      - name: Use this action with specified generator and compilers
+      - name: Use the action with specified generator and compilers
         uses: ./
         with:
           source-dir: test
