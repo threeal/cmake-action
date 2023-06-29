@@ -1,50 +1,46 @@
 # CMake Action
 
-[![latest version](https://img.shields.io/github/v/release/threeal/cmake-action)](https://github.com/threeal/cmake-action/releases/)
-[![license](https://img.shields.io/github/license/threeal/cmake-action)](./LICENSE)
-[![test status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yml)
+[![Latest Version](https://img.shields.io/github/v/release/threeal/cmake-action)](https://github.com/threeal/cmake-action/releases/)
+[![License](https://img.shields.io/github/license/threeal/cmake-action)](./LICENSE)
+[![Test Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yml)
 
-Configure, build, and test a [CMake](https://cmake.org/) project on [GitHub Actions](https://github.com/features/actions).
-Use this action to simplify the workflow run of your CMake project.
-This action will configure a build environment for your project using the `cmake` command,
-  then it will build your project by running a `cmake --build` command,
-  and last it could test your project using the `ctest` command.
+Configure, build, and test your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for your CMake project. It configures the build environment using the `cmake` command, builds the project using the `cmake --build` command, and optionally tests the project using the `ctest` command.
 
 ## Features
 
-- Configure and build a project using the [cmake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
-- Optionally test a project using the [ctest](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
-- Auto-detect and install required dependencies.
-- Specify multiple CMake options directly from the Action inputs.
+- Configures and builds a project using the [cmake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
+- Option to test a project using the [ctest](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
+- Auto-detects and installs required dependencies.
+- Supports specifying multiple CMake options directly from the Action inputs.
 
 ## Usage
 
-For more information, see [action.yml](./action.yml) and [GitHub Actions guide](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
+For more information, refer to [action.yml](./action.yml) and the [GitHub Actions guide](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
 
 ### Inputs
 
 | Name | Value Type | Description |
 | --- | --- | --- |
-| `source-dir` | Path | Source directory of the CMake project. Defaults to current directory. |
-| `build-dir` | Path | Build directory of the CMake project. Defaults to `build` directory inside the source directory. |
+| `source-dir` | Path | Source directory of the CMake project. Defaults to the current directory. |
+| `build-dir` | Path | Build directory of the CMake project. Defaults to the `build` directory inside the source directory. |
 | `targets` | Multiple strings | List of build targets. |
-| `run-test` | `true` or `false` | If enabled, run testing using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). Defaults to `false`. |
-| `generator` | String | Build system generator of the CMake project. |
+| `run-test` | `true` or `false` | If enabled, runs testing using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). Defaults to `false`. |
+| `generator` | String | Build system generator for the CMake project. |
 | `c-compiler` | String | Preferred executable for compiling C language files. |
 | `cxx-compiler` | String | Preferred executable for compiling C++ language files. |
 | `c-flags` | Multiple strings | Additional flags passed when compiling C language files. |
 | `cxx-flags` | Multiple strings | Additional flags passed when compiling C++ language files. |
-| `args` | Multiple strings | Additional arguments passed during the CMake configuration. |
+| `args` | Multiple strings | Additional arguments passed during CMake configuration. |
 | `test-args` | Multiple strings | Additional arguments passed during the CTest run. |
 
-> Note: Multiple strings mean that the input could be specified with more than one value. Separate each value with a space or a new line.
+> Note: Multiple strings mean that the input can be specified with more than one value. Separate each value with a space or a new line.
 
 > Note: All inputs are optional.
 
 ### Examples
 
 ```yaml
-name: build
+name: Build
 on:
   push:
 jobs:
@@ -58,9 +54,9 @@ jobs:
         uses: threeal/cmake-action@latest
 ```
 
-> Note: You can replace `@latest` with any version you like. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
+> Note: You can replace `@latest` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
-#### Specify the Source and the Build Directories
+#### Specify the Source and Build Directories
 
 ```yaml
 - name: Configure and build this project
