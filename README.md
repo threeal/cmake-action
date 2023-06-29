@@ -49,11 +49,17 @@ jobs:
   build-project:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
+      - name: Checkout the repository
         uses: actions/checkout@v3.3.0
 
       - name: Configure the project
         uses: threeal/cmake-action@latest
+
+      - name: Build the project
+        runs: cmake --build build
+
+      - name: Test the project
+        runs: ctest --test-dir build
 ```
 
 > Note: You can replace `@latest` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
@@ -82,7 +88,7 @@ jobs:
 #### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
-- name: Configure and build this project
+- name: Configure and build the project
   uses: threeal/cmake-action@latest
   with:
     generator: Ninja
