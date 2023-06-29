@@ -9,10 +9,7 @@ inputs:
     description: The source directory of the CMake project
     required: false
   build-dir:
-    description: The source directory of the CMake project.
-    required: false
-  targets:
-    description: A list of build targets
+    description: The build directory of the CMake project
     required: false
   generator:
     description: The build system generator for the CMake project
@@ -24,24 +21,27 @@ inputs:
     description: The preferred executable for compiling C++ language files
     required: false
   c-flags:
-    description: Additional flags passed when compiling C language files
+    description: Additional flags to pass when compiling C language files
     required: false
   cxx-flags:
-    description: Additional flags passed when compiling C++ language files
+    description: Additional flags to pass when compiling C++ language files
     required: false
   args:
-    description: Additional arguments passed during the CMake configuration
+    description: Additional arguments to pass during the CMake configuration
     required: false
   run-build:
     description: If enabled, it builds the project using CMake (true/false)
     required: false
     default: false
+  build-args:
+    description: Additional arguments to pass during the CMake build
+    required: false
   run-test:
     description: If enabled, it runs testing using CTest (true/false)
     required: false
     default: false
   test-args:
-    description: Additional arguments passed during the CTest run
+    description: Additional arguments to pass during the CTest run
     required: false
 runs:
   using: composite
@@ -86,8 +86,8 @@ runs:
         if [ '${{ inputs.run-build }}' == 'true' ]; then
           BUILD_ARGS="--build '$BUILD_DIR'"
         fi
-        if [ -n '${{ inputs.targets }}' ]; then
-          BUILD_ARGS="$BUILD_ARGS --target ${{ inputs.targets }}"
+        if [ -n '${{ inputs.build-args }}' ]; then
+          BUILD_ARGS="$BUILD_ARGS ${{ inputs.build-args }}"
         fi
 
         TEST_ARGS=""

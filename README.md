@@ -8,9 +8,9 @@ Configure, build, and test your [CMake](https://cmake.org/) project using [GitHu
 
 ## Features
 
-- Configures a project using the [cmake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
+- Configures a project using the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
 - Option to build a project using the `cmake --build` command.
-- Option to test a project using the [ctest](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
+- Option to test a project using the [`ctest`](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
 - Auto-detects and installs required dependencies.
 - Supports specifying multiple CMake options directly from the Action inputs.
 
@@ -22,18 +22,18 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 
 | Name | Value Type | Description |
 | --- | --- | --- |
-| `source-dir` | Path | The source directory of the CMake project. Defaults to the current directory. |
-| `build-dir` | Path | The source directory of the CMake project.. Defaults to the `build` directory inside the source directory. |
-| `targets` | Multiple strings | A list of build targets. |
+| `source-dir` | Path | The source directory of the CMake project. It defaults to the current directory. |
+| `build-dir` | Path | The build directory of the CMake project. It defaults to the `build` directory inside the source directory. |
 | `generator` | String | The build system generator for the CMake project. |
 | `c-compiler` | String | The preferred executable for compiling C language files. |
 | `cxx-compiler` | String | The preferred executable for compiling C++ language files. |
-| `c-flags` | Multiple strings | Additional flags passed when compiling C language files. |
-| `cxx-flags` | Multiple strings | Additional flags passed when compiling C++ language files. |
-| `args` | Multiple strings | Additional arguments passed during the CMake configuration. |
-| `run-build` | `true` or `false` | If enabled, it builds the project using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). Defaults to `false`. |
-| `run-test` | `true` or `false` | If enabled, it runs testing using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). Defaults to `false`. |
-| `test-args` | Multiple strings | Additional arguments passed during the CTest run. |
+| `c-flags` | Multiple strings | Additional flags to pass when compiling C language files. |
+| `cxx-flags` | Multiple strings | Additional flags to pass when compiling C++ language files. |
+| `args` | Multiple strings | Additional arguments to pass during the CMake configuration. |
+| `run-build` | `true` or `false` | If enabled, it builds the project using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). It defaults to `false`. |
+| `build-args` | Multiple strings | Additional arguments to pass during the CMake build. |
+| `run-test` | `true` or `false` | If enabled, it runs testing using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). It defaults to `false`. |
+| `test-args` | Multiple strings | Additional arguments to pass during the CTest run. |
 
 > Note: Multiple strings mean that the input can be specified with more than one value. Separate each value with a space or a new line.
 
@@ -77,16 +77,6 @@ jobs:
     args: -DBUILD_TESTING=ON
     run-build: true
     run-test: true
-```
-
-#### Specify the Build Targets
-
-```yaml
-- name: Configure and build this project
-  uses: threeal/cmake-action@latest
-  with:
-    run-build: true
-    targets: hello_mars hello_sun
 ```
 
 #### Using Ninja as the Generator and Clang as the Compiler
