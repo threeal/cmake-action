@@ -24,7 +24,7 @@ jobs:
       - name: Try to test the project
         id: failed-step
         continue-on-error: true
-        run: ctest --test-dir build --output-on-failure --no-tests=error -R hello_world
+        run: ctest --test-dir build --output-on-failure --no-tests=error -R hello_world ${{ matrix.os == 'windows' && '-C Debug' || '' }}
 
       - name: Check on success
         if: steps.failed-step.outcome == 'success'
@@ -33,7 +33,7 @@ jobs:
       - name: Build and test the project
         run: |
           cmake --build build
-          ctest --test-dir build --output-on-failure --no-tests=error -R hello_world
+          ctest --test-dir build --output-on-failure --no-tests=error -R hello_world ${{ matrix.os == 'windows' && '-C Debug' || '' }}
 
   specified-dir-usage:
     runs-on: ubuntu-latest
