@@ -108,7 +108,7 @@ jobs:
           run-test: true
           test-args: -R test ${{ matrix.compiler == 'msvc' && '-C Debug' || '' }}
 
-  specified-compiler-usage:
+  specified-generator-and-compiler-usage:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
@@ -118,7 +118,7 @@ jobs:
       - name: Check out this repository
         uses: actions/checkout@v3.5.3
 
-      - name: Use this action with specified compilers
+      - name: Use this action with specified generator and compilers
         uses: ./
         with:
           source-dir: test
@@ -130,22 +130,3 @@ jobs:
           build-args: --target test_c --target test_cpp
           run-test: true
           test-args: -R test
-
-  specified-generator-usage:
-    runs-on: ${{ matrix.os }}-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows, ubuntu, macos]
-    steps:
-      - name: Check out this repository
-        uses: actions/checkout@v3.5.3
-
-      - name: Use this action with a specified generator
-        uses: ./
-        with:
-          source-dir: test
-          generator: Ninja
-          run-build: true
-          run-test: true
-          test-args: -R hello_world
