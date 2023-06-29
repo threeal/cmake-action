@@ -8,6 +8,7 @@ jobs:
   default-usage:
     runs-on: ${{ matrix.os }}-latest
     strategy:
+      fail-fast: false
       matrix:
         os: [windows, ubuntu, macos]
     steps:
@@ -86,6 +87,7 @@ jobs:
   additional-flags-usage:
     runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
     strategy:
+      fail-fast: false
       matrix:
         compiler: [gcc, msvc]
     steps:
@@ -107,6 +109,7 @@ jobs:
   specified-compiler-usage:
     runs-on: ${{ matrix.os }}-latest
     strategy:
+      fail-fast: false
       matrix:
         os: [windows, ubuntu, macos]
     steps:
@@ -129,6 +132,7 @@ jobs:
   specified-generator-usage:
     runs-on: ${{ matrix.os }}-latest
     strategy:
+      fail-fast: false
       matrix:
         os: [windows, ubuntu, macos]
     steps:
