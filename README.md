@@ -65,6 +65,16 @@ jobs:
 
 > **Note**: You can replace [`v1.2.0`](https://github.com/threeal/cmake-action/releases/tag/v1.2.0) with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
+#### Configure, Build, and Test in the Same Step
+
+```yaml
+- name: Configure, build, and test the project
+  uses: threeal/cmake-action@v1.2.0
+  with:
+    run-build: true
+    run-test: true
+```
+
 #### Specify the Source and Build Directories
 
 ```yaml
@@ -75,21 +85,10 @@ jobs:
     build-dir: submodules/out
 ```
 
-#### Configure, Build, and Test in the Same Step
-
-```yaml
-- name: Configure, build, and test the project
-  uses: threeal/cmake-action@v1.2.0
-  with:
-    options: BUILD_TESTING=ON
-    run-build: true
-    run-test: true
-```
-
 #### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
-- name: Configure and build the project
+- name: Configure the project
   uses: threeal/cmake-action@v1.2.0
   with:
     generator: Ninja
