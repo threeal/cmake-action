@@ -26,6 +26,9 @@ inputs:
   cxx-flags:
     description: Additional flags to pass when compiling C++ language files
     required: false
+  options:
+    description: Additional options to pass during the CMake configuration
+    required: false
   args:
     description: Additional arguments to pass during the CMake configuration
     required: false
@@ -78,6 +81,9 @@ runs:
         if [ -n '${{ inputs.cxx-flags }}' ]; then
           ARGS="$ARGS -D CMAKE_CXX_FLAGS='${{ inputs.cxx-flags }}'"
         fi
+        for OPT in ${{ inputs.options }}; do
+          ARGS="$ARGS -D $OPT"
+        done
         if [ -n '${{ inputs.args }}' ]; then
           ARGS="$ARGS ${{ inputs.args }}"
         fi

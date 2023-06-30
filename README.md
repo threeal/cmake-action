@@ -29,6 +29,7 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 | `cxx-compiler` | String | The preferred executable for compiling C++ language files. |
 | `c-flags` | Multiple strings | Additional flags to pass when compiling C language files. |
 | `cxx-flags` | Multiple strings | Additional flags to pass when compiling C++ language files. |
+| `options` | Multiple strings | Additional options to pass during the CMake configuration. |
 | `args` | Multiple strings | Additional arguments to pass during the CMake configuration. |
 | `run-build` | `true` or `false` | If enabled, it builds the project using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). It defaults to `false`. |
 | `build-args` | Multiple strings | Additional arguments to pass during the CMake build. |
@@ -80,7 +81,7 @@ jobs:
 - name: Configure, build, and test the project
   uses: threeal/cmake-action@latest
   with:
-    args: -DBUILD_TESTING=ON
+    options: BUILD_TESTING=ON
     run-build: true
     run-test: true
 ```
