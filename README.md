@@ -51,10 +51,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.3
 
       - name: Configure the project
-        uses: threeal/cmake-action@latest
+        uses: threeal/cmake-action@main
 
       - name: Build the project
         runs: cmake --build build
@@ -63,13 +63,13 @@ jobs:
         runs: ctest --test-dir build
 ```
 
-> **Note**: You can replace `@latest` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
+> **Note**: You can replace `@main` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
 #### Specify the Source and Build Directories
 
 ```yaml
 - name: Configure the project
-  uses: threeal/cmake-action@latest
+  uses: threeal/cmake-action@main
   with:
     source-dir: submodules
     build-dir: submodules/out
@@ -79,7 +79,7 @@ jobs:
 
 ```yaml
 - name: Configure, build, and test the project
-  uses: threeal/cmake-action@latest
+  uses: threeal/cmake-action@main
   with:
     options: BUILD_TESTING=ON
     run-build: true
@@ -90,7 +90,7 @@ jobs:
 
 ```yaml
 - name: Configure and build the project
-  uses: threeal/cmake-action@latest
+  uses: threeal/cmake-action@main
   with:
     generator: Ninja
     c-compiler: clang
