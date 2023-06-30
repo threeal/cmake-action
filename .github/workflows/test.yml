@@ -101,7 +101,7 @@ jobs:
           source-dir: test
           c-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           cxx-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
-          args: -D CHECK_SURPASS_WARNING=ON
+          options: CHECK_SURPASS_WARNING=ON
           run-build: true
           build-args: --target test_c --target test_cpp
           run-test: true
@@ -124,7 +124,7 @@ jobs:
           generator: Ninja
           c-compiler: clang
           cxx-compiler: clang++
-          args: -D CHECK_USING_CLANG=ON
+          options: CHECK_USING_CLANG=ON
           run-build: true
           build-args: --target test_c --target test_cpp
           run-test: true

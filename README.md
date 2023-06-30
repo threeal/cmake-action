@@ -24,20 +24,21 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 | --- | --- | --- |
 | `source-dir` | Path | The source directory of the CMake project. It defaults to the current directory. |
 | `build-dir` | Path | The build directory of the CMake project. It defaults to the `build` directory inside the source directory. |
-| `generator` | String | The build system generator for the CMake project. |
-| `c-compiler` | String | The preferred executable for compiling C language files. |
-| `cxx-compiler` | String | The preferred executable for compiling C++ language files. |
-| `c-flags` | Multiple strings | Additional flags to pass when compiling C language files. |
-| `cxx-flags` | Multiple strings | Additional flags to pass when compiling C++ language files. |
+| `generator` | String | The build system generator for the CMake project. It appends the CMake configuration arguments with `-G [val]`. |
+| `c-compiler` | String | The preferred executable for compiling C language files. It appends the CMake configuration arguments with `-D CMAKE_C_COMPILER=[val]`. |
+| `cxx-compiler` | String | The preferred executable for compiling C++ language files. It appends the CMake configuration arguments with `-D CMAKE_CXX_COMPILER=[val]`. |
+| `c-flags` | Multiple strings | Additional flags to pass when compiling C language files. It appends the CMake configuration arguments with `-D CMAKE_C_FLAGS=[vals]`. |
+| `cxx-flags` | Multiple strings | Additional flags to pass when compiling C++ language files. It appends the CMake configuration arguments with `-D CMAKE_CXX_FLAGS=[vals]`. |
+| `options` | Multiple strings | Additional options to pass during the CMake configuration. It appends the CMake configuration arguments with each of `-D [val]`. |
 | `args` | Multiple strings | Additional arguments to pass during the CMake configuration. |
-| `run-build` | `true` or `false` | If enabled, it builds the project using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). It defaults to `false`. |
+| `run-build` | `true` or `false` | If enabled, it builds the project using CMake. It defaults to `false`. |
 | `build-args` | Multiple strings | Additional arguments to pass during the CMake build. |
 | `run-test` | `true` or `false` | If enabled, it runs testing using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). It defaults to `false`. |
 | `test-args` | Multiple strings | Additional arguments to pass during the CTest run. |
 
-> Note: Multiple strings mean that the input can be specified with more than one value. Separate each value with a space or a new line.
+> **Note**: Multiple strings mean that the input can be specified with more than one value. Separate each value with a space or a new line.
 
-> Note: All inputs are optional.
+> **Note**: All inputs are optional.
 
 ### Examples
 
@@ -50,10 +51,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.3
 
       - name: Configure the project
-        uses: threeal/cmake-action@latest
+        uses: threeal/cmake-action@main
 
       - name: Build the project
         runs: cmake --build build
@@ -62,13 +63,13 @@ jobs:
         runs: ctest --test-dir build
 ```
 
-> Note: You can replace `@latest` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
+> **Note**: You can replace `@main` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
 #### Specify the Source and Build Directories
 
 ```yaml
 - name: Configure the project
-  uses: threeal/cmake-action@latest
+  uses: threeal/cmake-action@main
   with:
     source-dir: submodules
     build-dir: submodules/out
@@ -78,9 +79,9 @@ jobs:
 
 ```yaml
 - name: Configure, build, and test the project
-  uses: threeal/cmake-action@latest
+  uses: threeal/cmake-action@main
   with:
-    args: -DBUILD_TESTING=ON
+    options: BUILD_TESTING=ON
     run-build: true
     run-test: true
 ```
@@ -89,7 +90,7 @@ jobs:
 
 ```yaml
 - name: Configure and build the project
-  uses: threeal/cmake-action@latest
+  uses: threeal/cmake-action@main
   with:
     generator: Ninja
     c-compiler: clang
