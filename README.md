@@ -40,6 +40,12 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 
 > **Note**: All inputs are optional.
 
+### Outputs
+
+| Name | Value Type | Description |
+| --- | --- | --- |
+| `build-dir` | Path | The build directory of the CMake project. |
+
 ### Examples
 
 ```yaml
