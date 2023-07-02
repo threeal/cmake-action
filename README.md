@@ -4,15 +4,15 @@
 [![License](https://img.shields.io/github/license/threeal/cmake-action)](./LICENSE)
 [![Test Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yml)
 
-Configure, build, and test your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for your CMake project. It configures the build environment using the `cmake` command, and optionally builds the project using the `cmake --build` command and tests the project using the `ctest` command.
+Configure, build, and test your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for configuring the build environment of a CMake project. It can also be optionally specified to build a CMake project using the `cmake --build` command and test it using the `ctest` command.
 
 ## Features
 
-- Configures a project using the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
-- Option to build a project using the `cmake --build` command.
-- Option to test a project using the [`ctest`](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
+- Configures a CMake project using the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
+- Optionally builds a CMake project using the `cmake --build` command.
+- Optionally tests a CMake project using the [`ctest`](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
 - Auto-detects and installs required dependencies.
-- Supports specifying multiple CMake options directly from the Action inputs.
+- Supports specifying multiple CMake options directly from the action inputs.
 
 ## Usage
 
