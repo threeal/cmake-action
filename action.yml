@@ -1,5 +1,5 @@
 name: CMake Action
-description: Configure, build, and test a CMake project
+description: Configure, build, and test your CMake project
 author: Alfi Maulana
 branding:
   color: gray-dark
