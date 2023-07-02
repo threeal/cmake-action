@@ -46,11 +46,15 @@ inputs:
   test-args:
     description: Additional arguments to pass during the CTest run
     required: false
+outputs:
+  build-dir:
+    description: The build directory of the CMake project
+    value: ${{ steps.process-inputs.outputs.build-dir }}
 runs:
   using: composite
   steps:
     - name: Process the inputs
-      id: process_inputs
+      id: process-inputs
       shell: bash
       run: |
         SOURCE_DIR="."
@@ -64,6 +68,7 @@ runs:
         elif [ -n "${{ inputs.source-dir }}" ]; then
           BUILD_DIR="${{ inputs.source-dir }}/build"
         fi
+        echo "build-dir=$BUILD_DIR" >> $GITHUB_OUTPUT
 
         ARGS="'$SOURCE_DIR' -B '$BUILD_DIR'"
         if [ -n '${{ inputs.generator }}' ]; then
@@ -87,14 +92,14 @@ runs:
         if [ -n '${{ inputs.args }}' ]; then
           ARGS="$ARGS ${{ inputs.args }}"
         fi
-        echo "cmake_args=${ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
+        echo "cmake-args=${ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
 
         if [ '${{ inputs.run-build }}' == 'true' ] || [ '${{ inputs.run-test }}' == 'true' ]; then
           BUILD_ARGS="--build '$BUILD_DIR'"
           if [ -n '${{ inputs.build-args }}' ]; then
             BUILD_ARGS="$BUILD_ARGS ${{ inputs.build-args }}"
           fi
-          echo "cmake_build_args=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
+          echo "cmake-build-args=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
         fi
 
         if [ '${{ inputs.run-test }}' == 'true' ]; then
@@ -102,7 +107,7 @@ runs:
           if [ -n '${{ inputs.test-args }}' ]; then
             TEST_ARGS="$TEST_ARGS ${{ inputs.test-args }}"
           fi
-          echo "cmake_test_args=${TEST_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
+          echo "cmake-test-args=${TEST_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
         fi
 
     - name: Install Ninja
@@ -117,14 +122,14 @@ runs:
 
     - name: Configure the CMake project
       shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
-      run: cmake ${{ steps.process_inputs.outputs.cmake_args }}
+      run: cmake ${{ steps.process-inputs.outputs.cmake-args }}
 
     - name: Build targets
       if: inputs.run-build != 'false' || inputs.run-test != 'false'
       shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
-      run: cmake ${{ steps.process_inputs.outputs.cmake_build_args }}
+      run: cmake ${{ steps.process-inputs.outputs.cmake-build-args }}
 
     - name: Run tests
       if: inputs.run-test != 'false'
       shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
-      run: ctest ${{ steps.process_inputs.outputs.cmake_test_args }}
+      run: ctest ${{ steps.process-inputs.outputs.cmake-test-args }}
