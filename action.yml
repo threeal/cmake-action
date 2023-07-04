@@ -5,6 +5,9 @@ branding:
   color: gray-dark
   icon: terminal
 inputs:
+  shell:
+    description: The shell to be used to run the commands
+    required: false
   source-dir:
     description: The source directory of the CMake project
     required: false
@@ -57,6 +60,13 @@ runs:
       id: process-inputs
       shell: bash
       run: |
+        if [ -n '${{ inputs.shell }}' ]; then
+          SHELL='${{ inputs.shell }}'
+        else
+          SHELL='${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}'
+        fi
+        echo "shell=$SHELL" >> $GITHUB_OUTPUT
+
         SOURCE_DIR="."
         if [ -n '${{ inputs.source-dir }}' ]; then
           SOURCE_DIR="${{ inputs.source-dir }}"
@@ -121,15 +131,15 @@ runs:
         esac
 
     - name: Configure the CMake project
-      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+      shell: ${{ steps.process-inputs.outputs.shell }}
       run: cmake ${{ steps.process-inputs.outputs.cmake-args }}
 
     - name: Build targets
       if: inputs.run-build != 'false' || inputs.run-test != 'false'
-      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+      shell: ${{ steps.process-inputs.outputs.shell }}
       run: cmake ${{ steps.process-inputs.outputs.cmake-build-args }}
 
     - name: Run tests
       if: inputs.run-test != 'false'
-      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+      shell: ${{ steps.process-inputs.outputs.shell }}
       run: ctest ${{ steps.process-inputs.outputs.cmake-test-args }}

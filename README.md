@@ -22,6 +22,7 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 
 | Name | Value Type | Description |
 | --- | --- | --- |
+| `shell` | String | The shell to be used to run the commands. It defaults to `pwsh` on Windows and `bash` on Linux and macOS. Refer to [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell) for more information on available shell options. |
 | `source-dir` | Path | The source directory of the CMake project. It defaults to the current directory. |
 | `build-dir` | Path | The build directory of the CMake project. It defaults to the `build` directory inside the source directory. |
 | `generator` | String | The build system generator for the CMake project. It appends the CMake configuration arguments with `-G [val]`. |
