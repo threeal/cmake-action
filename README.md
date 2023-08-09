@@ -61,7 +61,7 @@ jobs:
         uses: actions/checkout@v3.5.3
 
       - name: Configure the project
-        uses: threeal/cmake-action@v1.2.0
+        uses: threeal/cmake-action@v1.3.0
 
       - name: Build the project
         runs: cmake --build build
@@ -70,13 +70,13 @@ jobs:
         runs: ctest --test-dir build
 ```
 
-> **Note**: You can replace [`v1.2.0`](https://github.com/threeal/cmake-action/releases/tag/v1.2.0) with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
+> **Note**: You can replace [`v1.3.0`](https://github.com/threeal/cmake-action/releases/tag/v1.3.0) with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
 #### Configure, Build, and Test in the Same Step
 
 ```yaml
 - name: Configure, build, and test the project
-  uses: threeal/cmake-action@v1.2.0
+  uses: threeal/cmake-action@v1.3.0
   with:
     run-build: true
     run-test: true
@@ -86,7 +86,7 @@ jobs:
 
 ```yaml
 - name: Configure the project
-  uses: threeal/cmake-action@v1.2.0
+  uses: threeal/cmake-action@v1.3.0
   with:
     source-dir: submodules
     build-dir: submodules/out
@@ -96,7 +96,7 @@ jobs:
 
 ```yaml
 - name: Configure the project
-  uses: threeal/cmake-action@v1.2.0
+  uses: threeal/cmake-action@v1.3.0
   with:
     generator: Ninja
     c-compiler: clang
