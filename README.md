@@ -4,15 +4,15 @@
 [![License](https://img.shields.io/github/license/threeal/cmake-action)](./LICENSE)
 [![Test Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yml)
 
-Configure, build, and test your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for your CMake project. It configures the build environment using the `cmake` command, and optionally builds the project using the `cmake --build` command and tests the project using the `ctest` command.
+Configure, build, and test your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for configuring the build environment of a CMake project. It can also be optionally specified to build a CMake project using the `cmake --build` command and test it using the `ctest` command.
 
 ## Features
 
-- Configures a project using the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
-- Option to build a project using the `cmake --build` command.
-- Option to test a project using the [`ctest`](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
+- Configures a CMake project using the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
+- Optionally builds a CMake project using the `cmake --build` command.
+- Optionally tests a CMake project using the [`ctest`](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
 - Auto-detects and installs required dependencies.
-- Supports specifying multiple CMake options directly from the Action inputs.
+- Supports specifying multiple CMake options directly from the action inputs.
 
 ## Usage
 
@@ -22,6 +22,7 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 
 | Name | Value Type | Description |
 | --- | --- | --- |
+| `shell` | String | The shell to be used to run the commands. It defaults to `pwsh` on Windows and `bash` on Linux and macOS. Refer to [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell) for more information on available shell options. |
 | `source-dir` | Path | The source directory of the CMake project. It defaults to the current directory. |
 | `build-dir` | Path | The build directory of the CMake project. It defaults to the `build` directory inside the source directory. |
 | `generator` | String | The build system generator for the CMake project. It appends the CMake configuration arguments with `-G [val]`. |
@@ -40,6 +41,12 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 
 > **Note**: All inputs are optional.
 
+### Outputs
+
+| Name | Value Type | Description |
+| --- | --- | --- |
+| `build-dir` | Path | The build directory of the CMake project. |
+
 ### Examples
 
 ```yaml
@@ -54,7 +61,7 @@ jobs:
         uses: actions/checkout@v3.5.3
 
       - name: Configure the project
-        uses: threeal/cmake-action@main
+        uses: threeal/cmake-action@v1.3.0
 
       - name: Build the project
         runs: cmake --build build
@@ -63,34 +70,33 @@ jobs:
         runs: ctest --test-dir build
 ```
 
-> **Note**: You can replace `@main` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
-
-#### Specify the Source and Build Directories
-
-```yaml
-- name: Configure the project
-  uses: threeal/cmake-action@main
-  with:
-    source-dir: submodules
-    build-dir: submodules/out
-```
+> **Note**: You can replace [`v1.3.0`](https://github.com/threeal/cmake-action/releases/tag/v1.3.0) with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
 #### Configure, Build, and Test in the Same Step
 
 ```yaml
 - name: Configure, build, and test the project
-  uses: threeal/cmake-action@main
+  uses: threeal/cmake-action@v1.3.0
   with:
-    options: BUILD_TESTING=ON
     run-build: true
     run-test: true
+```
+
+#### Specify the Source and Build Directories
+
+```yaml
+- name: Configure the project
+  uses: threeal/cmake-action@v1.3.0
+  with:
+    source-dir: submodules
+    build-dir: submodules/out
 ```
 
 #### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
-- name: Configure and build the project
-  uses: threeal/cmake-action@main
+- name: Configure the project
+  uses: threeal/cmake-action@v1.3.0
   with:
     generator: Ninja
     c-compiler: clang
