@@ -13,7 +13,7 @@ jobs:
         os: [windows, ubuntu, macos]
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4.0.0
 
       - name: Move the test project to the working directory
         run: mv test/* .
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4.0.0
 
       - name: Use the action with specified directories
         id: cmake-action
@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4.0.0
 
       - name: Use the action with run build enabled
         id: cmake-action
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4.0.0
 
       - name: Use the action with run test enabled
         uses: ./
@@ -96,7 +96,7 @@ jobs:
         compiler: [gcc, msvc]
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4.0.0
 
       - name: Use the action with additional compiler flags
         uses: ./
@@ -118,7 +118,7 @@ jobs:
         os: [windows, ubuntu, macos]
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4.0.0
 
       - name: Use the action with specified generator and compilers
         uses: ./
@@ -137,7 +137,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4.0.0
 
       - name: Use the action with specified shell
         uses: ./
