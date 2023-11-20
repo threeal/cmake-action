@@ -3,5 +3,6 @@
 !.git*
 
 build/
+coverage/
 dist/
 node_modules/
