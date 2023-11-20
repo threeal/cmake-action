@@ -4,7 +4,36 @@ import exec from "@actions/exec";
 async function main() {
   const sourceDir = core.getInput("source-dir");
   const buildDir = core.getInput("build-dir");
-  await exec.exec("cmake", [sourceDir || ".", "-B", buildDir || "build"]);
+
+  const configureArgs = [sourceDir || ".", "-B", buildDir || "build"];
+
+  const generator = core.getInput("generator");
+  if (generator) configureArgs.push(...["-G", generator]);
+
+  const cCompiler = core.getInput("c-compiler");
+  if (cCompiler) configureArgs.push("-DCMAKE_C_COMPILER=" + cCompiler);
+
+  const cxxCompiler = core.getInput("cxx-compiler");
+  if (cxxCompiler) configureArgs.push("-DCMAKE_CXX_COMPILER=" + cxxCompiler);
+
+  const cFlags = core.getMultilineInput("c-flags").join(" ");
+  if (cFlags) configureArgs.push("-DCMAKE_C_FLAGS=" + cFlags);
+
+  const cxxFlags = core.getMultilineInput("cxx-flags").join(" ");
+  if (cxxFlags) configureArgs.push("-DCMAKE_CXX_FLAGS=" + cxxFlags);
+
+  const options = core
+    .getMultilineInput("options")
+    .flatMap((opts) => opts.split(" "))
+    .map((opt) => "-D" + opt);
+  configureArgs.push(...options);
+
+  const args = core
+    .getMultilineInput("args")
+    .flatMap((args) => args.split(" "));
+  configureArgs.push(...args);
+
+  await exec.exec("cmake", configureArgs);
   core.setOutput("build-dir", buildDir || "build");
 
   const runBuild = core.getBooleanInput("run-build");

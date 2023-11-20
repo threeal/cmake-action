@@ -27243,7 +27243,30 @@ var __webpack_exports__ = {};
 async function main() {
     const sourceDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("source-dir");
     const buildDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("build-dir");
-    await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", [sourceDir || ".", "-B", buildDir || "build"]);
+    const configureArgs = [sourceDir || ".", "-B", buildDir || "build"];
+    const generator = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("generator");
+    if (generator)
+        configureArgs.push(...["-G", generator]);
+    const cCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("c-compiler");
+    if (cCompiler)
+        configureArgs.push("-DCMAKE_C_COMPILER=" + cCompiler);
+    const cxxCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("cxx-compiler");
+    if (cxxCompiler)
+        configureArgs.push("-DCMAKE_CXX_COMPILER=" + cxxCompiler);
+    const cFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("c-flags").join(" ");
+    if (cFlags)
+        configureArgs.push("-DCMAKE_C_FLAGS=" + cFlags);
+    const cxxFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("cxx-flags").join(" ");
+    if (cxxFlags)
+        configureArgs.push("-DCMAKE_CXX_FLAGS=" + cxxFlags);
+    const options = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("options")
+        .flatMap((opts) => opts.split(" "))
+        .map((opt) => "-D" + opt);
+    configureArgs.push(...options);
+    const args = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("args")
+        .flatMap((args) => args.split(" "));
+    configureArgs.push(...args);
+    await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", configureArgs);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
     const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-build");
     const runTest = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-test");
