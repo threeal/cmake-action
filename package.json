@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "bundle": "tsc && ncc build dist/main.mjs -o main",
-    "check": "sort-package-json && prettier --write . !dist && eslint src",
+    "check": "sort-package-json && prettier --write . !main !README.md && eslint src",
     "test": "jest"
   },
   "devDependencies": {
