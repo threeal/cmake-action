@@ -1,4 +1,7 @@
 .*
+!.eslint*
 !.git*
 
-build
+build/
+dist/
+node_modules/
