@@ -22,6 +22,12 @@ async function main() {
   const cxxFlags = core.getMultilineInput("cxx-flags").join(" ");
   if (cxxFlags) configureArgs.push("-DCMAKE_CXX_FLAGS=" + cxxFlags);
 
+  const options = core
+    .getMultilineInput("options")
+    .flatMap((opts) => opts.split(" "))
+    .map((opt) => "-D" + opt);
+  configureArgs.push(...options);
+
   await exec.exec("cmake", configureArgs);
   core.setOutput("build-dir", buildDir || "build");
 

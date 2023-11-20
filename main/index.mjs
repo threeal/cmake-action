@@ -27259,6 +27259,10 @@ async function main() {
     const cxxFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("cxx-flags").join(" ");
     if (cxxFlags)
         configureArgs.push("-DCMAKE_CXX_FLAGS=" + cxxFlags);
+    const options = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("options")
+        .flatMap((opts) => opts.split(" "))
+        .map((opt) => "-D" + opt);
+    configureArgs.push(...options);
     await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", configureArgs);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
     const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-build");
