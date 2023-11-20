@@ -27247,7 +27247,8 @@ async function main() {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
     const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-build");
     if (runBuild) {
-        const buildArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("build-args");
+        const buildArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("build-args")
+            .flatMap((args) => args.split(" "));
         await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
     }
 }

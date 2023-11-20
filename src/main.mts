@@ -9,7 +9,9 @@ async function main() {
 
   const runBuild = core.getBooleanInput("run-build");
   if (runBuild) {
-    const buildArgs = core.getMultilineInput("build-args");
+    const buildArgs = core
+      .getMultilineInput("build-args")
+      .flatMap((args) => args.split(" "));
     await exec.exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
   }
 }
