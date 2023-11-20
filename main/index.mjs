@@ -27245,6 +27245,7 @@ async function main() {
     const buildDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("build-dir");
     await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", [sourceDir || ".", "-B", buildDir || "build"]);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
+    await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", ["--build", buildDir || "build"]);
 }
 main();
 //# sourceMappingURL=main.mjs.map
