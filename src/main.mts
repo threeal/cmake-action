@@ -28,6 +28,11 @@ async function main() {
     .map((opt) => "-D" + opt);
   configureArgs.push(...options);
 
+  const args = core
+    .getMultilineInput("args")
+    .flatMap((args) => args.split(" "));
+  configureArgs.push(...args);
+
   await exec.exec("cmake", configureArgs);
   core.setOutput("build-dir", buildDir || "build");
 
