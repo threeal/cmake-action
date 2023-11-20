@@ -7,7 +7,10 @@ async function main() {
   await exec.exec("cmake", [sourceDir || ".", "-B", buildDir || "build"]);
   core.setOutput("build-dir", buildDir || "build");
 
-  await exec.exec("cmake", ["--build", buildDir || "build"]);
+  const runBuild = core.getBooleanInput("run-build");
+  if (runBuild) {
+    await exec.exec("cmake", ["--build", buildDir || "build"]);
+  }
 }
 
 main();
