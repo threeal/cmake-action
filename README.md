@@ -2,6 +2,7 @@
 
 [![Latest Version](https://img.shields.io/github/v/release/threeal/cmake-action)](https://github.com/threeal/cmake-action/releases/)
 [![License](https://img.shields.io/github/license/threeal/cmake-action)](./LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/build.yaml?branch=main)](https://github.com/threeal/cmake-action/actions/workflows/build.yaml)
 [![Test Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yml)
 
 Configure, build, and test your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for configuring the build environment of a CMake project. It can also be optionally specified to build a CMake project using the `cmake --build` command and test it using the `ctest` command.

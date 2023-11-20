@@ -1,0 +1,19 @@
+{
+  "collectCoverage": true,
+  "coverageThreshold": {
+    "global": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  },
+  "extensionsToTreatAsEsm": [".ts", ".mts"],
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.mjs$": "$1.mts"
+  },
+  "testMatch": ["**/*.test.ts"],
+  "transform": {
+    "^.+\\.m?ts$": ["ts-jest", { "useESM": true }]
+  }
+}
