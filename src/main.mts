@@ -8,14 +8,15 @@ async function main() {
   core.setOutput("build-dir", buildDir || "build");
 
   const runBuild = core.getBooleanInput("run-build");
-  if (runBuild) {
+  const runTest = core.getBooleanInput("run-test");
+
+  if (runBuild || runTest) {
     const buildArgs = core
       .getMultilineInput("build-args")
       .flatMap((args) => args.split(" "));
     await exec.exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
   }
 
-  const runTest = core.getBooleanInput("run-test");
   if (runTest) {
     const testArgs = core
       .getMultilineInput("test-args")

@@ -27246,12 +27246,12 @@ async function main() {
     await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", [sourceDir || ".", "-B", buildDir || "build"]);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
     const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-build");
-    if (runBuild) {
+    const runTest = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-test");
+    if (runBuild || runTest) {
         const buildArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("build-args")
             .flatMap((args) => args.split(" "));
         await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
     }
-    const runTest = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-test");
     if (runTest) {
         const testArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("test-args")
             .flatMap((args) => args.split(" "));
