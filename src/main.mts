@@ -10,6 +10,12 @@ async function main() {
   const generator = core.getInput("generator");
   if (generator) configureArgs.push(...["-G", generator]);
 
+  const cCompiler = core.getInput("c-compiler");
+  if (cCompiler) configureArgs.push("-DCMAKE_C_COMPILER=" + cCompiler);
+
+  const cxxCompiler = core.getInput("cxx-compiler");
+  if (cxxCompiler) configureArgs.push("-DCMAKE_CXX_COMPILER=" + cxxCompiler);
+
   await exec.exec("cmake", configureArgs);
   core.setOutput("build-dir", buildDir || "build");
 

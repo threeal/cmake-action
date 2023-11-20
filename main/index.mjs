@@ -27247,6 +27247,12 @@ async function main() {
     const generator = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("generator");
     if (generator)
         configureArgs.push(...["-G", generator]);
+    const cCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("c-compiler");
+    if (cCompiler)
+        configureArgs.push("-DCMAKE_C_COMPILER=" + cCompiler);
+    const cxxCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("cxx-compiler");
+    if (cxxCompiler)
+        configureArgs.push("-DCMAKE_CXX_COMPILER=" + cxxCompiler);
     await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", configureArgs);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
     const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-build");
