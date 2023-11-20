@@ -16,6 +16,12 @@ async function main() {
   const cxxCompiler = core.getInput("cxx-compiler");
   if (cxxCompiler) configureArgs.push("-DCMAKE_CXX_COMPILER=" + cxxCompiler);
 
+  const cFlags = core.getMultilineInput("c-flags").join(" ");
+  if (cFlags) configureArgs.push("-DCMAKE_C_FLAGS=" + cFlags);
+
+  const cxxFlags = core.getMultilineInput("cxx-flags").join(" ");
+  if (cxxFlags) configureArgs.push("-DCMAKE_CXX_FLAGS=" + cxxFlags);
+
   await exec.exec("cmake", configureArgs);
   core.setOutput("build-dir", buildDir || "build");
 

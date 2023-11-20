@@ -27253,6 +27253,12 @@ async function main() {
     const cxxCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("cxx-compiler");
     if (cxxCompiler)
         configureArgs.push("-DCMAKE_CXX_COMPILER=" + cxxCompiler);
+    const cFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("c-flags").join(" ");
+    if (cFlags)
+        configureArgs.push("-DCMAKE_C_FLAGS=" + cFlags);
+    const cxxFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("cxx-flags").join(" ");
+    if (cxxFlags)
+        configureArgs.push("-DCMAKE_CXX_FLAGS=" + cxxFlags);
     await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", configureArgs);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
     const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-build");
