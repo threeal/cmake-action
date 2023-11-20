@@ -14,6 +14,20 @@ async function main() {
       .flatMap((args) => args.split(" "));
     await exec.exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
   }
+
+  const runTest = core.getBooleanInput("run-test");
+  if (runTest) {
+    const testArgs = core
+      .getMultilineInput("test-args")
+      .flatMap((args) => args.split(" "));
+    await exec.exec("ctest", [
+      "--test-dir",
+      buildDir || "build",
+      "--output-on-failure",
+      "--no-tests=error",
+      ...testArgs,
+    ]);
+  }
 }
 
 main();

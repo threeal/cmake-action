@@ -27251,6 +27251,18 @@ async function main() {
             .flatMap((args) => args.split(" "));
         await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
     }
+    const runTest = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-test");
+    if (runTest) {
+        const testArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("test-args")
+            .flatMap((args) => args.split(" "));
+        await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("ctest", [
+            "--test-dir",
+            buildDir || "build",
+            "--output-on-failure",
+            "--no-tests=error",
+            ...testArgs,
+        ]);
+    }
 }
 main();
 //# sourceMappingURL=main.mjs.map
