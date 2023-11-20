@@ -27243,7 +27243,11 @@ var __webpack_exports__ = {};
 async function main() {
     const sourceDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("source-dir");
     const buildDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("build-dir");
-    await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", [sourceDir || ".", "-B", buildDir || "build"]);
+    const configureArgs = [sourceDir || ".", "-B", buildDir || "build"];
+    const generator = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("generator");
+    if (generator)
+        configureArgs.push(...["-G", generator]);
+    await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", configureArgs);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
     const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-build");
     const runTest = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-test");

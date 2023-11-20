@@ -4,7 +4,13 @@ import exec from "@actions/exec";
 async function main() {
   const sourceDir = core.getInput("source-dir");
   const buildDir = core.getInput("build-dir");
-  await exec.exec("cmake", [sourceDir || ".", "-B", buildDir || "build"]);
+
+  const configureArgs = [sourceDir || ".", "-B", buildDir || "build"];
+
+  const generator = core.getInput("generator");
+  if (generator) configureArgs.push(...["-G", generator]);
+
+  await exec.exec("cmake", configureArgs);
   core.setOutput("build-dir", buildDir || "build");
 
   const runBuild = core.getBooleanInput("run-build");
