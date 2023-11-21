@@ -1,5 +1,6 @@
 import core from "@actions/core";
 import exec from "@actions/exec";
+import io from "@actions/io";
 
 async function main() {
   const sourceDir = core.getInput("source-dir");
@@ -9,6 +10,20 @@ async function main() {
 
   const generator = core.getInput("generator");
   if (generator) configureArgs.push(...["-G", generator]);
+
+  if (generator.match(/ninja/gi) && !(await io.which("ninja"))) {
+    switch (process.platform) {
+      case "linux":
+        await exec.exec("sudo", ["apt", "install", "-y", "ninja-build"]);
+        break;
+      case "darwin":
+        await exec.exec("brew", ["install", "ninja"]);
+        break;
+      case "win32":
+        await exec.exec("choco", ["install", "ninja"]);
+        break;
+    }
+  }
 
   const cCompiler = core.getInput("c-compiler");
   if (cCompiler) configureArgs.push("-DCMAKE_C_COMPILER=" + cCompiler);
