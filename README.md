@@ -2,6 +2,7 @@
 
 [![Latest Version](https://img.shields.io/github/v/release/threeal/cmake-action)](https://github.com/threeal/cmake-action/releases/)
 [![License](https://img.shields.io/github/license/threeal/cmake-action)](./LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/build.yaml?branch=main)](https://github.com/threeal/cmake-action/actions/workflows/build.yaml)
 [![Test Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yml)
 
 Configure, build, and test your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for configuring the build environment of a CMake project. It can also be optionally specified to build a CMake project using the `cmake --build` command and test it using the `ctest` command.
@@ -22,7 +23,6 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 
 | Name | Value Type | Description |
 | --- | --- | --- |
-| `shell` | String | The shell to be used to run the commands. It defaults to `pwsh` on Windows and `bash` on Linux and macOS. Refer to [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell) for more information on available shell options. |
 | `source-dir` | Path | The source directory of the CMake project. It defaults to the current directory. |
 | `build-dir` | Path | The build directory of the CMake project. It defaults to the `build` directory inside the source directory. |
 | `generator` | String | The build system generator for the CMake project. It appends the CMake configuration arguments with `-G [val]`. |

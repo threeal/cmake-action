@@ -7,3 +7,12 @@ updates:
     commit-message:
       prefix: chore
     labels: [chore]
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: chore
+    labels: [chore]
+    versioning-strategy: increase

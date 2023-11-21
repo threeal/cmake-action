@@ -5,9 +5,6 @@ branding:
   color: gray-dark
   icon: terminal
 inputs:
-  shell:
-    description: The shell to be used to run the commands
-    required: false
   source-dir:
     description: The source directory of the CMake project
     required: false
@@ -54,92 +51,5 @@ outputs:
     description: The build directory of the CMake project
     value: ${{ steps.process-inputs.outputs.build-dir }}
 runs:
-  using: composite
-  steps:
-    - name: Process the inputs
-      id: process-inputs
-      shell: bash
-      run: |
-        if [ -n '${{ inputs.shell }}' ]; then
-          SHELL='${{ inputs.shell }}'
-        else
-          SHELL='${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}'
-        fi
-        echo "shell=$SHELL" >> $GITHUB_OUTPUT
-
-        SOURCE_DIR="."
-        if [ -n '${{ inputs.source-dir }}' ]; then
-          SOURCE_DIR="${{ inputs.source-dir }}"
-        fi
-
-        BUILD_DIR="build"
-        if [ -n '${{ inputs.build-dir }}' ]; then
-          BUILD_DIR="${{ inputs.build-dir }}"
-        elif [ -n "${{ inputs.source-dir }}" ]; then
-          BUILD_DIR="${{ inputs.source-dir }}/build"
-        fi
-        echo "build-dir=$BUILD_DIR" >> $GITHUB_OUTPUT
-
-        ARGS="'$SOURCE_DIR' -B '$BUILD_DIR'"
-        if [ -n '${{ inputs.generator }}' ]; then
-          ARGS="$ARGS -G '${{ inputs.generator }}'"
-        fi
-        if [ -n '${{ inputs.c-compiler }}' ]; then
-          ARGS="$ARGS -D CMAKE_C_COMPILER='${{ inputs.c-compiler }}'"
-        fi
-        if [ -n '${{ inputs.cxx-compiler }}' ]; then
-          ARGS="$ARGS -D CMAKE_CXX_COMPILER='${{ inputs.cxx-compiler }}'"
-        fi
-        if [ -n '${{ inputs.c-flags }}' ]; then
-          ARGS="$ARGS -D CMAKE_C_FLAGS='${{ inputs.c-flags }}'"
-        fi
-        if [ -n '${{ inputs.cxx-flags }}' ]; then
-          ARGS="$ARGS -D CMAKE_CXX_FLAGS='${{ inputs.cxx-flags }}'"
-        fi
-        for OPT in ${{ inputs.options }}; do
-          ARGS="$ARGS -D $OPT"
-        done
-        if [ -n '${{ inputs.args }}' ]; then
-          ARGS="$ARGS ${{ inputs.args }}"
-        fi
-        echo "cmake-args=${ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
-
-        if [ '${{ inputs.run-build }}' == 'true' ] || [ '${{ inputs.run-test }}' == 'true' ]; then
-          BUILD_ARGS="--build '$BUILD_DIR'"
-          if [ -n '${{ inputs.build-args }}' ]; then
-            BUILD_ARGS="$BUILD_ARGS ${{ inputs.build-args }}"
-          fi
-          echo "cmake-build-args=${BUILD_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
-        fi
-
-        if [ '${{ inputs.run-test }}' == 'true' ]; then
-          TEST_ARGS="--test-dir '$BUILD_DIR' --output-on-failure --no-tests=error"
-          if [ -n '${{ inputs.test-args }}' ]; then
-            TEST_ARGS="$TEST_ARGS ${{ inputs.test-args }}"
-          fi
-          echo "cmake-test-args=${TEST_ARGS//[$'\t\r\n']}" >> $GITHUB_OUTPUT
-        fi
-
-    - name: Install Ninja
-      if: ${{ inputs.generator == 'Ninja' }}
-      shell: bash
-      run: |
-        case "$OSTYPE" in
-          darwin*)  brew install ninja ;;
-          linux*)   sudo apt install -y ninja-build ;;
-          *)        choco install ninja ;;
-        esac
-
-    - name: Configure the CMake project
-      shell: ${{ steps.process-inputs.outputs.shell }}
-      run: cmake ${{ steps.process-inputs.outputs.cmake-args }}
-
-    - name: Build targets
-      if: inputs.run-build != 'false' || inputs.run-test != 'false'
-      shell: ${{ steps.process-inputs.outputs.shell }}
-      run: cmake ${{ steps.process-inputs.outputs.cmake-build-args }}
-
-    - name: Run tests
-      if: inputs.run-test != 'false'
-      shell: ${{ steps.process-inputs.outputs.shell }}
-      run: ctest ${{ steps.process-inputs.outputs.cmake-test-args }}
+  using: node20
+  main: main/index.mjs

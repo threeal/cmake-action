@@ -1,0 +1,39 @@
+name: Build
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  build-package:
+    name: Build Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.0
+        with:
+          node-version: latest
+
+      - name: Update Yarn
+        run: corepack enable && yarn set version stable
+
+      - name: Cache deps
+        uses: actions/cache@v3.3.2
+        with:
+          path: .yarn
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Install deps
+        run: yarn install
+
+      - name: Check lib
+        run: yarn check
+
+      - name: Bundle dist
+        run: yarn bundle
+
+      - name: Check diff
+        run: git diff --exit-code HEAD

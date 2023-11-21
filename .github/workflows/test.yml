@@ -5,6 +5,36 @@ on:
   push:
     branches: [latest, main]
 jobs:
+  test-package:
+    name: Test Package
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows, ubuntu, macos]
+    env:
+      NODE_OPTIONS: --experimental-vm-modules
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.0
+        with:
+          node-version: latest
+
+      - name: Cache deps
+        uses: actions/cache@v3.3.2
+        with:
+          path: .yarn
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Install deps
+        run: corepack enable && yarn install
+
+      - name: Test lib
+        run: yarn test
+
   default-usage:
     runs-on: ${{ matrix.os }}-latest
     strategy:
@@ -132,16 +162,3 @@ jobs:
           build-args: --target test_c --target test_cpp
           run-test: true
           test-args: -R test
-
-  specified-shell:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v4.1.1
-
-      - name: Use the action with specified shell
-        uses: ./
-        with:
-          shell: bash
-          source-dir: test
-          run-build: true
