@@ -35,7 +35,8 @@ jobs:
       - name: Test lib
         run: yarn test
 
-  default-usage:
+  test-action:
+    name: Test Action
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
@@ -66,7 +67,8 @@ jobs:
           cmake --build ${{ steps.cmake-action.outputs.build-dir }}
           ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world ${{ matrix.os == 'windows' && '-C Debug' || '' }}
 
-  specified-dir-usage:
+  test-action-with-specified-dirs:
+    name: Test Action With Specified Directories
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -88,7 +90,8 @@ jobs:
           cmake --build ${{ steps.cmake-action.outputs.build-dir }}
           ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world
 
-  run-build-usage:
+  test-action-with-run-build:
+    name: Test Action With Run Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -105,7 +108,8 @@ jobs:
       - name: Test the project
         run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R test
 
-  run-test-usage:
+  test-action-with-run-test:
+    name: Test Action With Run Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -118,7 +122,8 @@ jobs:
           run-test: true
           test-args: -R hello_world
 
-  additional-flags-usage:
+  test-action-with-additional-args:
+    name: Test Action With Additional Arguments
     runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
     strategy:
       fail-fast: false
@@ -140,7 +145,8 @@ jobs:
           run-test: true
           test-args: -R test ${{ matrix.compiler == 'msvc' && '-C Debug' || '' }}
 
-  specified-generator-and-compiler-usage:
+  test-action-with-custom-tools:
+    name: Test Action With Custom Tools
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
