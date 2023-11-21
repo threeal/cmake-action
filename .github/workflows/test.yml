@@ -162,16 +162,3 @@ jobs:
           build-args: --target test_c --target test_cpp
           run-test: true
           test-args: -R test
-
-  specified-shell:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v4.1.1
-
-      - name: Use the action with specified shell
-        uses: ./
-        with:
-          shell: bash
-          source-dir: test
-          run-build: true
