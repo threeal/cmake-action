@@ -55,18 +55,19 @@ on:
   push:
 jobs:
   build-project:
+    name: Build Project
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3.5.3
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
 
-      - name: Configure the project
+      - name: Configure Project
         uses: threeal/cmake-action@v1.3.0
 
-      - name: Build the project
+      - name: Build Project
         runs: cmake --build build
 
-      - name: Test the project
+      - name: Test Project
         runs: ctest --test-dir build
 ```
 
@@ -75,7 +76,7 @@ jobs:
 #### Configure, Build, and Test in the Same Step
 
 ```yaml
-- name: Configure, build, and test the project
+- name: Configure, Build, and Test Project
   uses: threeal/cmake-action@v1.3.0
   with:
     run-build: true
@@ -85,7 +86,7 @@ jobs:
 #### Specify the Source and Build Directories
 
 ```yaml
-- name: Configure the project
+- name: Configure Project
   uses: threeal/cmake-action@v1.3.0
   with:
     source-dir: submodules
@@ -95,7 +96,7 @@ jobs:
 #### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
-- name: Configure the project
+- name: Configure Project
   uses: threeal/cmake-action@v1.3.0
   with:
     generator: Ninja
