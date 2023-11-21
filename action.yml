@@ -5,9 +5,6 @@ branding:
   color: gray-dark
   icon: terminal
 inputs:
-  shell:
-    description: The shell to be used to run the commands
-    required: false
   source-dir:
     description: The source directory of the CMake project
     required: false
