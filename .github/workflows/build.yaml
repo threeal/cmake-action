@@ -20,20 +20,20 @@ jobs:
       - name: Update Yarn
         run: corepack enable && yarn set version stable
 
-      - name: Cache deps
+      - name: Cache Dependencies
         uses: actions/cache@v3.3.2
         with:
           path: .yarn
           key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
 
-      - name: Install deps
+      - name: Install Dependencies
         run: yarn install
 
-      - name: Check lib
+      - name: Check Package
         run: yarn check
 
-      - name: Bundle dist
+      - name: Bundle Package
         run: yarn bundle
 
-      - name: Check diff
+      - name: Check Differences
         run: git diff --exit-code HEAD
