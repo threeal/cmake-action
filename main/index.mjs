@@ -27247,6 +27247,19 @@ async function main() {
     const generator = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("generator");
     if (generator)
         configureArgs.push(...["-G", generator]);
+    if (generator.match(/ninja/gi)) {
+        switch (process.platform) {
+            case "linux":
+                await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("sudo", ["apt", "install", "-y", "ninja-build"]);
+                break;
+            case "darwin":
+                await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("brew", ["install", "ninja"]);
+                break;
+            case "win32":
+                await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("choco", ["install", "ninja"]);
+                break;
+        }
+    }
     const cCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("c-compiler");
     if (cCompiler)
         configureArgs.push("-DCMAKE_C_COMPILER=" + cCompiler);
