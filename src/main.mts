@@ -1,5 +1,6 @@
 import core from "@actions/core";
 import exec from "@actions/exec";
+import io from "@actions/io";
 
 async function main() {
   const sourceDir = core.getInput("source-dir");
@@ -10,7 +11,7 @@ async function main() {
   const generator = core.getInput("generator");
   if (generator) configureArgs.push(...["-G", generator]);
 
-  if (generator.match(/ninja/gi)) {
+  if (generator.match(/ninja/gi) && !(await io.which("ninja"))) {
     switch (process.platform) {
       case "linux":
         await exec.exec("sudo", ["apt", "install", "-y", "ninja-build"]);

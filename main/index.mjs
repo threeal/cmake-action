@@ -27238,6 +27238,8 @@ var __webpack_exports__ = {};
 (() => {
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2340);
 /* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(4926);
+/* harmony import */ var _actions_io__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(1793);
+
 
 
 async function main() {
@@ -27247,7 +27249,7 @@ async function main() {
     const generator = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("generator");
     if (generator)
         configureArgs.push(...["-G", generator]);
-    if (generator.match(/ninja/gi)) {
+    if (generator.match(/ninja/gi) && !(await _actions_io__WEBPACK_IMPORTED_MODULE_2__.which("ninja"))) {
         switch (process.platform) {
             case "linux":
                 await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("sudo", ["apt", "install", "-y", "ninja-build"]);
