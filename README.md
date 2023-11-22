@@ -3,7 +3,7 @@
 [![Latest Version](https://img.shields.io/github/v/release/threeal/cmake-action)](https://github.com/threeal/cmake-action/releases/)
 [![License](https://img.shields.io/github/license/threeal/cmake-action)](./LICENSE)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/build.yaml?branch=main)](https://github.com/threeal/cmake-action/actions/workflows/build.yaml)
-[![Test Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yml)
+[![Test Status](https://img.shields.io/github/actions/workflow/status/threeal/cmake-action/test.yaml?label=test&branch=main)](https://github.com/threeal/cmake-action/actions/workflows/test.yaml)
 
 Configure, build, and test your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for configuring the build environment of a CMake project. It can also be optionally specified to build a CMake project using the `cmake --build` command and test it using the `ctest` command.
 
@@ -55,18 +55,19 @@ on:
   push:
 jobs:
   build-project:
+    name: Build Project
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3.5.3
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
 
-      - name: Configure the project
+      - name: Configure Project
         uses: threeal/cmake-action@v1.3.0
 
-      - name: Build the project
+      - name: Build Project
         runs: cmake --build build
 
-      - name: Test the project
+      - name: Test Project
         runs: ctest --test-dir build
 ```
 
@@ -75,7 +76,7 @@ jobs:
 #### Configure, Build, and Test in the Same Step
 
 ```yaml
-- name: Configure, build, and test the project
+- name: Configure, Build, and Test Project
   uses: threeal/cmake-action@v1.3.0
   with:
     run-build: true
@@ -85,7 +86,7 @@ jobs:
 #### Specify the Source and Build Directories
 
 ```yaml
-- name: Configure the project
+- name: Configure Project
   uses: threeal/cmake-action@v1.3.0
   with:
     source-dir: submodules
@@ -95,7 +96,7 @@ jobs:
 #### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
-- name: Configure the project
+- name: Configure Project
   uses: threeal/cmake-action@v1.3.0
   with:
     generator: Ninja

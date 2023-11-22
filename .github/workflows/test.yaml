@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: [latest, main]
+    branches: [main]
 jobs:
   test-package:
     name: Test Package
@@ -23,78 +23,81 @@ jobs:
         with:
           node-version: latest
 
-      - name: Cache deps
+      - name: Cache Dependencies
         uses: actions/cache@v3.3.2
         with:
           path: .yarn
           key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
 
-      - name: Install deps
+      - name: Install Dependencies
         run: corepack enable && yarn install
 
-      - name: Test lib
+      - name: Test Package
         run: yarn test
 
-  default-usage:
+  test-action:
+    name: Test Action
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
         os: [windows, ubuntu, macos]
     steps:
-      - name: Checkout the repository
+      - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Move the test project to the working directory
+      - name: Move Project
         run: mv test/* .
 
-      - name: Use the action
+      - name: Configure Project
         id: cmake-action
         uses: ./
 
-      - name: Try to test the project
+      - name: Try to Test Project
         id: failed-step
         continue-on-error: true
         run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world ${{ matrix.os == 'windows' && '-C Debug' || '' }}
 
-      - name: Check on success
+      - name: Previous Step Should Failed
         if: steps.failed-step.outcome == 'success'
         run: exit 1
 
-      - name: Build and test the project
+      - name: Build and Test Project
         run: |
           cmake --build ${{ steps.cmake-action.outputs.build-dir }}
           ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world ${{ matrix.os == 'windows' && '-C Debug' || '' }}
 
-  specified-dir-usage:
+  test-action-with-specified-dirs:
+    name: Test Action With Specified Directories
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
+      - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Use the action with specified directories
+      - name: Configure Project
         id: cmake-action
         uses: ./
         with:
           source-dir: test
           build-dir: output
 
-      - name: Check if the default build directory does not exist
+      - name: Default Build Directory Should Not Exist
         shell: bash
         run: test ! -e build && test ! -e test/build
 
-      - name: Build and test the project
+      - name: Build and Test Project
         run: |
           cmake --build ${{ steps.cmake-action.outputs.build-dir }}
           ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world
 
-  run-build-usage:
+  test-action-with-run-build:
+    name: Test Action With Run Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
+      - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Use the action with run build enabled
+      - name: Configure and Build Project
         id: cmake-action
         uses: ./
         with:
@@ -102,33 +105,35 @@ jobs:
           run-build: true
           build-args: --target test_c --target test_cpp
 
-      - name: Test the project
+      - name: Test Project
         run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R test
 
-  run-test-usage:
+  test-action-with-run-test:
+    name: Test Action With Run Test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
+      - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Use the action with run test enabled
+      - name: Configure, Build, and Test Project
         uses: ./
         with:
           source-dir: test
           run-test: true
           test-args: -R hello_world
 
-  additional-flags-usage:
+  test-action-with-additional-args:
+    name: Test Action With Additional Arguments
     runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
     strategy:
       fail-fast: false
       matrix:
         compiler: [gcc, msvc]
     steps:
-      - name: Checkout the repository
+      - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Use the action with additional compiler flags
+      - name: Configure, Build, and Test Project
         uses: ./
         with:
           source-dir: test
@@ -140,17 +145,18 @@ jobs:
           run-test: true
           test-args: -R test ${{ matrix.compiler == 'msvc' && '-C Debug' || '' }}
 
-  specified-generator-and-compiler-usage:
+  test-action-with-custom-tools:
+    name: Test Action With Custom Tools
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
         os: [windows, ubuntu, macos]
     steps:
-      - name: Checkout the repository
+      - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Use the action with specified generator and compilers
+      - name: Configure, Build, and Test Project
         uses: ./
         with:
           source-dir: test
