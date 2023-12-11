@@ -10,6 +10,5 @@
   },
   "moduleNameMapper": {
     "^(\\.{1,2}/.*)\\.mjs$": "<rootDir>/dist/$1.mjs"
-  },
-  "testMatch": ["**/*.test.js"]
+  }
 }
