@@ -5,7 +5,7 @@
   "scripts": {
     "bundle": "tsc && ncc build dist/main.mjs -o main",
     "check": "sort-package-json && prettier --write . !main !README.md && eslint src",
-    "test": "jest"
+    "test": "tsc && jest"
   },
   "dependencies": {
     "@actions/core": "^1.10.1",
