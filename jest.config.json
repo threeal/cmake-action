@@ -8,9 +8,8 @@
       "statements": 100
     }
   },
-  "extensionsToTreatAsEsm": [".ts", ".mts"],
   "moduleNameMapper": {
     "^(\\.{1,2}/.*)\\.mjs$": "<rootDir>/dist/$1.mjs"
   },
-  "testMatch": ["**/*.test.ts"]
+  "testMatch": ["**/*.test.js"]
 }
