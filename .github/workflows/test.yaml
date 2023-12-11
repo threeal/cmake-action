@@ -12,8 +12,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows, ubuntu, macos]
-    env:
-      NODE_OPTIONS: --experimental-vm-modules
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
@@ -34,6 +32,8 @@ jobs:
 
       - name: Test Package
         run: yarn test
+        env:
+          NODE_OPTIONS: --experimental-vm-modules
 
   test-action:
     name: Test Action
