@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "bundle": "tsc && ncc build dist/main.mjs -o main",
-    "check": "prettier --write . !main !README.md && eslint src package.json",
+    "check": "prettier --write . !main !README.md && eslint --ignore-path .gitignore .",
     "test": "tsc && jest"
   },
   "dependencies": {
