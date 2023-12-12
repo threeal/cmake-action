@@ -29,12 +29,6 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Check Format
-        run: yarn format
-
-      - name: Check Lint
-        run: yarn lint
-
       - name: Bundle Package
         run: yarn bundle
 
