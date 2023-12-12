@@ -29,5 +29,5 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Bundle Package
-        run: yarn bundle && git diff --exit-code HEAD
+      - name: Build Package
+        run: yarn build && git diff --exit-code HEAD
