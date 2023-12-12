@@ -20,6 +20,9 @@ jobs:
       - name: Enable Yarn
         run: corepack enable yarn
 
+      - name: Check Yarn Version
+        run: yarn set version stable && git diff --exit-code HEAD
+
       - name: Cache Dependencies
         uses: actions/cache@v3.3.2
         with:
