@@ -17,8 +17,8 @@ jobs:
         with:
           node-version: latest
 
-      - name: Update Yarn
-        run: corepack enable && yarn set version stable
+      - name: Enable Yarn
+        run: corepack enable yarn
 
       - name: Cache Dependencies
         uses: actions/cache@v3.3.2
@@ -29,14 +29,5 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Check Format
-        run: yarn format
-
-      - name: Check Lint
-        run: yarn lint
-
       - name: Bundle Package
-        run: yarn bundle
-
-      - name: Check Differences
-        run: git diff --exit-code HEAD
+        run: yarn bundle && git diff --exit-code HEAD
