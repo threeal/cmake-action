@@ -74,6 +74,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+          sparse-checkout: |
+            action.yml
+            main
+            test
+          sparse-checkout-cone-mode: false
 
       - name: Move Project
         run: mv test/* .
@@ -102,6 +108,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+          sparse-checkout: |
+            action.yml
+            main
+            test
+          sparse-checkout-cone-mode: false
 
       - name: Configure Project
         id: cmake-action
@@ -125,6 +137,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+          sparse-checkout: |
+            action.yml
+            main
+            test
+          sparse-checkout-cone-mode: false
 
       - name: Configure and Build Project
         id: cmake-action
@@ -143,6 +161,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+          sparse-checkout: |
+            action.yml
+            main
+            test
+          sparse-checkout-cone-mode: false
 
       - name: Configure, Build, and Test Project
         uses: ./
@@ -161,6 +185,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+          sparse-checkout: |
+            action.yml
+            main
+            test
+          sparse-checkout-cone-mode: false
 
       - name: Configure, Build, and Test Project
         uses: ./
@@ -184,6 +214,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+        with:
+          sparse-checkout: |
+            action.yml
+            main
+            test
+          sparse-checkout-cone-mode: false
 
       - name: Configure, Build, and Test Project
         uses: ./
