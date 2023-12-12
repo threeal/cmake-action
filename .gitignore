@@ -1,6 +1,7 @@
 .*
 !.eslint*
 !.git*
+!.yarnrc.yml
 
 build/
 coverage/
