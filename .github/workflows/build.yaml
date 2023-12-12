@@ -30,7 +30,4 @@ jobs:
         run: yarn install
 
       - name: Bundle Package
-        run: yarn bundle
-
-      - name: Check Differences
-        run: git diff --exit-code HEAD
+        run: yarn bundle && git diff --exit-code HEAD
