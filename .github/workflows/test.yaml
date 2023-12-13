@@ -17,20 +17,11 @@ jobs:
         with:
           node-version: latest
 
-      - name: Enable Yarn
-        run: corepack enable yarn
+      - name: Install Dependencies
+        uses: threeal/yarn-install-action@v1.0.0
 
       - name: Check Yarn Version
         run: yarn set version stable && git diff --exit-code HEAD
-
-      - name: Cache Dependencies
-        uses: actions/cache@v3.3.2
-        with:
-          path: .yarn
-          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-
-      - name: Install Dependencies
-        run: yarn install
 
       - name: Check Format
         run: yarn format && git diff --exit-code HEAD
@@ -50,14 +41,8 @@ jobs:
         with:
           node-version: latest
 
-      - name: Cache Dependencies
-        uses: actions/cache@v3.3.2
-        with:
-          path: .yarn
-          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-
       - name: Install Dependencies
-        run: corepack enable && yarn install
+        uses: threeal/yarn-install-action@v1.0.0
 
       - name: Test Package
         run: yarn test
