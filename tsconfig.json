@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "NodeNext",
+    "module": "nodenext",
     "declaration": true,
     "outDir": "dist",
     "sourceMap": true,
-    "target": "ES2022",
+    "target": "es2022",
     "skipLibCheck": true
   },
   "include": ["src"]
