@@ -1,2 +1,2 @@
-main/index.mjs -diff linguist-generated
+dist/index.mjs -diff linguist-generated
 yarn.lock -diff linguist-generated

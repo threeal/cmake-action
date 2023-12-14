@@ -7,8 +7,5 @@
       "lines": 100,
       "statements": 100
     }
-  },
-  "moduleNameMapper": {
-    "^(\\.{1,2}/.*)\\.mjs$": "<rootDir>/dist/$1.mjs"
   }
 }

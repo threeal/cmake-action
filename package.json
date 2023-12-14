@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc && ncc build dist/main.mjs -o main",
+    "build": "tsc && ncc build src/main.mjs -o main",
     "format": "prettier --write . !main !README.md",
     "lint": "eslint --ignore-path .gitignore .",
     "test": "tsc && jest"
