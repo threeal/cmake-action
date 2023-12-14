@@ -3,9 +3,6 @@
     "exactOptionalPropertyTypes": true,
     "strict": true,
     "module": "node16",
-    "declaration": true,
-    "outDir": "dist",
-    "sourceMap": true,
     "target": "es2022",
     "skipLibCheck": true
   },

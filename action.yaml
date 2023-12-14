@@ -52,4 +52,4 @@ outputs:
     value: ${{ steps.process-inputs.outputs.build-dir }}
 runs:
   using: node20
-  main: main/index.mjs
+  main: dist/index.mjs
