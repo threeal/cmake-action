@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["main"],
+  "ignorePatterns": ["dist"],
   "extends": ["eslint:recommended", "prettier"],
   "parserOptions": {
     "ecmaVersion": 2022,
