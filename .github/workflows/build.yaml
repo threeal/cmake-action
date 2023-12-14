@@ -21,4 +21,6 @@ jobs:
         uses: threeal/yarn-install-action@v1.0.0
 
       - name: Build Package
-        run: yarn build && git diff --exit-code HEAD
+        run: |
+          corepack yarn build
+          git diff --exit-code HEAD
