@@ -75,4 +75,4 @@ async function main() {
   }
 }
 
-main();
+main().catch((err) => core.setFailed(err));
