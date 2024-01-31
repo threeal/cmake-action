@@ -20,11 +20,6 @@ jobs:
       - name: Install Dependencies
         uses: threeal/yarn-install-action@v1.0.0
 
-      - name: Check Yarn Version
-        run: |
-          corepack yarn set version stable
-          git diff --exit-code HEAD
-
       - name: Check Format
         run: |
           corepack yarn format
