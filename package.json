@@ -1,5 +1,4 @@
 {
-  "name": "cmake-action",
   "private": true,
   "type": "module",
   "scripts": {
