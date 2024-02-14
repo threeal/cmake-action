@@ -2,10 +2,6 @@
   "root": true,
   "ignorePatterns": ["dist"],
   "extends": ["eslint:recommended", "prettier"],
-  "parserOptions": {
-    "ecmaVersion": 2022,
-    "sourceType": "module"
-  },
   "overrides": [
     {
       "files": ["**/*.mts", "**/*.ts"],
