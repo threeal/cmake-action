@@ -4,7 +4,6 @@
 !.yarnrc.yml
 
 build/
-coverage/
 node_modules/
 
 src/**/*.mjs

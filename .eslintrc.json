@@ -20,12 +20,6 @@
       }
     },
     {
-      "files": ["**/*.test.*"],
-      "env": {
-        "jest": true
-      }
-    },
-    {
       "files": ["package.json"],
       "plugins": ["json-files"],
       "rules": {
