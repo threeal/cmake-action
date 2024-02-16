@@ -5,11 +5,7 @@
   "overrides": [
     {
       "files": ["**/*.mts", "**/*.ts"],
-      "extends": ["plugin:@typescript-eslint/recommended"],
-      "plugins": ["eslint-plugin-tsdoc"],
-      "rules": {
-        "tsdoc/syntax": "error"
-      }
+      "extends": ["plugin:@typescript-eslint/recommended"]
     },
     {
       "files": ["package.json"],

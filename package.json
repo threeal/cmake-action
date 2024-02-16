@@ -18,7 +18,6 @@
     "@vercel/ncc": "^0.38.1",
     "eslint": "^8.56.0",
     "eslint-plugin-json-files": "^4.1.0",
-    "eslint-plugin-tsdoc": "^0.2.17",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3"
   },
