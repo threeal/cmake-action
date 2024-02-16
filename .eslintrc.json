@@ -1,19 +1,11 @@
 {
   "root": true,
   "ignorePatterns": ["dist"],
-  "extends": ["eslint:recommended", "prettier"],
+  "extends": ["eslint:recommended"],
   "overrides": [
     {
-      "files": ["**/*.mts", "**/*.ts"],
-      "extends": ["plugin:@typescript-eslint/recommended"],
-      "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "project": ["tsconfig.json"]
-      },
-      "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc"],
-      "rules": {
-        "tsdoc/syntax": "error"
-      }
+      "files": ["**/*.?([cm])ts"],
+      "extends": ["plugin:@typescript-eslint/recommended"]
     },
     {
       "files": ["package.json"],
