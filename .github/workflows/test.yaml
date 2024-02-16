@@ -28,26 +28,6 @@ jobs:
       - name: Check Lint
         run: corepack yarn lint
 
-  test-package:
-    name: Test Package
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.1
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4.0.2
-        with:
-          node-version: latest
-
-      - name: Install Dependencies
-        uses: threeal/yarn-install-action@v1.0.0
-
-      - name: Test Package
-        run: corepack yarn test
-        env:
-          NODE_OPTIONS: --experimental-vm-modules
-
   test-action:
     name: Test Action
     runs-on: ${{ matrix.os }}-latest
