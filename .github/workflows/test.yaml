@@ -22,11 +22,11 @@ jobs:
 
       - name: Check Format
         run: |
-          corepack yarn format
+          yarn format
           git diff --exit-code HEAD
 
       - name: Check Lint
-        run: corepack yarn lint
+        run: yarn lint
 
   test-action:
     name: Test Action
