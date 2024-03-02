@@ -17,8 +17,8 @@ jobs:
         with:
           node-version: latest
 
-      - name: Install Dependencies
-        uses: threeal/yarn-install-action@v2.0.0
+      - name: Setup Yarn
+        uses: threeal/setup-yarn-action@v2.0.0
 
       - name: Build Package
         run: |
