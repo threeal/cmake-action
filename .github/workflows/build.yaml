@@ -17,10 +17,12 @@ jobs:
         with:
           node-version: latest
 
-      - name: Install Dependencies
-        uses: threeal/yarn-install-action@v2.0.0
+      - name: Setup Yarn
+        uses: threeal/setup-yarn-action@v2.0.0
+        with:
+          version: stable
 
       - name: Build Package
         run: |
-          corepack yarn build
+          yarn build
           git diff --exit-code HEAD
