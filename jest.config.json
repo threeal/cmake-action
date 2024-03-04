@@ -1,0 +1,19 @@
+{
+  "collectCoverage": true,
+  "coverageThreshold": {
+    "global": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  },
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  },
+  "preset": "ts-jest/presets/default-esm",
+  "transform": {
+    "^.+\\.ts$": ["ts-jest", { "useESM": true }]
+  },
+  "verbose": true
+}
