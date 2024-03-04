@@ -27685,6 +27685,35 @@ module.exports = parseParams
 /******/ }
 /******/ 
 /************************************************************************/
+/******/ /* webpack/runtime/compat get default export */
+/******/ (() => {
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__nccwpck_require__.n = (module) => {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			() => (module['default']) :
+/******/ 			() => (module);
+/******/ 		__nccwpck_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/define property getters */
+/******/ (() => {
+/******/ 	// define getter functions for harmony exports
+/******/ 	__nccwpck_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			}
+/******/ 		}
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/hasOwnProperty shorthand */
+/******/ (() => {
+/******/ 	__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ })();
+/******/ 
 /******/ /* webpack/runtime/compat */
 /******/ 
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
@@ -27694,63 +27723,66 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2340);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(4926);
+/* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_exec__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _actions_io__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(1793);
+/* harmony import */ var _actions_io__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(_actions_io__WEBPACK_IMPORTED_MODULE_2__);
 
 
 
 async function main() {
-    const sourceDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("source-dir");
-    const buildDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("build-dir");
+    const sourceDir = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getInput("source-dir");
+    const buildDir = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getInput("build-dir");
     const configureArgs = [sourceDir || ".", "-B", buildDir || "build"];
-    const generator = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("generator");
+    const generator = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getInput("generator");
     if (generator)
         configureArgs.push(...["-G", generator]);
-    if (generator.match(/ninja/gi) && !(await _actions_io__WEBPACK_IMPORTED_MODULE_2__.which("ninja"))) {
+    if (generator.match(/ninja/gi) && !(await _actions_io__WEBPACK_IMPORTED_MODULE_2___default().which("ninja"))) {
         switch (process.platform) {
             case "linux":
-                await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("sudo", ["apt", "install", "-y", "ninja-build"]);
+                await _actions_exec__WEBPACK_IMPORTED_MODULE_1___default().exec("sudo", ["apt", "install", "-y", "ninja-build"]);
                 break;
             case "darwin":
-                await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("brew", ["install", "ninja"]);
+                await _actions_exec__WEBPACK_IMPORTED_MODULE_1___default().exec("brew", ["install", "ninja"]);
                 break;
             case "win32":
-                await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("choco", ["install", "ninja"]);
+                await _actions_exec__WEBPACK_IMPORTED_MODULE_1___default().exec("choco", ["install", "ninja"]);
                 break;
         }
     }
-    const cCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("c-compiler");
+    const cCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getInput("c-compiler");
     if (cCompiler)
         configureArgs.push("-DCMAKE_C_COMPILER=" + cCompiler);
-    const cxxCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("cxx-compiler");
+    const cxxCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getInput("cxx-compiler");
     if (cxxCompiler)
         configureArgs.push("-DCMAKE_CXX_COMPILER=" + cxxCompiler);
-    const cFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("c-flags").join(" ");
+    const cFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getMultilineInput("c-flags").join(" ");
     if (cFlags)
         configureArgs.push("-DCMAKE_C_FLAGS=" + cFlags);
-    const cxxFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("cxx-flags").join(" ");
+    const cxxFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getMultilineInput("cxx-flags").join(" ");
     if (cxxFlags)
         configureArgs.push("-DCMAKE_CXX_FLAGS=" + cxxFlags);
-    const options = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("options")
+    const options = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getMultilineInput("options")
         .flatMap((opts) => opts.split(" "))
         .map((opt) => "-D" + opt);
     configureArgs.push(...options);
-    const args = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("args")
+    const args = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getMultilineInput("args")
         .flatMap((args) => args.split(" "));
     configureArgs.push(...args);
-    await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", configureArgs);
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
-    const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-build");
-    const runTest = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-test");
+    await _actions_exec__WEBPACK_IMPORTED_MODULE_1___default().exec("cmake", configureArgs);
+    _actions_core__WEBPACK_IMPORTED_MODULE_0___default().setOutput("build-dir", buildDir || "build");
+    const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getBooleanInput("run-build");
+    const runTest = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getBooleanInput("run-test");
     if (runBuild || runTest) {
-        const buildArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("build-args")
+        const buildArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getMultilineInput("build-args")
             .flatMap((args) => args.split(" "));
-        await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
+        await _actions_exec__WEBPACK_IMPORTED_MODULE_1___default().exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
     }
     if (runTest) {
-        const testArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("test-args")
+        const testArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0___default().getMultilineInput("test-args")
             .flatMap((args) => args.split(" "));
-        await _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec("ctest", [
+        await _actions_exec__WEBPACK_IMPORTED_MODULE_1___default().exec("ctest", [
             "--test-dir",
             buildDir || "build",
             "--output-on-failure",
@@ -27759,7 +27791,7 @@ async function main() {
         ]);
     }
 }
-main().catch((err) => _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(err));
+main().catch((err) => _actions_core__WEBPACK_IMPORTED_MODULE_0___default().setFailed(err));
 
 })();
 
