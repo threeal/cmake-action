@@ -5,4 +5,4 @@
 build/
 node_modules/
 
-src/**/*.mjs
+src/**/*.js
