@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "ncc build src/index.ts -o dist",
+    "build": "ncc build src/index.ts",
     "format": "prettier --write --cache . !dist !README.md",
     "lint": "eslint --ignore-path .gitignore ."
   },
