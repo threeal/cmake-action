@@ -27685,35 +27685,6 @@ module.exports = parseParams
 /******/ }
 /******/ 
 /************************************************************************/
-/******/ /* webpack/runtime/compat get default export */
-/******/ (() => {
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__nccwpck_require__.n = (module) => {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			() => (module['default']) :
-/******/ 			() => (module);
-/******/ 		__nccwpck_require__.d(getter, { a: getter });
-/******/ 		return getter;
-/******/ 	};
-/******/ })();
-/******/ 
-/******/ /* webpack/runtime/define property getters */
-/******/ (() => {
-/******/ 	// define getter functions for harmony exports
-/******/ 	__nccwpck_require__.d = (exports, definition) => {
-/******/ 		for(var key in definition) {
-/******/ 			if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 			}
-/******/ 		}
-/******/ 	};
-/******/ })();
-/******/ 
-/******/ /* webpack/runtime/hasOwnProperty shorthand */
-/******/ (() => {
-/******/ 	__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ })();
-/******/ 
 /******/ /* webpack/runtime/compat */
 /******/ 
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
@@ -27722,76 +27693,95 @@ module.exports = parseParams
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2340);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(4926);
-/* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_exec__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _actions_io__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(1793);
-/* harmony import */ var _actions_io__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(_actions_io__WEBPACK_IMPORTED_MODULE_2__);
+
+// EXTERNAL MODULE: ../../../.yarn/berry/cache/@actions-core-npm-1.10.1-3cb1000b4d-10c0.zip/node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(2340);
+// EXTERNAL MODULE: ../../../.yarn/berry/cache/@actions-exec-npm-1.1.1-90973d2f96-10c0.zip/node_modules/@actions/exec/lib/exec.js
+var exec = __nccwpck_require__(4926);
+// EXTERNAL MODULE: ../../../.yarn/berry/cache/@actions-io-npm-1.1.3-82d1cf012b-10c0.zip/node_modules/@actions/io/lib/io.js
+var io = __nccwpck_require__(1793);
+;// CONCATENATED MODULE: ./src/inputs.ts
+
+function getInputs() {
+    return {
+        sourceDir: (0,core.getInput)("source-dir"),
+        buildDir: (0,core.getInput)("build-dir"),
+        generator: (0,core.getInput)("generator"),
+        cCompiler: (0,core.getInput)("c-compiler"),
+        cxxCompiler: (0,core.getInput)("cxx-compiler"),
+        cFlags: (0,core.getMultilineInput)("c-flags").join(" "),
+        cxxFlags: (0,core.getMultilineInput)("cxx-flags").join(" "),
+        options: (0,core.getMultilineInput)("options").flatMap((opts) => opts.split(" ")),
+        args: (0,core.getMultilineInput)("args").flatMap((args) => args.split(" ")),
+        runBuild: (0,core.getBooleanInput)("run-build"),
+        buildArgs: (0,core.getMultilineInput)("build-args").flatMap((args) => args.split(" ")),
+        testArgs: (0,core.getMultilineInput)("test-args").flatMap((args) => args.split(" ")),
+        runTest: (0,core.getBooleanInput)("run-test"),
+    };
+}
+
+;// CONCATENATED MODULE: ./src/index.ts
+
 
 
 
 async function main() {
-    const sourceDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("source-dir");
-    const buildDir = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("build-dir");
-    const configureArgs = [sourceDir || ".", "-B", buildDir || "build"];
-    const generator = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("generator");
-    if (generator)
-        configureArgs.push(...["-G", generator]);
-    if (generator.match(/ninja/gi) && !(await (0,_actions_io__WEBPACK_IMPORTED_MODULE_2__.which)("ninja"))) {
+    const inputs = getInputs();
+    const configureArgs = [
+        inputs.sourceDir || ".",
+        "-B",
+        inputs.buildDir || "build",
+    ];
+    if (inputs.generator) {
+        configureArgs.push(...["-G", inputs.generator]);
+    }
+    if (inputs.generator.match(/ninja/gi) && !(await (0,io.which)("ninja"))) {
         switch (process.platform) {
             case "linux":
-                await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)("sudo", ["apt", "install", "-y", "ninja-build"]);
+                await (0,exec.exec)("sudo", ["apt", "install", "-y", "ninja-build"]);
                 break;
             case "darwin":
-                await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)("brew", ["install", "ninja"]);
+                await (0,exec.exec)("brew", ["install", "ninja"]);
                 break;
             case "win32":
-                await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)("choco", ["install", "ninja"]);
+                await (0,exec.exec)("choco", ["install", "ninja"]);
                 break;
         }
     }
-    const cCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("c-compiler");
-    if (cCompiler)
-        configureArgs.push("-DCMAKE_C_COMPILER=" + cCompiler);
-    const cxxCompiler = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("cxx-compiler");
-    if (cxxCompiler)
-        configureArgs.push("-DCMAKE_CXX_COMPILER=" + cxxCompiler);
-    const cFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("c-flags").join(" ");
-    if (cFlags)
-        configureArgs.push("-DCMAKE_C_FLAGS=" + cFlags);
-    const cxxFlags = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("cxx-flags").join(" ");
-    if (cxxFlags)
-        configureArgs.push("-DCMAKE_CXX_FLAGS=" + cxxFlags);
-    const options = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("options")
-        .flatMap((opts) => opts.split(" "))
-        .map((opt) => "-D" + opt);
-    configureArgs.push(...options);
-    const args = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("args")
-        .flatMap((args) => args.split(" "));
-    configureArgs.push(...args);
-    await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)("cmake", configureArgs);
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", buildDir || "build");
-    const runBuild = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-build");
-    const runTest = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getBooleanInput("run-test");
-    if (runBuild || runTest) {
-        const buildArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("build-args")
-            .flatMap((args) => args.split(" "));
-        await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)("cmake", ["--build", buildDir || "build", ...buildArgs]);
+    if (inputs.cCompiler) {
+        configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);
     }
-    if (runTest) {
-        const testArgs = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getMultilineInput("test-args")
-            .flatMap((args) => args.split(" "));
-        await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)("ctest", [
+    if (inputs.cxxCompiler) {
+        configureArgs.push("-DCMAKE_CXX_COMPILER=" + inputs.cxxCompiler);
+    }
+    if (inputs.cFlags) {
+        configureArgs.push("-DCMAKE_C_FLAGS=" + inputs.cFlags);
+    }
+    if (inputs.cxxFlags) {
+        configureArgs.push("-DCMAKE_CXX_FLAGS=" + inputs.cxxFlags);
+    }
+    configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
+    configureArgs.push(...inputs.args);
+    await (0,exec.exec)("cmake", configureArgs);
+    core.setOutput("build-dir", inputs.buildDir || "build");
+    if (inputs.runBuild || inputs.runTest) {
+        await (0,exec.exec)("cmake", [
+            "--build",
+            inputs.buildDir || "build",
+            ...inputs.buildArgs,
+        ]);
+    }
+    if (inputs.runTest) {
+        await (0,exec.exec)("ctest", [
             "--test-dir",
-            buildDir || "build",
+            inputs.buildDir || "build",
             "--output-on-failure",
             "--no-tests=error",
-            ...testArgs,
+            ...inputs.testArgs,
         ]);
     }
 }
-main().catch((err) => _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(err));
+main().catch((err) => core.setFailed(err));
 
 })();
 

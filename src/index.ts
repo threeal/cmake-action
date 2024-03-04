@@ -1,17 +1,22 @@
 import * as core from "@actions/core";
 import { exec } from "@actions/exec";
 import { which } from "@actions/io";
+import { getInputs } from "./inputs.js";
 
 async function main() {
-  const sourceDir = core.getInput("source-dir");
-  const buildDir = core.getInput("build-dir");
+  const inputs = getInputs();
 
-  const configureArgs = [sourceDir || ".", "-B", buildDir || "build"];
+  const configureArgs = [
+    inputs.sourceDir || ".",
+    "-B",
+    inputs.buildDir || "build",
+  ];
 
-  const generator = core.getInput("generator");
-  if (generator) configureArgs.push(...["-G", generator]);
+  if (inputs.generator) {
+    configureArgs.push(...["-G", inputs.generator]);
+  }
 
-  if (generator.match(/ninja/gi) && !(await which("ninja"))) {
+  if (inputs.generator.match(/ninja/gi) && !(await which("ninja"))) {
     switch (process.platform) {
       case "linux":
         await exec("sudo", ["apt", "install", "-y", "ninja-build"]);
@@ -25,52 +30,43 @@ async function main() {
     }
   }
 
-  const cCompiler = core.getInput("c-compiler");
-  if (cCompiler) configureArgs.push("-DCMAKE_C_COMPILER=" + cCompiler);
-
-  const cxxCompiler = core.getInput("cxx-compiler");
-  if (cxxCompiler) configureArgs.push("-DCMAKE_CXX_COMPILER=" + cxxCompiler);
-
-  const cFlags = core.getMultilineInput("c-flags").join(" ");
-  if (cFlags) configureArgs.push("-DCMAKE_C_FLAGS=" + cFlags);
-
-  const cxxFlags = core.getMultilineInput("cxx-flags").join(" ");
-  if (cxxFlags) configureArgs.push("-DCMAKE_CXX_FLAGS=" + cxxFlags);
-
-  const options = core
-    .getMultilineInput("options")
-    .flatMap((opts) => opts.split(" "))
-    .map((opt) => "-D" + opt);
-  configureArgs.push(...options);
-
-  const args = core
-    .getMultilineInput("args")
-    .flatMap((args) => args.split(" "));
-  configureArgs.push(...args);
-
-  await exec("cmake", configureArgs);
-  core.setOutput("build-dir", buildDir || "build");
-
-  const runBuild = core.getBooleanInput("run-build");
-  const runTest = core.getBooleanInput("run-test");
-
-  if (runBuild || runTest) {
-    const buildArgs = core
-      .getMultilineInput("build-args")
-      .flatMap((args) => args.split(" "));
-    await exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
+  if (inputs.cCompiler) {
+    configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);
   }
 
-  if (runTest) {
-    const testArgs = core
-      .getMultilineInput("test-args")
-      .flatMap((args) => args.split(" "));
+  if (inputs.cxxCompiler) {
+    configureArgs.push("-DCMAKE_CXX_COMPILER=" + inputs.cxxCompiler);
+  }
+
+  if (inputs.cFlags) {
+    configureArgs.push("-DCMAKE_C_FLAGS=" + inputs.cFlags);
+  }
+
+  if (inputs.cxxFlags) {
+    configureArgs.push("-DCMAKE_CXX_FLAGS=" + inputs.cxxFlags);
+  }
+
+  configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
+  configureArgs.push(...inputs.args);
+
+  await exec("cmake", configureArgs);
+  core.setOutput("build-dir", inputs.buildDir || "build");
+
+  if (inputs.runBuild || inputs.runTest) {
+    await exec("cmake", [
+      "--build",
+      inputs.buildDir || "build",
+      ...inputs.buildArgs,
+    ]);
+  }
+
+  if (inputs.runTest) {
     await exec("ctest", [
       "--test-dir",
-      buildDir || "build",
+      inputs.buildDir || "build",
       "--output-on-failure",
       "--no-tests=error",
-      ...testArgs,
+      ...inputs.testArgs,
     ]);
   }
 }
