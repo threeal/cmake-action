@@ -7,45 +7,32 @@ branding:
 inputs:
   source-dir:
     description: The source directory of the CMake project
-    required: false
   build-dir:
     description: The build directory of the CMake project
-    required: false
   generator:
     description: The build system generator for the CMake project
-    required: false
   c-compiler:
     description: The preferred executable for compiling C language files
-    required: false
   cxx-compiler:
     description: The preferred executable for compiling C++ language files
-    required: false
   c-flags:
     description: Additional flags to pass when compiling C language files
-    required: false
   cxx-flags:
     description: Additional flags to pass when compiling C++ language files
-    required: false
   options:
     description: Additional options to pass during the CMake configuration
-    required: false
   args:
     description: Additional arguments to pass during the CMake configuration
-    required: false
   run-build:
     description: If enabled, it builds the project using CMake (true/false)
-    required: false
     default: false
   build-args:
     description: Additional arguments to pass during the CMake build
-    required: false
   run-test:
     description: If enabled, it runs testing using CTest (true/false)
-    required: false
     default: false
   test-args:
     description: Additional arguments to pass during the CTest run
-    required: false
 outputs:
   build-dir:
     description: The build directory of the CMake project
