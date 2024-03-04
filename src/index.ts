@@ -1,6 +1,6 @@
-import core from "@actions/core";
-import exec from "@actions/exec";
-import io from "@actions/io";
+import * as core from "@actions/core";
+import { exec } from "@actions/exec";
+import { which } from "@actions/io";
 
 async function main() {
   const sourceDir = core.getInput("source-dir");
@@ -11,16 +11,16 @@ async function main() {
   const generator = core.getInput("generator");
   if (generator) configureArgs.push(...["-G", generator]);
 
-  if (generator.match(/ninja/gi) && !(await io.which("ninja"))) {
+  if (generator.match(/ninja/gi) && !(await which("ninja"))) {
     switch (process.platform) {
       case "linux":
-        await exec.exec("sudo", ["apt", "install", "-y", "ninja-build"]);
+        await exec("sudo", ["apt", "install", "-y", "ninja-build"]);
         break;
       case "darwin":
-        await exec.exec("brew", ["install", "ninja"]);
+        await exec("brew", ["install", "ninja"]);
         break;
       case "win32":
-        await exec.exec("choco", ["install", "ninja"]);
+        await exec("choco", ["install", "ninja"]);
         break;
     }
   }
@@ -48,7 +48,7 @@ async function main() {
     .flatMap((args) => args.split(" "));
   configureArgs.push(...args);
 
-  await exec.exec("cmake", configureArgs);
+  await exec("cmake", configureArgs);
   core.setOutput("build-dir", buildDir || "build");
 
   const runBuild = core.getBooleanInput("run-build");
@@ -58,14 +58,14 @@ async function main() {
     const buildArgs = core
       .getMultilineInput("build-args")
       .flatMap((args) => args.split(" "));
-    await exec.exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
+    await exec("cmake", ["--build", buildDir || "build", ...buildArgs]);
   }
 
   if (runTest) {
     const testArgs = core
       .getMultilineInput("test-args")
       .flatMap((args) => args.split(" "));
-    await exec.exec("ctest", [
+    await exec("ctest", [
       "--test-dir",
       buildDir || "build",
       "--output-on-failure",
