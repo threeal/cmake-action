@@ -18,8 +18,8 @@ export interface Inputs {
 
 export function getInputs(): Inputs {
   return {
-    sourceDir: getInput("source-dir"),
-    buildDir: getInput("build-dir"),
+    sourceDir: getInput("source-dir") || ".",
+    buildDir: getInput("build-dir") || "build",
     generator: getInput("generator"),
     cCompiler: getInput("c-compiler"),
     cxxCompiler: getInput("cxx-compiler"),

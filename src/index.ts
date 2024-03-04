@@ -6,11 +6,7 @@ import { getInputs } from "./inputs.js";
 async function main() {
   const inputs = getInputs();
 
-  const configureArgs = [
-    inputs.sourceDir || ".",
-    "-B",
-    inputs.buildDir || "build",
-  ];
+  const configureArgs = [inputs.sourceDir, "-B", inputs.buildDir];
 
   if (inputs.generator) {
     configureArgs.push(...["-G", inputs.generator]);
@@ -50,20 +46,16 @@ async function main() {
   configureArgs.push(...inputs.args);
 
   await exec("cmake", configureArgs);
-  core.setOutput("build-dir", inputs.buildDir || "build");
+  core.setOutput("build-dir", inputs.buildDir);
 
   if (inputs.runBuild || inputs.runTest) {
-    await exec("cmake", [
-      "--build",
-      inputs.buildDir || "build",
-      ...inputs.buildArgs,
-    ]);
+    await exec("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
   }
 
   if (inputs.runTest) {
     await exec("ctest", [
       "--test-dir",
-      inputs.buildDir || "build",
+      inputs.buildDir,
       "--output-on-failure",
       "--no-tests=error",
       ...inputs.testArgs,

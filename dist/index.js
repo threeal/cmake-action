@@ -27704,8 +27704,8 @@ var io = __nccwpck_require__(1793);
 
 function getInputs() {
     return {
-        sourceDir: (0,core.getInput)("source-dir"),
-        buildDir: (0,core.getInput)("build-dir"),
+        sourceDir: (0,core.getInput)("source-dir") || ".",
+        buildDir: (0,core.getInput)("build-dir") || "build",
         generator: (0,core.getInput)("generator"),
         cCompiler: (0,core.getInput)("c-compiler"),
         cxxCompiler: (0,core.getInput)("cxx-compiler"),
@@ -27727,11 +27727,7 @@ function getInputs() {
 
 async function main() {
     const inputs = getInputs();
-    const configureArgs = [
-        inputs.sourceDir || ".",
-        "-B",
-        inputs.buildDir || "build",
-    ];
+    const configureArgs = [inputs.sourceDir, "-B", inputs.buildDir];
     if (inputs.generator) {
         configureArgs.push(...["-G", inputs.generator]);
     }
@@ -27763,18 +27759,14 @@ async function main() {
     configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
     configureArgs.push(...inputs.args);
     await (0,exec.exec)("cmake", configureArgs);
-    core.setOutput("build-dir", inputs.buildDir || "build");
+    core.setOutput("build-dir", inputs.buildDir);
     if (inputs.runBuild || inputs.runTest) {
-        await (0,exec.exec)("cmake", [
-            "--build",
-            inputs.buildDir || "build",
-            ...inputs.buildArgs,
-        ]);
+        await (0,exec.exec)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
     }
     if (inputs.runTest) {
         await (0,exec.exec)("ctest", [
             "--test-dir",
-            inputs.buildDir || "build",
+            inputs.buildDir,
             "--output-on-failure",
             "--no-tests=error",
             ...inputs.testArgs,
