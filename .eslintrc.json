@@ -4,7 +4,7 @@
   "extends": ["eslint:recommended"],
   "overrides": [
     {
-      "files": ["**/*.?([cm])ts"],
+      "files": ["**/*.ts"],
       "extends": ["plugin:@typescript-eslint/recommended"]
     }
   ]
