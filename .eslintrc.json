@@ -1,6 +1,5 @@
 {
   "root": true,
-  "ignorePatterns": ["dist"],
   "extends": ["eslint:recommended"],
   "overrides": [
     {
