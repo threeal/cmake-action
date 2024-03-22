@@ -29,8 +29,6 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 | `args` | Multiple strings | Additional arguments to pass during the CMake configuration. |
 | `run-build` | `true` or `false` | If enabled, it builds the project using CMake. It defaults to `false`. |
 | `build-args` | Multiple strings | Additional arguments to pass during the CMake build. |
-| `run-test` | `true` or `false` | If enabled, it runs testing using [CTest](https://cmake.org/cmake/help/latest/manual/ctest.1.html). It defaults to `false`. |
-| `test-args` | Multiple strings | Additional arguments to pass during the CTest run. |
 
 > **Note**: Multiple strings mean that the input can be specified with more than one value. Separate each value with a space or a new line.
 
@@ -61,21 +59,17 @@ jobs:
 
       - name: Build Project
         runs: cmake --build build
-
-      - name: Test Project
-        runs: ctest --test-dir build
 ```
 
 > **Note**: You can replace [`v1.3.0`](https://github.com/threeal/cmake-action/releases/tag/v1.3.0) with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
-#### Configure, Build, and Test in the Same Step
+#### Configure and Build in the Same Step
 
 ```yaml
 - name: Configure, Build, and Test Project
   uses: threeal/cmake-action@v1.3.0
   with:
     run-build: true
-    run-test: true
 ```
 
 #### Specify the Source and Build Directories

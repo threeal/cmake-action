@@ -35,8 +35,6 @@ describe("get action inputs", () => {
         args: [],
         runBuild: false,
         buildArgs: [],
-        runTest: false,
-        testArgs: [],
       });
     });
   });
@@ -50,8 +48,6 @@ describe("get action inputs", () => {
       jest.mocked(getBooleanInput).mockImplementation((name) => {
         switch (name) {
           case "run-build":
-            return true;
-          case "run-test":
             return true;
         }
         throw new Error(`invalid input name: ${name}`);
@@ -88,8 +84,6 @@ describe("get action inputs", () => {
               "some-build-args another-build-args",
               "some-other-build-args",
             ];
-          case "test-args":
-            return ["some-test-args another-test-args", "some-other-test-args"];
         }
         throw new Error(`invalid input name: ${name}`);
       });
@@ -115,12 +109,6 @@ describe("get action inputs", () => {
           "some-build-args",
           "another-build-args",
           "some-other-build-args",
-        ],
-        runTest: true,
-        testArgs: [
-          "some-test-args",
-          "another-test-args",
-          "some-other-test-args",
         ],
       });
     });

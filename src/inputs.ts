@@ -12,8 +12,6 @@ export interface Inputs {
   args: string[];
   runBuild: boolean;
   buildArgs: string[];
-  runTest: boolean;
-  testArgs: string[];
 }
 
 export function getInputs(): Inputs {
@@ -31,7 +29,5 @@ export function getInputs(): Inputs {
     buildArgs: getMultilineInput("build-args").flatMap((args) =>
       args.split(" "),
     ),
-    testArgs: getMultilineInput("test-args").flatMap((args) => args.split(" ")),
-    runTest: getBooleanInput("run-test"),
   };
 }

@@ -141,26 +141,6 @@ jobs:
       - name: Test Project
         run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R test
 
-  test-action-with-run-test:
-    name: Test Action With Run Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.2
-        with:
-          sparse-checkout: |
-            action.yml
-            dist
-            test
-          sparse-checkout-cone-mode: false
-
-      - name: Configure, Build, and Test Project
-        uses: ./
-        with:
-          source-dir: test
-          run-test: true
-          test-args: -R hello_world
-
   test-action-with-additional-args:
     name: Test Action With Additional Arguments
     runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
@@ -187,8 +167,6 @@ jobs:
           options: CHECK_SURPASS_WARNING=ON
           run-build: true
           build-args: --target test_c --target test_cpp
-          run-test: true
-          test-args: -R test ${{ matrix.compiler == 'msvc' && '-C Debug' || '' }}
 
   test-action-with-custom-tools:
     name: Test Action With Custom Tools
@@ -217,5 +195,3 @@ jobs:
           options: CHECK_USING_CLANG=ON
           run-build: true
           build-args: --target test_c --target test_cpp
-          run-test: true
-          test-args: -R test

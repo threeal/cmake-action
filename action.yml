@@ -28,11 +28,6 @@ inputs:
     default: false
   build-args:
     description: Additional arguments to pass during the CMake build
-  run-test:
-    description: If enabled, it runs testing using CTest (true/false)
-    default: false
-  test-args:
-    description: Additional arguments to pass during the CTest run
 outputs:
   build-dir:
     description: The build directory of the CMake project
