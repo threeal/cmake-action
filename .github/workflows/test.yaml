@@ -185,6 +185,9 @@ jobs:
             test
           sparse-checkout-cone-mode: false
 
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v4
+
       - name: Configure, Build, and Test Project
         uses: ./
         with:
