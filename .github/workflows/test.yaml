@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v4.1.2
         with:
           sparse-checkout: |
-            action.yaml
+            action.yml
             dist
             test
           sparse-checkout-cone-mode: false
@@ -96,7 +96,7 @@ jobs:
         uses: actions/checkout@v4.1.2
         with:
           sparse-checkout: |
-            action.yaml
+            action.yml
             dist
             test
           sparse-checkout-cone-mode: false
@@ -125,7 +125,7 @@ jobs:
         uses: actions/checkout@v4.1.2
         with:
           sparse-checkout: |
-            action.yaml
+            action.yml
             dist
             test
           sparse-checkout-cone-mode: false
@@ -149,7 +149,7 @@ jobs:
         uses: actions/checkout@v4.1.2
         with:
           sparse-checkout: |
-            action.yaml
+            action.yml
             dist
             test
           sparse-checkout-cone-mode: false
@@ -173,7 +173,7 @@ jobs:
         uses: actions/checkout@v4.1.2
         with:
           sparse-checkout: |
-            action.yaml
+            action.yml
             dist
             test
           sparse-checkout-cone-mode: false
@@ -202,7 +202,7 @@ jobs:
         uses: actions/checkout@v4.1.2
         with:
           sparse-checkout: |
-            action.yaml
+            action.yml
             dist
             test
           sparse-checkout-cone-mode: false
