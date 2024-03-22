@@ -12,7 +12,7 @@ Configure, build, and test your [CMake](https://cmake.org/) project using [GitHu
 
 ## Usage
 
-For more information, refer to [action.yaml](./action.yaml) and the [GitHub Actions guide](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
+For more information, refer to [action.yml](./action.yml) and the [GitHub Actions guide](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
 
 ### Inputs
 
