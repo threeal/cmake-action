@@ -48,18 +48,8 @@ async function main() {
   await exec("cmake", configureArgs);
   core.setOutput("build-dir", inputs.buildDir);
 
-  if (inputs.runBuild || inputs.runTest) {
+  if (inputs.runBuild) {
     await exec("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
-  }
-
-  if (inputs.runTest) {
-    await exec("ctest", [
-      "--test-dir",
-      inputs.buildDir,
-      "--output-on-failure",
-      "--no-tests=error",
-      ...inputs.testArgs,
-    ]);
   }
 }
 

@@ -27715,8 +27715,6 @@ function getInputs() {
         args: (0,core.getMultilineInput)("args").flatMap((args) => args.split(" ")),
         runBuild: (0,core.getBooleanInput)("run-build"),
         buildArgs: (0,core.getMultilineInput)("build-args").flatMap((args) => args.split(" ")),
-        testArgs: (0,core.getMultilineInput)("test-args").flatMap((args) => args.split(" ")),
-        runTest: (0,core.getBooleanInput)("run-test"),
     };
 }
 
@@ -27760,17 +27758,8 @@ async function main() {
     configureArgs.push(...inputs.args);
     await (0,exec.exec)("cmake", configureArgs);
     core.setOutput("build-dir", inputs.buildDir);
-    if (inputs.runBuild || inputs.runTest) {
+    if (inputs.runBuild) {
         await (0,exec.exec)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
-    }
-    if (inputs.runTest) {
-        await (0,exec.exec)("ctest", [
-            "--test-dir",
-            inputs.buildDir,
-            "--output-on-failure",
-            "--no-tests=error",
-            ...inputs.testArgs,
-        ]);
     }
 }
 main().catch((err) => core.setFailed(err));
