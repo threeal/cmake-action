@@ -6,7 +6,6 @@ Configure and build your [CMake](https://cmake.org/) project using [GitHub Actio
 
 - Configures a CMake project using the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
 - Optionally builds a CMake project using the `cmake --build` command.
-- Auto-detects and installs required dependencies.
 - Supports specifying multiple CMake options directly from the action inputs.
 
 ## Usage
@@ -84,6 +83,9 @@ jobs:
 #### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
+- name: Setup Ninja
+  uses: seanmiddleditch/gha-setup-ninja@v4
+
 - name: Configure Project
   uses: threeal/cmake-action@v1.3.0
   with:
