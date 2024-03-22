@@ -27698,8 +27698,6 @@ var __webpack_exports__ = {};
 var core = __nccwpck_require__(2340);
 // EXTERNAL MODULE: ../../../.yarn/berry/cache/@actions-exec-npm-1.1.1-90973d2f96-10c0.zip/node_modules/@actions/exec/lib/exec.js
 var exec = __nccwpck_require__(4926);
-// EXTERNAL MODULE: ../../../.yarn/berry/cache/@actions-io-npm-1.1.3-82d1cf012b-10c0.zip/node_modules/@actions/io/lib/io.js
-var io = __nccwpck_require__(1793);
 ;// CONCATENATED MODULE: ./src/inputs.ts
 
 function getInputs() {
@@ -27722,25 +27720,11 @@ function getInputs() {
 
 
 
-
 async function main() {
     const inputs = getInputs();
     const configureArgs = [inputs.sourceDir, "-B", inputs.buildDir];
     if (inputs.generator) {
         configureArgs.push(...["-G", inputs.generator]);
-    }
-    if (inputs.generator.match(/ninja/gi) && !(await (0,io.which)("ninja"))) {
-        switch (process.platform) {
-            case "linux":
-                await (0,exec.exec)("sudo", ["apt", "install", "-y", "ninja-build"]);
-                break;
-            case "darwin":
-                await (0,exec.exec)("brew", ["install", "ninja"]);
-                break;
-            case "win32":
-                await (0,exec.exec)("choco", ["install", "ninja"]);
-                break;
-        }
     }
     if (inputs.cCompiler) {
         configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);

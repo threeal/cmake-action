@@ -1,6 +1,5 @@
 import * as core from "@actions/core";
 import { exec } from "@actions/exec";
-import { which } from "@actions/io";
 import { getInputs } from "./inputs.js";
 
 async function main() {
@@ -10,20 +9,6 @@ async function main() {
 
   if (inputs.generator) {
     configureArgs.push(...["-G", inputs.generator]);
-  }
-
-  if (inputs.generator.match(/ninja/gi) && !(await which("ninja"))) {
-    switch (process.platform) {
-      case "linux":
-        await exec("sudo", ["apt", "install", "-y", "ninja-build"]);
-        break;
-      case "darwin":
-        await exec("brew", ["install", "ninja"]);
-        break;
-      case "win32":
-        await exec("choco", ["install", "ninja"]);
-        break;
-    }
   }
 
   if (inputs.cCompiler) {
