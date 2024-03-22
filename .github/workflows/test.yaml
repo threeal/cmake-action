@@ -75,7 +75,10 @@ jobs:
         uses: ./
 
       - name: Test Project
-        run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world ${{ matrix.os == 'windows' && '-C Debug' || '' }}
+        uses: threeal/ctest-action@v1.0.0
+        with:
+          build-config: Debug
+          tests-regex: hello_world
 
   test-action-with-specified-dirs:
     name: Test Action With Specified Directories
@@ -102,7 +105,10 @@ jobs:
         run: test ! -e build && test ! -e test/build
 
       - name: Test Project
-        run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world
+        uses: threeal/ctest-action@v1.0.0
+        with:
+          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
+          tests-regex: hello_world
 
   test-action-without-run-build:
     name: Test Action Without Run Build
@@ -127,7 +133,9 @@ jobs:
       - name: Try to Test Project
         id: failed-step
         continue-on-error: true
-        run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world
+        uses: threeal/ctest-action@v1.0.0
+        with:
+          tests-regex: hello_world
 
       - name: Previous Step Should Failed
         if: steps.failed-step.outcome == 'success'
