@@ -1,12 +1,11 @@
 # CMake Action
 
-Configure, build, and test your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for configuring the build environment of a CMake project. It can also be optionally specified to build a CMake project using the `cmake --build` command and test it using the `ctest` command.
+Configure and build your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for configuring the build environment of a CMake project. It can also be optionally specified to build a CMake project using the `cmake --build` command.
 
 ## Features
 
 - Configures a CMake project using the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
 - Optionally builds a CMake project using the `cmake --build` command.
-- Optionally tests a CMake project using the [`ctest`](https://cmake.org/cmake/help/latest/manual/ctest.1.html) command.
 - Auto-detects and installs required dependencies.
 - Supports specifying multiple CMake options directly from the action inputs.
 
@@ -66,7 +65,7 @@ jobs:
 #### Configure and Build in the Same Step
 
 ```yaml
-- name: Configure, Build, and Test Project
+- name: Configure and Build Project
   uses: threeal/cmake-action@v1.3.0
   with:
     run-build: true
