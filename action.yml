@@ -25,7 +25,7 @@ inputs:
     description: Additional arguments to pass during the CMake configuration
   run-build:
     description: If enabled, it builds the project using CMake (true/false)
-    default: false
+    default: true
   build-args:
     description: Additional arguments to pass during the CMake build
 outputs:

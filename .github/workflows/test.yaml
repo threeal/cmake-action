@@ -70,55 +70,15 @@ jobs:
       - name: Move Project
         run: mv test/* .
 
-      - name: Configure Project
+      - name: Configure and Build Project
         id: cmake-action
         uses: ./
 
-      - name: Try to Test Project
-        id: failed-step
-        continue-on-error: true
+      - name: Test Project
         run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world ${{ matrix.os == 'windows' && '-C Debug' || '' }}
-
-      - name: Previous Step Should Failed
-        if: steps.failed-step.outcome == 'success'
-        run: exit 1
-
-      - name: Build and Test Project
-        run: |
-          cmake --build ${{ steps.cmake-action.outputs.build-dir }}
-          ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world ${{ matrix.os == 'windows' && '-C Debug' || '' }}
 
   test-action-with-specified-dirs:
     name: Test Action With Specified Directories
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.2
-        with:
-          sparse-checkout: |
-            action.yml
-            dist
-            test
-          sparse-checkout-cone-mode: false
-
-      - name: Configure Project
-        id: cmake-action
-        uses: ./
-        with:
-          source-dir: test
-          build-dir: output
-
-      - name: Default Build Directory Should Not Exist
-        shell: bash
-        run: test ! -e build && test ! -e test/build
-
-      - name: Build and Test Project
-        run: |
-          cmake --build ${{ steps.cmake-action.outputs.build-dir }}
-          ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world
-
-  test-action-with-run-build:
-    name: Test Action With Run Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -135,11 +95,43 @@ jobs:
         uses: ./
         with:
           source-dir: test
-          run-build: true
-          build-args: --target test_c --target test_cpp
+          build-dir: output
+
+      - name: Default Build Directory Should Not Exist
+        shell: bash
+        run: test ! -e build && test ! -e test/build
 
       - name: Test Project
-        run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R test
+        run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world
+
+  test-action-without-run-build:
+    name: Test Action Without Run Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.2
+        with:
+          sparse-checkout: |
+            action.yml
+            dist
+            test
+          sparse-checkout-cone-mode: false
+
+      - name: Configure Project
+        id: cmake-action
+        uses: ./
+        with:
+          source-dir: test
+          run-build: false
+
+      - name: Try to Test Project
+        id: failed-step
+        continue-on-error: true
+        run: ctest --test-dir ${{ steps.cmake-action.outputs.build-dir }} --output-on-failure --no-tests=error -R hello_world
+
+      - name: Previous Step Should Failed
+        if: steps.failed-step.outcome == 'success'
+        run: exit 1
 
   test-action-with-additional-args:
     name: Test Action With Additional Arguments
@@ -165,7 +157,6 @@ jobs:
           c-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           cxx-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           options: CHECK_SURPASS_WARNING=ON
-          run-build: true
           build-args: --target test_c --target test_cpp
 
   test-action-with-custom-tools:
@@ -196,5 +187,4 @@ jobs:
           c-compiler: clang
           cxx-compiler: clang++
           options: CHECK_USING_CLANG=ON
-          run-build: true
           build-args: --target test_c --target test_cpp
