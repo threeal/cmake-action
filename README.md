@@ -25,7 +25,7 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 | `cxx-flags` | Multiple strings | Additional flags to pass when compiling C++ language files. It appends the CMake configuration arguments with `-D CMAKE_CXX_FLAGS=[vals]`. |
 | `options` | Multiple strings | Additional options to pass during the CMake configuration. It appends the CMake configuration arguments with each of `-D [val]`. |
 | `args` | Multiple strings | Additional arguments to pass during the CMake configuration. |
-| `run-build` | `true` or `false` | If enabled, it builds the project using CMake. It defaults to `false`. |
+| `run-build` | `true` or `false` | If enabled, it builds the project using CMake. It defaults to `true`. |
 | `build-args` | Multiple strings | Additional arguments to pass during the CMake build. |
 
 > **Note**: Multiple strings mean that the input can be specified with more than one value. Separate each value with a space or a new line.
@@ -52,29 +52,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
 
-      - name: Configure Project
-        uses: threeal/cmake-action@v1.3.0
-
-      - name: Build Project
-        runs: cmake --build build
+      - name: Configure and Build Project
+        uses: threeal/cmake-action@main
 ```
 
-> **Note**: You can replace [`v1.3.0`](https://github.com/threeal/cmake-action/releases/tag/v1.3.0) with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
+> **Note**: You can replace `main` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
-#### Configure and Build in the Same Step
+#### Configure Project Without Building
 
 ```yaml
-- name: Configure and Build Project
-  uses: threeal/cmake-action@v1.3.0
+- name: Configure Project
+  uses: threeal/cmake-action@main
   with:
-    run-build: true
+    run-build: false
 ```
 
 #### Specify the Source and Build Directories
 
 ```yaml
-- name: Configure Project
-  uses: threeal/cmake-action@v1.3.0
+- name: Configure and Build Project
+  uses: threeal/cmake-action@main
   with:
     source-dir: submodules
     build-dir: submodules/out
@@ -86,8 +83,8 @@ jobs:
 - name: Setup Ninja
   uses: seanmiddleditch/gha-setup-ninja@v4
 
-- name: Configure Project
-  uses: threeal/cmake-action@v1.3.0
+- name: Configure and Build Project
+  uses: threeal/cmake-action@main
   with:
     generator: Ninja
     c-compiler: clang
