@@ -158,7 +158,7 @@ jobs:
             test
           sparse-checkout-cone-mode: false
 
-      - name: Configure, Build, and Test Project
+      - name: Configure and Build Project
         uses: ./
         with:
           source-dir: test
@@ -166,6 +166,12 @@ jobs:
           cxx-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           options: CHECK_SURPASS_WARNING=ON
           build-args: --target test_c --target test_cpp
+
+      - name: Test Project
+        uses: threeal/ctest-action@v1.0.0
+        with:
+          build-config: Debug
+          tests-regex: test
 
   test-action-with-custom-tools:
     name: Test Action With Custom Tools
@@ -187,7 +193,7 @@ jobs:
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v4
 
-      - name: Configure, Build, and Test Project
+      - name: Configure and Build Project
         uses: ./
         with:
           source-dir: test
@@ -196,3 +202,8 @@ jobs:
           cxx-compiler: clang++
           options: CHECK_USING_CLANG=ON
           build-args: --target test_c --target test_cpp
+
+      - name: Test Project
+        uses: threeal/ctest-action@v1.0.0
+        with:
+          tests-regex: test
