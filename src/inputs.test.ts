@@ -21,6 +21,65 @@ describe("get action inputs", () => {
       name: "with nothing specified",
     },
     {
+      name: "with source directory specified",
+      stringInputs: { "source-dir": "project" },
+      expectedInputs: { sourceDir: "project" },
+    },
+    {
+      name: "with build directory specified",
+      stringInputs: { "build-dir": "output" },
+      expectedInputs: { buildDir: "output" },
+    },
+    {
+      name: "with generator specified",
+      stringInputs: { generator: "Ninja" },
+      expectedInputs: { generator: "Ninja" },
+    },
+    {
+      name: "with C compiler specified",
+      stringInputs: { "c-compiler": "clang" },
+      expectedInputs: { cCompiler: "clang" },
+    },
+    {
+      name: "with C++ compiler specified",
+      stringInputs: { "cxx-compiler": "clang++" },
+      expectedInputs: { cxxCompiler: "clang++" },
+    },
+    {
+      name: "with C flags specified",
+      multilineInputs: { "c-flags": ["-Werror -Wall", "-Wextra"] },
+      expectedInputs: { cFlags: "-Werror -Wall -Wextra" },
+    },
+    {
+      name: "with C++ flags specified",
+      multilineInputs: { "cxx-flags": ["-Werror -Wall", "-Wextra -Wpedantic"] },
+      expectedInputs: { cxxFlags: "-Werror -Wall -Wextra -Wpedantic" },
+    },
+    {
+      name: "with additional options specified",
+      multilineInputs: {
+        options: ["BUILD_TESTING=ON BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+      },
+      expectedInputs: {
+        options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+      },
+    },
+    {
+      name: "with additional arguments specified",
+      multilineInputs: { args: ["-Wdev -Wdeprecated", "--fresh"] },
+      expectedInputs: { args: ["-Wdev", "-Wdeprecated", "--fresh"] },
+    },
+    {
+      name: "with run build specified",
+      booleanInputs: { "run-build": false },
+      expectedInputs: { runBuild: false },
+    },
+    {
+      name: "with additional build arguments specified",
+      multilineInputs: { "build-args": ["--target foo", "--parallel 8"] },
+      expectedInputs: { buildArgs: ["--target", "foo", "--parallel", "8"] },
+    },
+    {
       name: "with all specified",
       booleanInputs: {
         "run-build": false,
