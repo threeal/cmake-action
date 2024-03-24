@@ -27698,6 +27698,43 @@ var __webpack_exports__ = {};
 var core = __nccwpck_require__(2340);
 // EXTERNAL MODULE: ../../../.yarn/berry/cache/@actions-exec-npm-1.1.1-90973d2f96-10c0.zip/node_modules/@actions/exec/lib/exec.js
 var exec = __nccwpck_require__(4926);
+;// CONCATENATED MODULE: ./src/cmake.ts
+
+/**
+ * Configures the build system of a CMake project.
+ *
+ * @param inputs - The action inputs.
+ */
+async function configureProject(inputs) {
+    const configureArgs = [inputs.sourceDir, "-B", inputs.buildDir];
+    if (inputs.generator) {
+        configureArgs.push(...["-G", inputs.generator]);
+    }
+    if (inputs.cCompiler) {
+        configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);
+    }
+    if (inputs.cxxCompiler) {
+        configureArgs.push("-DCMAKE_CXX_COMPILER=" + inputs.cxxCompiler);
+    }
+    if (inputs.cFlags) {
+        configureArgs.push("-DCMAKE_C_FLAGS=" + inputs.cFlags);
+    }
+    if (inputs.cxxFlags) {
+        configureArgs.push("-DCMAKE_CXX_FLAGS=" + inputs.cxxFlags);
+    }
+    configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
+    configureArgs.push(...inputs.args);
+    await (0,exec.exec)("cmake", configureArgs);
+}
+/**
+ * Build a CMake project.
+ *
+ * @param inputs - The action inputs.
+ */
+async function buildProject(inputs) {
+    await (0,exec.exec)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
+}
+
 ;// CONCATENATED MODULE: ./src/inputs.ts
 
 function getInputs() {
@@ -27722,28 +27759,10 @@ function getInputs() {
 
 async function main() {
     const inputs = getInputs();
-    const configureArgs = [inputs.sourceDir, "-B", inputs.buildDir];
-    if (inputs.generator) {
-        configureArgs.push(...["-G", inputs.generator]);
-    }
-    if (inputs.cCompiler) {
-        configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);
-    }
-    if (inputs.cxxCompiler) {
-        configureArgs.push("-DCMAKE_CXX_COMPILER=" + inputs.cxxCompiler);
-    }
-    if (inputs.cFlags) {
-        configureArgs.push("-DCMAKE_C_FLAGS=" + inputs.cFlags);
-    }
-    if (inputs.cxxFlags) {
-        configureArgs.push("-DCMAKE_CXX_FLAGS=" + inputs.cxxFlags);
-    }
-    configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
-    configureArgs.push(...inputs.args);
-    await (0,exec.exec)("cmake", configureArgs);
+    await configureProject(inputs);
     core.setOutput("build-dir", inputs.buildDir);
     if (inputs.runBuild) {
-        await (0,exec.exec)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
+        await buildProject(inputs);
     }
 }
 main().catch((err) => core.setFailed(err));
