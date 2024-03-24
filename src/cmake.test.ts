@@ -1,31 +1,31 @@
 import { jest } from "@jest/globals";
 import type { Inputs } from "./inputs.js";
 
+interface TestCase {
+  name: string;
+  inputs: Inputs;
+  expectedArgs: string[];
+}
+
+const defaultInputs: Inputs = {
+  sourceDir: ".",
+  buildDir: "build",
+  generator: "",
+  cCompiler: "",
+  cxxCompiler: "",
+  cFlags: "",
+  cxxFlags: "",
+  options: [],
+  args: [],
+  runBuild: true,
+  buildArgs: [],
+};
+
 jest.unstable_mockModule("@actions/exec", () => ({
   exec: jest.fn(),
 }));
 
 describe("configure a CMake project", () => {
-  const defaultInputs: Inputs = {
-    sourceDir: ".",
-    buildDir: "build",
-    generator: "",
-    cCompiler: "",
-    cxxCompiler: "",
-    cFlags: "",
-    cxxFlags: "",
-    options: [],
-    args: [],
-    runBuild: true,
-    buildArgs: [],
-  };
-
-  interface TestCase {
-    name: string;
-    inputs: Inputs;
-    expectedArgs: string[];
-  }
-
   const testCases: TestCase[] = [
     {
       name: "with nothing specified",
@@ -155,6 +155,55 @@ describe("configure a CMake project", () => {
       jest.mocked(exec).mockReset();
 
       await expect(configureProject(inputs)).resolves.toBeUndefined();
+
+      expect(exec).toHaveBeenCalledTimes(1);
+      expect(exec).toHaveBeenLastCalledWith("cmake", expectedArgs);
+    });
+  }
+});
+
+describe("build a CMake project", () => {
+  const testCases: TestCase[] = [
+    {
+      name: "with nothing specified",
+      inputs: defaultInputs,
+      expectedArgs: ["--build", "build"],
+    },
+    {
+      name: "with build directory specified",
+      inputs: {
+        ...defaultInputs,
+        buildDir: "output",
+      },
+      expectedArgs: ["--build", "output"],
+    },
+    {
+      name: "with additional arguments specified",
+      inputs: {
+        ...defaultInputs,
+        buildArgs: ["--target", "foo"],
+      },
+      expectedArgs: ["--build", "build", "--target", "foo"],
+    },
+    {
+      name: "with all specified",
+      inputs: {
+        ...defaultInputs,
+        buildDir: "output",
+        buildArgs: ["--target", "foo"],
+      },
+      expectedArgs: ["--build", "output", "--target", "foo"],
+    },
+  ];
+
+  for (const { name, inputs, expectedArgs } of testCases) {
+    it(`should execute the correct command ${name}`, async () => {
+      const { buildProject } = await import("./cmake.js");
+      const { exec } = await import("@actions/exec");
+
+      jest.mocked(exec).mockReset();
+
+      await expect(buildProject(inputs)).resolves.toBeUndefined();
 
       expect(exec).toHaveBeenCalledTimes(1);
       expect(exec).toHaveBeenLastCalledWith("cmake", expectedArgs);

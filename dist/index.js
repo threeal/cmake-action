@@ -27726,6 +27726,14 @@ async function configureProject(inputs) {
     configureArgs.push(...inputs.args);
     await (0,exec.exec)("cmake", configureArgs);
 }
+/**
+ * Build a CMake project.
+ *
+ * @param inputs - The action inputs.
+ */
+async function buildProject(inputs) {
+    await (0,exec.exec)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
+}
 
 ;// CONCATENATED MODULE: ./src/inputs.ts
 
@@ -27749,13 +27757,12 @@ function getInputs() {
 
 
 
-
 async function main() {
     const inputs = getInputs();
     await configureProject(inputs);
     core.setOutput("build-dir", inputs.buildDir);
     if (inputs.runBuild) {
-        await (0,exec.exec)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
+        await buildProject(inputs);
     }
 }
 main().catch((err) => core.setFailed(err));

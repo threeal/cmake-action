@@ -34,3 +34,12 @@ export async function configureProject(inputs: Inputs): Promise<void> {
 
   await exec("cmake", configureArgs);
 }
+
+/**
+ * Build a CMake project.
+ *
+ * @param inputs - The action inputs.
+ */
+export async function buildProject(inputs: Inputs): Promise<void> {
+  await exec("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
+}
