@@ -22,15 +22,28 @@ describe("get action inputs", () => {
     buildArgs: [],
   };
 
+  let booleanInputs: { [key: string]: boolean };
+  let stringInputs: { [key: string]: string };
+  let multilineInputs: { [key: string]: string[] };
+
   beforeEach(async () => {
     const core = await import("@actions/core");
 
+    booleanInputs = { "run-build": true };
+    stringInputs = {};
+    multilineInputs = {};
+
     jest.mocked(core.getBooleanInput).mockImplementation((name) => {
-      return name == "run-build";
+      return booleanInputs[name] ?? false;
     });
 
-    jest.mocked(core.getInput).mockReturnValue("");
-    jest.mocked(core.getMultilineInput).mockReturnValue([]);
+    jest.mocked(core.getInput).mockImplementation((name) => {
+      return stringInputs[name] ?? "";
+    });
+
+    jest.mocked(core.getMultilineInput).mockImplementation((name) => {
+      return multilineInputs[name] ?? [];
+    });
   });
 
   it("should get the action inputs with nothing specified", async () => {
@@ -41,41 +54,29 @@ describe("get action inputs", () => {
 
   it("should get the action inputs with all specified", async () => {
     const { getInputs } = await import("./inputs.js");
-    const core = await import("@actions/core");
 
-    jest.mocked(core.getBooleanInput).mockReturnValue(false);
+    booleanInputs = {
+      ...booleanInputs,
+      "run-build": false,
+    };
 
-    jest.mocked(core.getInput).mockImplementation((name) => {
-      switch (name) {
-        case "source-dir":
-          return "project";
-        case "build-dir":
-          return "output";
-        case "generator":
-          return "Ninja";
-        case "c-compiler":
-          return "clang";
-        case "cxx-compiler":
-          return "clang++";
-      }
-      return "";
-    });
+    stringInputs = {
+      ...stringInputs,
+      "source-dir": "project",
+      "build-dir": "output",
+      generator: "Ninja",
+      "c-compiler": "clang",
+      "cxx-compiler": "clang++",
+    };
 
-    jest.mocked(core.getMultilineInput).mockImplementation((name) => {
-      switch (name) {
-        case "c-flags":
-          return ["-Werror -Wall", "-Wextra"];
-        case "cxx-flags":
-          return ["-Werror -Wall", "-Wextra -Wpedantic"];
-        case "options":
-          return ["BUILD_TESTING=ON BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"];
-        case "args":
-          return ["-Wdev -Wdeprecated", "--fresh"];
-        case "build-args":
-          return ["--target foo", "--parallel 8"];
-      }
-      return [];
-    });
+    multilineInputs = {
+      ...multilineInputs,
+      "c-flags": ["-Werror -Wall", "-Wextra"],
+      "cxx-flags": ["-Werror -Wall", "-Wextra -Wpedantic"],
+      options: ["BUILD_TESTING=ON BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+      args: ["-Wdev -Wdeprecated", "--fresh"],
+      "build-args": ["--target foo", "--parallel 8"],
+    };
 
     expect(getInputs()).toStrictEqual({
       sourceDir: "project",
