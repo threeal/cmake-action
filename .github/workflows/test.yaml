@@ -121,24 +121,15 @@ jobs:
             test
           sparse-checkout-cone-mode: false
 
+      - name: Modify Project
+        run: echo 'invalid' >> cmake-action/test/hello_world.cpp
+
       - name: Configure Project
         id: cmake-action
         uses: ./cmake-action
         with:
           source-dir: cmake-action/test
           run-build: false
-
-      - name: Try to Test Project
-        id: failed-step
-        continue-on-error: true
-        uses: threeal/ctest-action@v1.0.0
-        with:
-          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
-          tests-regex: hello_world
-
-      - name: Previous Step Should Failed
-        if: steps.failed-step.outcome == 'success'
-        run: exit 1
 
   test-action-with-additional-args:
     name: Test Action With Additional Arguments
