@@ -1,4 +1,5 @@
 import { getBooleanInput, getInput, getMultilineInput } from "@actions/core";
+import path from "node:path";
 
 export interface Inputs {
   sourceDir: string;
@@ -15,9 +16,10 @@ export interface Inputs {
 }
 
 export function getInputs(): Inputs {
+  const sourceDir = getInput("source-dir") || ".";
   return {
-    sourceDir: getInput("source-dir") || ".",
-    buildDir: getInput("build-dir") || "build",
+    sourceDir,
+    buildDir: getInput("build-dir") || path.join(sourceDir, "build"),
     generator: getInput("generator"),
     cCompiler: getInput("c-compiler"),
     cxxCompiler: getInput("cxx-compiler"),

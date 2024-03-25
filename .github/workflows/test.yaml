@@ -71,7 +71,6 @@ jobs:
         run: mv test/* .
 
       - name: Configure and Build Project
-        id: cmake-action
         uses: ./
 
       - name: Test Project
@@ -135,6 +134,7 @@ jobs:
         continue-on-error: true
         uses: threeal/ctest-action@v1.0.0
         with:
+          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
           tests-regex: hello_world
 
       - name: Previous Step Should Failed
@@ -159,6 +159,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Configure and Build Project
+        id: cmake-action
         uses: ./
         with:
           source-dir: test
@@ -170,6 +171,7 @@ jobs:
       - name: Test Project
         uses: threeal/ctest-action@v1.0.0
         with:
+          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
           build-config: Debug
           tests-regex: test
 
@@ -194,6 +196,7 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v4
 
       - name: Configure and Build Project
+        id: cmake-action
         uses: ./
         with:
           source-dir: test
@@ -206,4 +209,5 @@ jobs:
       - name: Test Project
         uses: threeal/ctest-action@v1.0.0
         with:
+          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
           tests-regex: test

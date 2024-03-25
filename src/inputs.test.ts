@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+import path from "node:path";
 import type { Inputs } from "./inputs.js";
 
 jest.unstable_mockModule("@actions/core", () => ({
@@ -23,12 +24,26 @@ describe("get action inputs", () => {
     {
       name: "with source directory specified",
       stringInputs: { "source-dir": "project" },
-      expectedInputs: { sourceDir: "project" },
+      expectedInputs: {
+        sourceDir: "project",
+        buildDir: path.join("project", "build"),
+      },
     },
     {
       name: "with build directory specified",
       stringInputs: { "build-dir": "output" },
       expectedInputs: { buildDir: "output" },
+    },
+    {
+      name: "with source and build directories specified",
+      stringInputs: {
+        "source-dir": "project",
+        "build-dir": "output",
+      },
+      expectedInputs: {
+        sourceDir: "project",
+        buildDir: "output",
+      },
     },
     {
       name: "with generator specified",
