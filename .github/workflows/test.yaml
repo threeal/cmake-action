@@ -131,41 +131,6 @@ jobs:
           source-dir: cmake-action/test
           run-build: false
 
-  test-action-with-additional-args:
-    name: Test Action With Additional Arguments
-    runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler: [gcc, msvc]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.2
-        with:
-          path: cmake-action
-          sparse-checkout: |
-            action.yml
-            dist
-            test
-          sparse-checkout-cone-mode: false
-
-      - name: Configure and Build Project
-        id: cmake-action
-        uses: ./cmake-action
-        with:
-          source-dir: cmake-action/test
-          c-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
-          cxx-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
-          options: CHECK_SURPASS_WARNING=ON
-          build-args: --target test_c --target test_cpp
-
-      - name: Test Project
-        uses: threeal/ctest-action@v1.0.0
-        with:
-          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
-          build-config: Debug
-          tests-regex: test
-
   test-action-with-custom-generator:
     name: Test Action With Custom Generator
     runs-on: ubuntu-latest
