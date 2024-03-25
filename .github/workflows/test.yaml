@@ -58,91 +58,124 @@ jobs:
       matrix:
         os: [windows, ubuntu, macos]
     steps:
-      - name: Checkout
+      - name: Checkout Project
+        uses: actions/checkout@v4.1.2
+        with:
+          repository: threeal/cpp-starter
+
+      - name: Checkout Action
         uses: actions/checkout@v4.1.2
         with:
           path: cmake-action
           sparse-checkout: |
             action.yml
             dist
-            test
           sparse-checkout-cone-mode: false
 
-      - name: Move Project
-        run: mv cmake-action/test/* .
-
       - name: Configure and Build Project
+        id: cmake-action
         uses: ./cmake-action
 
-      - name: Test Project
-        uses: threeal/ctest-action@v1.0.0
-        with:
-          build-config: Debug
-          tests-regex: hello_world
+      - name: Run Project
+        run: ${{ steps.cmake-action.outputs.build-dir }}/${{ matrix.os == 'windows' && 'Debug/generate_sequence.exe' || 'generate_sequence' }} 5
 
   test-action-with-specified-dirs:
     name: Test Action With Specified Directories
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Project
+        uses: actions/checkout@v4.1.2
+        with:
+          repository: threeal/cpp-starter
+          path: project
+
+      - name: Checkout Action
         uses: actions/checkout@v4.1.2
         with:
           path: cmake-action
           sparse-checkout: |
             action.yml
             dist
-            test
           sparse-checkout-cone-mode: false
 
       - name: Configure and Build Project
         id: cmake-action
         uses: ./cmake-action
         with:
-          source-dir: cmake-action/test
+          source-dir: project
           build-dir: output
 
-      - name: Test Project
-        uses: threeal/ctest-action@v1.0.0
-        with:
-          test-dir: output
-          tests-regex: hello_world
+      - name: Run Project
+        run: output/generate_sequence 5
 
   test-action-without-run-build:
     name: Test Action Without Run Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Project
+        uses: actions/checkout@v4.1.2
+        with:
+          repository: threeal/cpp-starter
+
+      - name: Checkout Action
         uses: actions/checkout@v4.1.2
         with:
           path: cmake-action
           sparse-checkout: |
             action.yml
             dist
-            test
           sparse-checkout-cone-mode: false
 
       - name: Modify Project
-        run: echo 'invalid' >> cmake-action/test/hello_world.cpp
+        run: echo 'invalid' >> src/main.cpp
 
       - name: Configure Project
-        id: cmake-action
         uses: ./cmake-action
         with:
-          source-dir: cmake-action/test
           run-build: false
+
+  test-action-with-additional-options:
+    name: Test Action With Additional Options
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v4.1.2
+        with:
+          repository: threeal/cpp-starter
+
+      - name: Checkout Action
+        uses: actions/checkout@v4.1.2
+        with:
+          path: cmake-action
+          sparse-checkout: |
+            action.yml
+            dist
+          sparse-checkout-cone-mode: false
+
+      - name: Configure and Build Project
+        uses: ./cmake-action
+        with:
+          options: BUILD_TESTING=ON
+
+      - name: Test Project
+        uses: threeal/ctest-action@v1.0.0
 
   test-action-with-custom-generator:
     name: Test Action With Custom Generator
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Project
+        uses: actions/checkout@v4.1.2
+        with:
+          repository: threeal/cpp-starter
+
+      - name: Checkout Action
         uses: actions/checkout@v4.1.2
         with:
           path: cmake-action
           sparse-checkout: |
             action.yml
             dist
-            test
           sparse-checkout-cone-mode: false
 
       - name: Setup Ninja
@@ -152,7 +185,6 @@ jobs:
         id: cmake-action
         uses: ./cmake-action
         with:
-          source-dir: cmake-action/test
           generator: Ninja
           run-build: false
 
