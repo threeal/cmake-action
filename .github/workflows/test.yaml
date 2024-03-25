@@ -73,14 +73,11 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Configure and Build Project
+        id: cmake-action
         uses: ./cmake-action
-        with:
-          options: BUILD_TESTING=ON
 
-      - name: Test Project
-        uses: threeal/ctest-action@v1.0.0
-        with:
-          build-config: Debug
+      - name: Run Project
+        run: ${{ steps.cmake-action.outputs.build-dir }}/${{ matrix.os == 'windows' && 'Debug/generate_sequence.exe' || 'generate_sequence' }} 5
 
   test-action-with-specified-dirs:
     name: Test Action With Specified Directories
@@ -102,16 +99,14 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Configure and Build Project
+        id: cmake-action
         uses: ./cmake-action
         with:
           source-dir: project
           build-dir: output
-          options: BUILD_TESTING=ON
 
-      - name: Test Project
-        uses: threeal/ctest-action@v1.0.0
-        with:
-          test-dir: output
+      - name: Run Project
+        run: output/generate_sequence 5
 
   test-action-without-run-build:
     name: Test Action Without Run Build
