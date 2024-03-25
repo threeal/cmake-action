@@ -3,7 +3,7 @@ import type { Inputs } from "./inputs.js";
 
 interface TestCase {
   name: string;
-  inputs: Inputs;
+  inputs?: Partial<Inputs>;
   expectedArgs: string[];
 }
 
@@ -29,63 +29,41 @@ describe("configure a CMake project", () => {
   const testCases: TestCase[] = [
     {
       name: "with nothing specified",
-      inputs: defaultInputs,
       expectedArgs: [".", "-B", "build"],
     },
     {
       name: "with source directory specified",
-      inputs: {
-        ...defaultInputs,
-        sourceDir: "project",
-      },
+      inputs: { sourceDir: "project" },
       expectedArgs: ["project", "-B", "build"],
     },
     {
       name: "with build directory specified",
-      inputs: {
-        ...defaultInputs,
-        buildDir: "output",
-      },
+      inputs: { buildDir: "output" },
       expectedArgs: [".", "-B", "output"],
     },
     {
       name: "with generator specified",
-      inputs: {
-        ...defaultInputs,
-        generator: "Ninja",
-      },
+      inputs: { generator: "Ninja" },
       expectedArgs: [".", "-B", "build", "-G", "Ninja"],
     },
     {
       name: "with C compiler specified",
-      inputs: {
-        ...defaultInputs,
-        cCompiler: "clang",
-      },
+      inputs: { cCompiler: "clang" },
       expectedArgs: [".", "-B", "build", "-DCMAKE_C_COMPILER=clang"],
     },
     {
       name: "with C++ compiler specified",
-      inputs: {
-        ...defaultInputs,
-        cxxCompiler: "clang++",
-      },
+      inputs: { cxxCompiler: "clang++" },
       expectedArgs: [".", "-B", "build", "-DCMAKE_CXX_COMPILER=clang++"],
     },
     {
       name: "with C flags specified",
-      inputs: {
-        ...defaultInputs,
-        cFlags: "-Werror -Wall",
-      },
+      inputs: { cFlags: "-Werror -Wall" },
       expectedArgs: [".", "-B", "build", "-DCMAKE_C_FLAGS=-Werror -Wall"],
     },
     {
       name: "with C++ flags specified",
-      inputs: {
-        ...defaultInputs,
-        cxxFlags: "-Werror -Wall -Wextra",
-      },
+      inputs: { cxxFlags: "-Werror -Wall -Wextra" },
       expectedArgs: [
         ".",
         "-B",
@@ -95,10 +73,7 @@ describe("configure a CMake project", () => {
     },
     {
       name: "with additional options specified",
-      inputs: {
-        ...defaultInputs,
-        options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"],
-      },
+      inputs: { options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"] },
       expectedArgs: [
         ".",
         "-B",
@@ -109,16 +84,12 @@ describe("configure a CMake project", () => {
     },
     {
       name: "with additional arguments specified",
-      inputs: {
-        ...defaultInputs,
-        args: ["-Wdev", "-Wdeprecated"],
-      },
+      inputs: { args: ["-Wdev", "-Wdeprecated"] },
       expectedArgs: [".", "-B", "build", "-Wdev", "-Wdeprecated"],
     },
     {
       name: "with all specified",
       inputs: {
-        ...defaultInputs,
         sourceDir: "project",
         buildDir: "output",
         generator: "Ninja",
@@ -147,17 +118,18 @@ describe("configure a CMake project", () => {
     },
   ];
 
-  for (const { name, inputs, expectedArgs } of testCases) {
-    it(`should execute the correct command ${name}`, async () => {
+  for (const testCase of testCases) {
+    it(`should execute the correct command ${testCase.name}`, async () => {
       const { configureProject } = await import("./cmake.js");
       const { exec } = await import("@actions/exec");
 
       jest.mocked(exec).mockReset();
 
-      await expect(configureProject(inputs)).resolves.toBeUndefined();
+      const prom = configureProject({ ...defaultInputs, ...testCase.inputs });
+      await expect(prom).resolves.toBeUndefined();
 
       expect(exec).toHaveBeenCalledTimes(1);
-      expect(exec).toHaveBeenLastCalledWith("cmake", expectedArgs);
+      expect(exec).toHaveBeenLastCalledWith("cmake", testCase.expectedArgs);
     });
   }
 });
@@ -166,29 +138,21 @@ describe("build a CMake project", () => {
   const testCases: TestCase[] = [
     {
       name: "with nothing specified",
-      inputs: defaultInputs,
       expectedArgs: ["--build", "build"],
     },
     {
       name: "with build directory specified",
-      inputs: {
-        ...defaultInputs,
-        buildDir: "output",
-      },
+      inputs: { buildDir: "output" },
       expectedArgs: ["--build", "output"],
     },
     {
       name: "with additional arguments specified",
-      inputs: {
-        ...defaultInputs,
-        buildArgs: ["--target", "foo"],
-      },
+      inputs: { buildArgs: ["--target", "foo"] },
       expectedArgs: ["--build", "build", "--target", "foo"],
     },
     {
       name: "with all specified",
       inputs: {
-        ...defaultInputs,
         buildDir: "output",
         buildArgs: ["--target", "foo"],
       },
@@ -196,17 +160,18 @@ describe("build a CMake project", () => {
     },
   ];
 
-  for (const { name, inputs, expectedArgs } of testCases) {
-    it(`should execute the correct command ${name}`, async () => {
+  for (const testCase of testCases) {
+    it(`should execute the correct command ${testCase.name}`, async () => {
       const { buildProject } = await import("./cmake.js");
       const { exec } = await import("@actions/exec");
 
       jest.mocked(exec).mockReset();
 
-      await expect(buildProject(inputs)).resolves.toBeUndefined();
+      const prom = buildProject({ ...defaultInputs, ...testCase.inputs });
+      await expect(prom).resolves.toBeUndefined();
 
       expect(exec).toHaveBeenCalledTimes(1);
-      expect(exec).toHaveBeenLastCalledWith("cmake", expectedArgs);
+      expect(exec).toHaveBeenLastCalledWith("cmake", testCase.expectedArgs);
     });
   }
 });
