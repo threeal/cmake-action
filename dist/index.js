@@ -27735,7 +27735,11 @@ var exec = __nccwpck_require__(4926);
  * @param inputs - The action inputs.
  */
 async function configureProject(inputs) {
-    const configureArgs = [inputs.sourceDir, "-B", inputs.buildDir];
+    const configureArgs = [];
+    if (inputs.sourceDir) {
+        configureArgs.push(inputs.sourceDir);
+    }
+    configureArgs.push("-B", inputs.buildDir);
     if (inputs.generator) {
         configureArgs.push(...["-G", inputs.generator]);
     }

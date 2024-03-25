@@ -7,7 +7,13 @@ import type { Inputs } from "./inputs.js";
  * @param inputs - The action inputs.
  */
 export async function configureProject(inputs: Inputs): Promise<void> {
-  const configureArgs = [inputs.sourceDir, "-B", inputs.buildDir];
+  const configureArgs = [];
+
+  if (inputs.sourceDir) {
+    configureArgs.push(inputs.sourceDir);
+  }
+
+  configureArgs.push("-B", inputs.buildDir);
 
   if (inputs.generator) {
     configureArgs.push(...["-G", inputs.generator]);
