@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+import type { Inputs } from "./inputs.js";
 
 jest.unstable_mockModule("@actions/core", () => ({
   getBooleanInput: jest.fn(),
@@ -7,23 +8,133 @@ jest.unstable_mockModule("@actions/core", () => ({
 }));
 
 describe("get action inputs", () => {
-  describe("with default values", () => {
-    beforeEach(async () => {
-      const { getBooleanInput, getInput, getMultilineInput } = await import(
-        "@actions/core"
-      );
+  interface TestCase {
+    name: string;
+    booleanInputs?: { [key: string]: boolean };
+    stringInputs?: { [key: string]: string };
+    multilineInputs?: { [key: string]: string[] };
+    expectedInputs?: Partial<Inputs>;
+  }
 
-      jest.mocked(getBooleanInput).mockReturnValue(false);
-      jest.mocked(getInput).mockReturnValue("");
-      jest.mocked(getMultilineInput).mockReturnValue([]);
-    });
+  const testCases: TestCase[] = [
+    {
+      name: "with nothing specified",
+    },
+    {
+      name: "with source directory specified",
+      stringInputs: { "source-dir": "project" },
+      expectedInputs: { sourceDir: "project" },
+    },
+    {
+      name: "with build directory specified",
+      stringInputs: { "build-dir": "output" },
+      expectedInputs: { buildDir: "output" },
+    },
+    {
+      name: "with generator specified",
+      stringInputs: { generator: "Ninja" },
+      expectedInputs: { generator: "Ninja" },
+    },
+    {
+      name: "with C compiler specified",
+      stringInputs: { "c-compiler": "clang" },
+      expectedInputs: { cCompiler: "clang" },
+    },
+    {
+      name: "with C++ compiler specified",
+      stringInputs: { "cxx-compiler": "clang++" },
+      expectedInputs: { cxxCompiler: "clang++" },
+    },
+    {
+      name: "with C flags specified",
+      multilineInputs: { "c-flags": ["-Werror -Wall", "-Wextra"] },
+      expectedInputs: { cFlags: "-Werror -Wall -Wextra" },
+    },
+    {
+      name: "with C++ flags specified",
+      multilineInputs: { "cxx-flags": ["-Werror -Wall", "-Wextra -Wpedantic"] },
+      expectedInputs: { cxxFlags: "-Werror -Wall -Wextra -Wpedantic" },
+    },
+    {
+      name: "with additional options specified",
+      multilineInputs: {
+        options: ["BUILD_TESTING=ON BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+      },
+      expectedInputs: {
+        options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+      },
+    },
+    {
+      name: "with additional arguments specified",
+      multilineInputs: { args: ["-Wdev -Wdeprecated", "--fresh"] },
+      expectedInputs: { args: ["-Wdev", "-Wdeprecated", "--fresh"] },
+    },
+    {
+      name: "with run build specified",
+      booleanInputs: { "run-build": false },
+      expectedInputs: { runBuild: false },
+    },
+    {
+      name: "with additional build arguments specified",
+      multilineInputs: { "build-args": ["--target foo", "--parallel 8"] },
+      expectedInputs: { buildArgs: ["--target", "foo", "--parallel", "8"] },
+    },
+    {
+      name: "with all specified",
+      booleanInputs: {
+        "run-build": false,
+      },
+      stringInputs: {
+        "source-dir": "project",
+        "build-dir": "output",
+        generator: "Ninja",
+        "c-compiler": "clang",
+        "cxx-compiler": "clang++",
+      },
+      multilineInputs: {
+        "c-flags": ["-Werror -Wall", "-Wextra"],
+        "cxx-flags": ["-Werror -Wall", "-Wextra -Wpedantic"],
+        options: ["BUILD_TESTING=ON BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+        args: ["-Wdev -Wdeprecated", "--fresh"],
+        "build-args": ["--target foo", "--parallel 8"],
+      },
+      expectedInputs: {
+        sourceDir: "project",
+        buildDir: "output",
+        generator: "Ninja",
+        cCompiler: "clang",
+        cxxCompiler: "clang++",
+        cFlags: "-Werror -Wall -Wextra",
+        cxxFlags: "-Werror -Wall -Wextra -Wpedantic",
+        options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+        args: ["-Wdev", "-Wdeprecated", "--fresh"],
+        runBuild: false,
+        buildArgs: ["--target", "foo", "--parallel", "8"],
+      },
+    },
+  ];
 
-    it("should get the action inputs", async () => {
+  for (const testCase of testCases) {
+    it(`should get the action inputs ${testCase.name}`, async () => {
       const { getInputs } = await import("./inputs.js");
+      const core = await import("@actions/core");
 
-      const inputs = getInputs();
+      const booleanInputs = { "run-build": true, ...testCase.booleanInputs };
+      jest.mocked(core.getBooleanInput).mockImplementation((name) => {
+        return booleanInputs[name] ?? false;
+      });
 
-      expect(inputs).toStrictEqual({
+      const stringInputs = { ...testCase.stringInputs };
+      jest.mocked(core.getInput).mockImplementation((name) => {
+        return stringInputs[name] ?? "";
+      });
+
+      const multilineInputs = { ...testCase.multilineInputs };
+      jest.mocked(core.getMultilineInput).mockImplementation((name) => {
+        return multilineInputs[name] ?? [];
+      });
+
+      expect(getInputs()).toStrictEqual({
         sourceDir: ".",
         buildDir: "build",
         generator: "",
@@ -33,84 +144,10 @@ describe("get action inputs", () => {
         cxxFlags: "",
         options: [],
         args: [],
-        runBuild: false,
-        buildArgs: [],
-      });
-    });
-  });
-
-  describe("with specified values", () => {
-    beforeEach(async () => {
-      const { getBooleanInput, getInput, getMultilineInput } = await import(
-        "@actions/core"
-      );
-
-      jest.mocked(getBooleanInput).mockImplementation((name) => {
-        switch (name) {
-          case "run-build":
-            return true;
-        }
-        throw new Error(`invalid input name: ${name}`);
-      });
-
-      jest.mocked(getInput).mockImplementation((name) => {
-        switch (name) {
-          case "source-dir":
-            return "some-source";
-          case "build-dir":
-            return "some-build";
-          case "generator":
-            return "some-generator";
-          case "c-compiler":
-            return "some-c-compiler";
-          case "cxx-compiler":
-            return "some-cxx-compiler";
-        }
-        throw new Error(`invalid input name: ${name}`);
-      });
-
-      jest.mocked(getMultilineInput).mockImplementation((name) => {
-        switch (name) {
-          case "c-flags":
-            return ["some-c-flag another-c-flag", "some-other-c-flag"];
-          case "cxx-flags":
-            return ["some-cxx-flag another-cxx-flag", "some-other-cxx-flag"];
-          case "options":
-            return ["some-options another-options", "some-other-options"];
-          case "args":
-            return ["some-args another-args", "some-other-args"];
-          case "build-args":
-            return [
-              "some-build-args another-build-args",
-              "some-other-build-args",
-            ];
-        }
-        throw new Error(`invalid input name: ${name}`);
-      });
-    });
-
-    it("should get the action inputs", async () => {
-      const { getInputs } = await import("./inputs.js");
-
-      const inputs = getInputs();
-
-      expect(inputs).toStrictEqual({
-        sourceDir: "some-source",
-        buildDir: "some-build",
-        generator: "some-generator",
-        cCompiler: "some-c-compiler",
-        cxxCompiler: "some-cxx-compiler",
-        cFlags: "some-c-flag another-c-flag some-other-c-flag",
-        cxxFlags: "some-cxx-flag another-cxx-flag some-other-cxx-flag",
-        options: ["some-options", "another-options", "some-other-options"],
-        args: ["some-args", "another-args", "some-other-args"],
         runBuild: true,
-        buildArgs: [
-          "some-build-args",
-          "another-build-args",
-          "some-other-build-args",
-        ],
+        buildArgs: [],
+        ...testCase.expectedInputs,
       });
     });
-  });
+  }
 });
