@@ -8,7 +8,7 @@ interface TestCase {
 }
 
 const defaultInputs: Inputs = {
-  sourceDir: ".",
+  sourceDir: "",
   buildDir: "build",
   generator: "",
   cCompiler: "",
@@ -29,7 +29,7 @@ describe("configure a CMake project", () => {
   const testCases: TestCase[] = [
     {
       name: "with nothing specified",
-      expectedArgs: [".", "-B", "build"],
+      expectedArgs: ["-B", "build"],
     },
     {
       name: "with source directory specified",
@@ -39,43 +39,37 @@ describe("configure a CMake project", () => {
     {
       name: "with build directory specified",
       inputs: { buildDir: "output" },
-      expectedArgs: [".", "-B", "output"],
+      expectedArgs: ["-B", "output"],
     },
     {
       name: "with generator specified",
       inputs: { generator: "Ninja" },
-      expectedArgs: [".", "-B", "build", "-G", "Ninja"],
+      expectedArgs: ["-B", "build", "-G", "Ninja"],
     },
     {
       name: "with C compiler specified",
       inputs: { cCompiler: "clang" },
-      expectedArgs: [".", "-B", "build", "-DCMAKE_C_COMPILER=clang"],
+      expectedArgs: ["-B", "build", "-DCMAKE_C_COMPILER=clang"],
     },
     {
       name: "with C++ compiler specified",
       inputs: { cxxCompiler: "clang++" },
-      expectedArgs: [".", "-B", "build", "-DCMAKE_CXX_COMPILER=clang++"],
+      expectedArgs: ["-B", "build", "-DCMAKE_CXX_COMPILER=clang++"],
     },
     {
       name: "with C flags specified",
       inputs: { cFlags: "-Werror -Wall" },
-      expectedArgs: [".", "-B", "build", "-DCMAKE_C_FLAGS=-Werror -Wall"],
+      expectedArgs: ["-B", "build", "-DCMAKE_C_FLAGS=-Werror -Wall"],
     },
     {
       name: "with C++ flags specified",
       inputs: { cxxFlags: "-Werror -Wall -Wextra" },
-      expectedArgs: [
-        ".",
-        "-B",
-        "build",
-        "-DCMAKE_CXX_FLAGS=-Werror -Wall -Wextra",
-      ],
+      expectedArgs: ["-B", "build", "-DCMAKE_CXX_FLAGS=-Werror -Wall -Wextra"],
     },
     {
       name: "with additional options specified",
       inputs: { options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"] },
       expectedArgs: [
-        ".",
         "-B",
         "build",
         "-DBUILD_TESTING=ON",
@@ -85,7 +79,7 @@ describe("configure a CMake project", () => {
     {
       name: "with additional arguments specified",
       inputs: { args: ["-Wdev", "-Wdeprecated"] },
-      expectedArgs: [".", "-B", "build", "-Wdev", "-Wdeprecated"],
+      expectedArgs: ["-B", "build", "-Wdev", "-Wdeprecated"],
     },
     {
       name: "with all specified",

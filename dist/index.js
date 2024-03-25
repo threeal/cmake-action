@@ -27735,7 +27735,11 @@ var exec = __nccwpck_require__(4926);
  * @param inputs - The action inputs.
  */
 async function configureProject(inputs) {
-    const configureArgs = [inputs.sourceDir, "-B", inputs.buildDir];
+    const configureArgs = [];
+    if (inputs.sourceDir) {
+        configureArgs.push(inputs.sourceDir);
+    }
+    configureArgs.push("-B", inputs.buildDir);
     if (inputs.generator) {
         configureArgs.push(...["-G", inputs.generator]);
     }
@@ -27771,7 +27775,7 @@ var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_nod
 
 
 function getInputs() {
-    const sourceDir = (0,core.getInput)("source-dir") || ".";
+    const sourceDir = (0,core.getInput)("source-dir");
     return {
         sourceDir,
         buildDir: (0,core.getInput)("build-dir") || external_node_path_default().join(sourceDir, "build"),

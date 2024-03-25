@@ -150,7 +150,7 @@ describe("get action inputs", () => {
       });
 
       expect(getInputs()).toStrictEqual({
-        sourceDir: ".",
+        sourceDir: "",
         buildDir: "build",
         generator: "",
         cCompiler: "",
