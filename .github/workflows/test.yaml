@@ -61,6 +61,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
         with:
+          path: cmake-action
           sparse-checkout: |
             action.yml
             dist
@@ -68,10 +69,10 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Move Project
-        run: mv test/* .
+        run: mv cmake-action/test/* .
 
       - name: Configure and Build Project
-        uses: ./
+        uses: ./cmake-action
 
       - name: Test Project
         uses: threeal/ctest-action@v1.0.0
@@ -86,6 +87,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
         with:
+          path: cmake-action
           sparse-checkout: |
             action.yml
             dist
@@ -94,14 +96,14 @@ jobs:
 
       - name: Configure and Build Project
         id: cmake-action
-        uses: ./
+        uses: ./cmake-action
         with:
-          source-dir: test
+          source-dir: cmake-action/test
           build-dir: output
 
       - name: Default Build Directory Should Not Exist
         shell: bash
-        run: test ! -e build && test ! -e test/build
+        run: test ! -e build && test ! -e cmake-action/test/build
 
       - name: Test Project
         uses: threeal/ctest-action@v1.0.0
@@ -116,6 +118,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
         with:
+          path: cmake-action
           sparse-checkout: |
             action.yml
             dist
@@ -124,9 +127,9 @@ jobs:
 
       - name: Configure Project
         id: cmake-action
-        uses: ./
+        uses: ./cmake-action
         with:
-          source-dir: test
+          source-dir: cmake-action/test
           run-build: false
 
       - name: Try to Test Project
@@ -152,6 +155,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
         with:
+          path: cmake-action
           sparse-checkout: |
             action.yml
             dist
@@ -160,9 +164,9 @@ jobs:
 
       - name: Configure and Build Project
         id: cmake-action
-        uses: ./
+        uses: ./cmake-action
         with:
-          source-dir: test
+          source-dir: cmake-action/test
           c-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           cxx-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
           options: CHECK_SURPASS_WARNING=ON
@@ -186,6 +190,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
         with:
+          path: cmake-action
           sparse-checkout: |
             action.yml
             dist
@@ -197,9 +202,9 @@ jobs:
 
       - name: Configure and Build Project
         id: cmake-action
-        uses: ./
+        uses: ./cmake-action
         with:
-          source-dir: test
+          source-dir: cmake-action/test
           generator: Ninja
           c-compiler: clang
           cxx-compiler: clang++
