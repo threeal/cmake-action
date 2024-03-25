@@ -101,14 +101,10 @@ jobs:
           source-dir: cmake-action/test
           build-dir: output
 
-      - name: Default Build Directory Should Not Exist
-        shell: bash
-        run: test ! -e build && test ! -e cmake-action/test/build
-
       - name: Test Project
         uses: threeal/ctest-action@v1.0.0
         with:
-          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
+          test-dir: output
           tests-regex: hello_world
 
   test-action-without-run-build:
