@@ -27771,7 +27771,7 @@ var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_nod
 
 
 function getInputs() {
-    const sourceDir = (0,core.getInput)("source-dir") || ".";
+    const sourceDir = (0,core.getInput)("source-dir");
     return {
         sourceDir,
         buildDir: (0,core.getInput)("build-dir") || external_node_path_default().join(sourceDir, "build"),

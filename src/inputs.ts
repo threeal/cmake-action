@@ -16,7 +16,7 @@ export interface Inputs {
 }
 
 export function getInputs(): Inputs {
-  const sourceDir = getInput("source-dir") || ".";
+  const sourceDir = getInput("source-dir");
   return {
     sourceDir,
     buildDir: getInput("build-dir") || path.join(sourceDir, "build"),
