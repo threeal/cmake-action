@@ -27685,6 +27685,35 @@ module.exports = parseParams
 /******/ }
 /******/ 
 /************************************************************************/
+/******/ /* webpack/runtime/compat get default export */
+/******/ (() => {
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__nccwpck_require__.n = (module) => {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			() => (module['default']) :
+/******/ 			() => (module);
+/******/ 		__nccwpck_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/define property getters */
+/******/ (() => {
+/******/ 	// define getter functions for harmony exports
+/******/ 	__nccwpck_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			}
+/******/ 		}
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/hasOwnProperty shorthand */
+/******/ (() => {
+/******/ 	__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ })();
+/******/ 
 /******/ /* webpack/runtime/compat */
 /******/ 
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
@@ -27735,12 +27764,17 @@ async function buildProject(inputs) {
     await (0,exec.exec)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
 }
 
+;// CONCATENATED MODULE: external "node:path"
+const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
+var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_namespaceObject);
 ;// CONCATENATED MODULE: ./src/inputs.ts
 
+
 function getInputs() {
+    const sourceDir = (0,core.getInput)("source-dir") || ".";
     return {
-        sourceDir: (0,core.getInput)("source-dir") || ".",
-        buildDir: (0,core.getInput)("build-dir") || "build",
+        sourceDir,
+        buildDir: (0,core.getInput)("build-dir") || external_node_path_default().join(sourceDir, "build"),
         generator: (0,core.getInput)("generator"),
         cCompiler: (0,core.getInput)("c-compiler"),
         cxxCompiler: (0,core.getInput)("cxx-compiler"),
