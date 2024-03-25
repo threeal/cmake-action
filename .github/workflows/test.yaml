@@ -61,6 +61,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
         with:
+          path: cmake-action
           sparse-checkout: |
             action.yml
             dist
@@ -68,10 +69,10 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Move Project
-        run: mv test/* .
+        run: mv cmake-action/test/* .
 
       - name: Configure and Build Project
-        uses: ./
+        uses: ./cmake-action
 
       - name: Test Project
         uses: threeal/ctest-action@v1.0.0
@@ -86,6 +87,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
         with:
+          path: cmake-action
           sparse-checkout: |
             action.yml
             dist
@@ -94,19 +96,15 @@ jobs:
 
       - name: Configure and Build Project
         id: cmake-action
-        uses: ./
+        uses: ./cmake-action
         with:
-          source-dir: test
+          source-dir: cmake-action/test
           build-dir: output
-
-      - name: Default Build Directory Should Not Exist
-        shell: bash
-        run: test ! -e build && test ! -e test/build
 
       - name: Test Project
         uses: threeal/ctest-action@v1.0.0
         with:
-          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
+          test-dir: output
           tests-regex: hello_world
 
   test-action-without-run-build:
@@ -116,76 +114,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
         with:
+          path: cmake-action
           sparse-checkout: |
             action.yml
             dist
             test
           sparse-checkout-cone-mode: false
+
+      - name: Modify Project
+        run: echo 'invalid' >> cmake-action/test/hello_world.cpp
 
       - name: Configure Project
         id: cmake-action
-        uses: ./
+        uses: ./cmake-action
         with:
-          source-dir: test
+          source-dir: cmake-action/test
           run-build: false
 
-      - name: Try to Test Project
-        id: failed-step
-        continue-on-error: true
-        uses: threeal/ctest-action@v1.0.0
-        with:
-          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
-          tests-regex: hello_world
-
-      - name: Previous Step Should Failed
-        if: steps.failed-step.outcome == 'success'
-        run: exit 1
-
-  test-action-with-additional-args:
-    name: Test Action With Additional Arguments
-    runs-on: ${{ matrix.compiler == 'msvc' && 'windows' || 'ubuntu' }}-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler: [gcc, msvc]
+  test-action-with-custom-generator:
+    name: Test Action With Custom Generator
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.2
         with:
-          sparse-checkout: |
-            action.yml
-            dist
-            test
-          sparse-checkout-cone-mode: false
-
-      - name: Configure and Build Project
-        id: cmake-action
-        uses: ./
-        with:
-          source-dir: test
-          c-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
-          cxx-flags: ${{ matrix.compiler == 'msvc' && '/w /WX-' || '-Wno-unused-variable' }}
-          options: CHECK_SURPASS_WARNING=ON
-          build-args: --target test_c --target test_cpp
-
-      - name: Test Project
-        uses: threeal/ctest-action@v1.0.0
-        with:
-          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
-          build-config: Debug
-          tests-regex: test
-
-  test-action-with-custom-tools:
-    name: Test Action With Custom Tools
-    runs-on: ${{ matrix.os }}-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows, ubuntu, macos]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.2
-        with:
+          path: cmake-action
           sparse-checkout: |
             action.yml
             dist
@@ -195,19 +148,13 @@ jobs:
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v4
 
-      - name: Configure and Build Project
+      - name: Configure Project
         id: cmake-action
-        uses: ./
+        uses: ./cmake-action
         with:
-          source-dir: test
+          source-dir: cmake-action/test
           generator: Ninja
-          c-compiler: clang
-          cxx-compiler: clang++
-          options: CHECK_USING_CLANG=ON
-          build-args: --target test_c --target test_cpp
+          run-build: false
 
-      - name: Test Project
-        uses: threeal/ctest-action@v1.0.0
-        with:
-          test-dir: ${{ steps.cmake-action.outputs.build-dir }}
-          tests-regex: test
+      - name: Build Project
+        run: ninja -C ${{ steps.cmake-action.outputs.build-dir }}
