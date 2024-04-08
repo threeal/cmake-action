@@ -3,5 +3,4 @@
 !.eslint*
 !.git*
 
-coverage/
 node_modules/
