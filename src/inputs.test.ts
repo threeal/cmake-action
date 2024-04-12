@@ -11,9 +11,9 @@ jest.unstable_mockModule("@actions/core", () => ({
 describe("get action inputs", () => {
   interface TestCase {
     name: string;
-    booleanInputs?: { [key: string]: boolean };
-    stringInputs?: { [key: string]: string };
-    multilineInputs?: { [key: string]: string[] };
+    booleanInputs?: Record<string, boolean>;
+    stringInputs?: Record<string, string>;
+    multilineInputs?: Record<string, string[]>;
     expectedInputs?: Partial<Inputs>;
   }
 
