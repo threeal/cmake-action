@@ -5,7 +5,7 @@
   "scripts": {
     "build": "ncc build src/index.ts",
     "format": "prettier --write --cache . !dist !README.md",
-    "lint": "eslint src",
+    "lint": "eslint .",
     "test": "jest"
   },
   "dependencies": {
@@ -13,6 +13,7 @@
     "@actions/exec": "^1.1.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.30",

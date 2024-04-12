@@ -1,6 +1,5 @@
 .*
 !.env.yarn
-!.eslint*
 !.git*
 
 node_modules/
