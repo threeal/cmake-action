@@ -5,7 +5,7 @@
   "scripts": {
     "build": "ncc build src/index.ts",
     "format": "prettier --write --cache . !dist !README.md",
-    "lint": "eslint .",
+    "lint": "eslint",
     "test": "jest"
   },
   "dependencies": {
