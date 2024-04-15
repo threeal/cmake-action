@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import { buildProject, configureProject } from "./cmake.js";
 import { getInputs } from "./inputs.js";
 
-async function main() {
+try {
   const inputs = getInputs();
 
   await configureProject(inputs);
@@ -12,6 +12,6 @@ async function main() {
   if (inputs.runBuild) {
     await buildProject(inputs);
   }
+} catch (err) {
+  core.setFailed(err);
 }
-
-main().catch((err) => core.setFailed(err));
