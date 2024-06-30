@@ -154,7 +154,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Setup Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v4
+        uses: seanmiddleditch/gha-setup-ninja@v5
 
       - name: Configure Project
         id: cmake-action
