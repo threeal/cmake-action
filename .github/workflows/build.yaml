@@ -9,7 +9,7 @@ jobs:
     name: Build Package
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Project
         uses: actions/checkout@v4.1.7
 
       - name: Setup Node.js
