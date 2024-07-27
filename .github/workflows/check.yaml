@@ -9,7 +9,7 @@ jobs:
     name: Check Package
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Project
         uses: actions/checkout@v4.1.7
 
       - name: Setup Node.js
@@ -22,7 +22,7 @@ jobs:
         with:
           version: stable
 
-      - name: Check Format
+      - name: Check Formatting
         run: |
           yarn format
           git diff --exit-code HEAD

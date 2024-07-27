@@ -9,7 +9,7 @@ jobs:
     name: Test Package
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Project
         uses: actions/checkout@v4.1.7
 
       - name: Setup Node.js
@@ -33,7 +33,7 @@ jobs:
       matrix:
         os: [windows, ubuntu, macos]
     steps:
-      - name: Checkout Project
+      - name: Checkout Sample Project
         uses: actions/checkout@v4.1.7
         with:
           repository: threeal/cpp-starter
@@ -48,18 +48,18 @@ jobs:
             dist
           sparse-checkout-cone-mode: false
 
-      - name: Configure and Build Project
+      - name: Build Sample Project
         id: cmake-action
         uses: ./cmake-action
 
-      - name: Run Project
+      - name: Run Sample Project
         run: ${{ steps.cmake-action.outputs.build-dir }}/${{ matrix.os == 'windows' && 'Debug/generate_sequence.exe' || 'generate_sequence' }} 5
 
   test-action-with-specified-dirs:
     name: Test Action With Specified Directories
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Project
+      - name: Checkout Sample Project
         uses: actions/checkout@v4.1.7
         with:
           repository: threeal/cpp-starter
@@ -75,21 +75,21 @@ jobs:
             dist
           sparse-checkout-cone-mode: false
 
-      - name: Configure and Build Project
+      - name: Build Sample Project
         id: cmake-action
         uses: ./cmake-action
         with:
           source-dir: project
           build-dir: output
 
-      - name: Run Project
+      - name: Run Sample Project
         run: output/generate_sequence 5
 
   test-action-without-run-build:
     name: Test Action Without Run Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Project
+      - name: Checkout Sample Project
         uses: actions/checkout@v4.1.7
         with:
           repository: threeal/cpp-starter
@@ -104,10 +104,10 @@ jobs:
             dist
           sparse-checkout-cone-mode: false
 
-      - name: Modify Project
+      - name: Modify Sample Project
         run: echo 'invalid' >> src/main.cpp
 
-      - name: Configure Project
+      - name: Configure Sample Project
         uses: ./cmake-action
         with:
           run-build: false
@@ -116,7 +116,7 @@ jobs:
     name: Test Action With Additional Options
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Project
+      - name: Checkout Sample Project
         uses: actions/checkout@v4.1.7
         with:
           repository: threeal/cpp-starter
@@ -131,19 +131,19 @@ jobs:
             dist
           sparse-checkout-cone-mode: false
 
-      - name: Configure and Build Project
+      - name: Build Sample Project
         uses: ./cmake-action
         with:
           options: BUILD_TESTING=ON
 
-      - name: Test Project
+      - name: Test Sample Project
         uses: threeal/ctest-action@v1.1.0
 
   test-action-with-custom-generator:
     name: Test Action With Custom Generator
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Project
+      - name: Checkout Sample Project
         uses: actions/checkout@v4.1.7
         with:
           repository: threeal/cpp-starter
@@ -161,12 +161,12 @@ jobs:
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v5
 
-      - name: Configure Project
+      - name: Configure Sample Project
         id: cmake-action
         uses: ./cmake-action
         with:
           generator: Ninja
           run-build: false
 
-      - name: Build Project
+      - name: Build Sample Project
         run: ninja -C ${{ steps.cmake-action.outputs.build-dir }}
