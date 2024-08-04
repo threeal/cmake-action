@@ -4,12 +4,6 @@ Configure and build [CMake](https://cmake.org/) projects on [GitHub Actions](htt
 
 This action wraps the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command for configuring and building CMake projects. It provides a more streamlined syntax for specifying build options compared to calling the `cmake` command directly.
 
-## Features
-
-- Configures a CMake project using the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
-- Optionally builds a CMake project using the `cmake --build` command.
-- Supports specifying multiple CMake options directly from the action inputs.
-
 ## Usage
 
 For more information, refer to [action.yml](./action.yml) and the [GitHub Actions guide](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
