@@ -8,21 +8,17 @@ This action wraps the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake
 
 | Name | Value Type | Description |
 | --- | --- | --- |
-| `source-dir` | Path | The source directory of the CMake project. It defaults to the current directory. |
-| `build-dir` | Path | The build directory of the CMake project. It defaults to the `build` directory inside the source directory. |
-| `generator` | String | The build system generator for the CMake project. It appends the CMake configuration arguments with `-G [val]`. |
-| `c-compiler` | String | The preferred executable for compiling C language files. It appends the CMake configuration arguments with `-D CMAKE_C_COMPILER=[val]`. |
-| `cxx-compiler` | String | The preferred executable for compiling C++ language files. It appends the CMake configuration arguments with `-D CMAKE_CXX_COMPILER=[val]`. |
-| `c-flags` | Multiple strings | Additional flags to pass when compiling C language files. It appends the CMake configuration arguments with `-D CMAKE_C_FLAGS=[vals]`. |
-| `cxx-flags` | Multiple strings | Additional flags to pass when compiling C++ language files. It appends the CMake configuration arguments with `-D CMAKE_CXX_FLAGS=[vals]`. |
-| `options` | Multiple strings | Additional options to pass during the CMake configuration. It appends the CMake configuration arguments with each of `-D [val]`. |
+| `source-dir` | Path | The source directory of the CMake project. Defaults to the current working directory. |
+| `build-dir` | Path | The build directory of the CMake project. Defaults to the `build` directory inside the source directory. |
+| `generator` | String | The build system generator for the CMake project. Equivalent to setting the `-G` option. |
+| `c-compiler` | String | The preferred executable for compiling C language files. Equivalent to defining the `CMAKE_C_COMPILER` variable. |
+| `cxx-compiler` | String | The preferred executable for compiling C++ language files. Equivalent to defining the `CMAKE_CXX_COMPILER` variable. |
+| `c-flags` | Multiple strings | Additional flags to pass when compiling C language files. Equivalent to defining the `CMAKE_C_FLAGS` variable. |
+| `cxx-flags` | Multiple strings | Additional flags to pass when compiling C++ language files. Equivalent to defining the `CMAKE_CXX_FLAGS` variable. |
+| `options` | Multiple strings | Additional options to pass during the CMake configuration. Equivalent to setting the `-D` option. |
 | `args` | Multiple strings | Additional arguments to pass during the CMake configuration. |
-| `run-build` | `true` or `false` | If enabled, it builds the project using CMake. It defaults to `true`. |
+| `run-build` | `true` or `false` | If enabled, builds the project using CMake. Defaults to `true`. |
 | `build-args` | Multiple strings | Additional arguments to pass during the CMake build. |
-
-> **Note**: Multiple strings mean that the input can be specified with more than one value. Separate each value with a space or a new line.
-
-> **Note**: All inputs are optional.
 
 ## Available Outputs
 
