@@ -4,11 +4,7 @@ Configure and build [CMake](https://cmake.org/) projects on [GitHub Actions](htt
 
 This action wraps the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command for configuring and building CMake projects. It provides a more streamlined syntax for specifying build options compared to calling the `cmake` command directly.
 
-## Usage
-
-For more information, refer to [action.yml](./action.yml) and the [GitHub Actions guide](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
-
-### Inputs
+## Available Inputs
 
 | Name | Value Type | Description |
 | --- | --- | --- |
@@ -28,13 +24,13 @@ For more information, refer to [action.yml](./action.yml) and the [GitHub Action
 
 > **Note**: All inputs are optional.
 
-### Outputs
+## Available Outputs
 
 | Name | Value Type | Description |
 | --- | --- | --- |
 | `build-dir` | Path | The build directory of the CMake project. |
 
-### Examples
+## Example Usages
 
 ```yaml
 name: Build
@@ -54,7 +50,7 @@ jobs:
 
 > **Note**: You can replace `main` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
 
-#### Configure Project Without Building
+### Configure Project Without Building
 
 ```yaml
 - name: Configure Project
@@ -63,7 +59,7 @@ jobs:
     run-build: false
 ```
 
-#### Specify the Source and Build Directories
+### Specify the Source and Build Directories
 
 ```yaml
 - name: Configure and Build Project
@@ -73,7 +69,7 @@ jobs:
     build-dir: submodules/out
 ```
 
-#### Using Ninja as the Generator and Clang as the Compiler
+### Using Ninja as the Generator and Clang as the Compiler
 
 ```yaml
 - name: Setup Ninja
