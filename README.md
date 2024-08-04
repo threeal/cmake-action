@@ -1,6 +1,8 @@
 # CMake Action
 
-Configure and build your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for configuring the build environment of a CMake project. It can also be optionally specified to build a CMake project using the `cmake --build` command.
+Configure and build [CMake](https://cmake.org/) projects on [GitHub Actions](https://github.com/features/actions).
+
+This action wraps the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command for configuring and building CMake projects. It provides a more streamlined syntax for specifying build options compared to calling the `cmake` command directly.
 
 ## Features
 
