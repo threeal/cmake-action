@@ -6,7 +6,7 @@ import type { Inputs } from "./inputs.js";
  *
  * @param inputs - The action inputs.
  */
-export async function configureProject(inputs: Inputs): Promise<void> {
+export function configureProject(inputs: Inputs): void {
   const configureArgs = [];
 
   if (inputs.sourceDir) {

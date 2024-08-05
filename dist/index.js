@@ -24841,7 +24841,7 @@ const external_node_child_process_namespaceObject = __WEBPACK_EXTERNAL_createReq
  *
  * @param inputs - The action inputs.
  */
-async function configureProject(inputs) {
+function configureProject(inputs) {
     const configureArgs = [];
     if (inputs.sourceDir) {
         configureArgs.push(inputs.sourceDir);
@@ -24891,7 +24891,7 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__, __we
 
 try {
     const inputs = (0,_inputs_js__WEBPACK_IMPORTED_MODULE_2__/* .getInputs */ .G)();
-    await (0,_cmake_js__WEBPACK_IMPORTED_MODULE_1__/* .configureProject */ .N)(inputs);
+    (0,_cmake_js__WEBPACK_IMPORTED_MODULE_1__/* .configureProject */ .N)(inputs);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", inputs.buildDir);
     if (inputs.runBuild) {
         await (0,_cmake_js__WEBPACK_IMPORTED_MODULE_1__/* .buildProject */ ._)(inputs);

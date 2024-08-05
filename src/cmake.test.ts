@@ -119,8 +119,7 @@ describe("configure a CMake project", () => {
 
       jest.mocked(execFileSync).mockReset();
 
-      const prom = configureProject({ ...defaultInputs, ...testCase.inputs });
-      await expect(prom).resolves.toBeUndefined();
+      configureProject({ ...defaultInputs, ...testCase.inputs });
 
       expect(execFileSync).toHaveBeenCalledTimes(1);
       expect(execFileSync).toHaveBeenLastCalledWith(
