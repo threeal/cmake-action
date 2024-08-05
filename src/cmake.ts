@@ -1,4 +1,4 @@
-import { exec } from "@actions/exec";
+import { execFileSync } from "node:child_process";
 import type { Inputs } from "./inputs.js";
 
 /**
@@ -38,7 +38,7 @@ export async function configureProject(inputs: Inputs): Promise<void> {
   configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
   configureArgs.push(...inputs.args);
 
-  await exec("cmake", configureArgs);
+  execFileSync("cmake", configureArgs);
 }
 
 /**
@@ -47,5 +47,5 @@ export async function configureProject(inputs: Inputs): Promise<void> {
  * @param inputs - The action inputs.
  */
 export async function buildProject(inputs: Inputs): Promise<void> {
-  await exec("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
+  execFileSync("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
 }

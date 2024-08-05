@@ -21,8 +21,8 @@ const defaultInputs: Inputs = {
   buildArgs: [],
 };
 
-jest.unstable_mockModule("@actions/exec", () => ({
-  exec: jest.fn(),
+jest.unstable_mockModule("node:child_process", () => ({
+  execFileSync: jest.fn(),
 }));
 
 describe("configure a CMake project", () => {
@@ -115,15 +115,18 @@ describe("configure a CMake project", () => {
   for (const testCase of testCases) {
     it(`should execute the correct command ${testCase.name}`, async () => {
       const { configureProject } = await import("./cmake.js");
-      const { exec } = await import("@actions/exec");
+      const { execFileSync } = await import("node:child_process");
 
-      jest.mocked(exec).mockReset();
+      jest.mocked(execFileSync).mockReset();
 
       const prom = configureProject({ ...defaultInputs, ...testCase.inputs });
       await expect(prom).resolves.toBeUndefined();
 
-      expect(exec).toHaveBeenCalledTimes(1);
-      expect(exec).toHaveBeenLastCalledWith("cmake", testCase.expectedArgs);
+      expect(execFileSync).toHaveBeenCalledTimes(1);
+      expect(execFileSync).toHaveBeenLastCalledWith(
+        "cmake",
+        testCase.expectedArgs,
+      );
     });
   }
 });
@@ -157,15 +160,18 @@ describe("build a CMake project", () => {
   for (const testCase of testCases) {
     it(`should execute the correct command ${testCase.name}`, async () => {
       const { buildProject } = await import("./cmake.js");
-      const { exec } = await import("@actions/exec");
+      const { execFileSync } = await import("node:child_process");
 
-      jest.mocked(exec).mockReset();
+      jest.mocked(execFileSync).mockReset();
 
       const prom = buildProject({ ...defaultInputs, ...testCase.inputs });
       await expect(prom).resolves.toBeUndefined();
 
-      expect(exec).toHaveBeenCalledTimes(1);
-      expect(exec).toHaveBeenLastCalledWith("cmake", testCase.expectedArgs);
+      expect(execFileSync).toHaveBeenCalledTimes(1);
+      expect(execFileSync).toHaveBeenLastCalledWith(
+        "cmake",
+        testCase.expectedArgs,
+      );
     });
   }
 });
