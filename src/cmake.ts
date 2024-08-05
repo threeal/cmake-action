@@ -46,6 +46,6 @@ export function configureProject(inputs: Inputs): void {
  *
  * @param inputs - The action inputs.
  */
-export async function buildProject(inputs: Inputs): Promise<void> {
+export function buildProject(inputs: Inputs): void {
   execFileSync("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
 }

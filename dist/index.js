@@ -24822,127 +24822,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 2590:
-/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
-
-
-// EXPORTS
-__nccwpck_require__.d(__webpack_exports__, {
-  "_": () => (/* binding */ buildProject),
-  "N": () => (/* binding */ configureProject)
-});
-
-;// CONCATENATED MODULE: external "node:child_process"
-const external_node_child_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:child_process");
-;// CONCATENATED MODULE: ./src/cmake.ts
-
-/**
- * Configures the build system of a CMake project.
- *
- * @param inputs - The action inputs.
- */
-function configureProject(inputs) {
-    const configureArgs = [];
-    if (inputs.sourceDir) {
-        configureArgs.push(inputs.sourceDir);
-    }
-    configureArgs.push("-B", inputs.buildDir);
-    if (inputs.generator) {
-        configureArgs.push(...["-G", inputs.generator]);
-    }
-    if (inputs.cCompiler) {
-        configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);
-    }
-    if (inputs.cxxCompiler) {
-        configureArgs.push("-DCMAKE_CXX_COMPILER=" + inputs.cxxCompiler);
-    }
-    if (inputs.cFlags) {
-        configureArgs.push("-DCMAKE_C_FLAGS=" + inputs.cFlags);
-    }
-    if (inputs.cxxFlags) {
-        configureArgs.push("-DCMAKE_CXX_FLAGS=" + inputs.cxxFlags);
-    }
-    configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
-    configureArgs.push(...inputs.args);
-    (0,external_node_child_process_namespaceObject.execFileSync)("cmake", configureArgs);
-}
-/**
- * Build a CMake project.
- *
- * @param inputs - The action inputs.
- */
-async function buildProject(inputs) {
-    (0,external_node_child_process_namespaceObject.execFileSync)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
-}
-
-
-/***/ }),
-
-/***/ 8510:
-/***/ ((module, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
-
-__nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2340);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _cmake_js__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(2590);
-/* harmony import */ var _inputs_js__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(6511);
-
-
-
-try {
-    const inputs = (0,_inputs_js__WEBPACK_IMPORTED_MODULE_2__/* .getInputs */ .G)();
-    (0,_cmake_js__WEBPACK_IMPORTED_MODULE_1__/* .configureProject */ .N)(inputs);
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("build-dir", inputs.buildDir);
-    if (inputs.runBuild) {
-        await (0,_cmake_js__WEBPACK_IMPORTED_MODULE_1__/* .buildProject */ ._)(inputs);
-    }
-}
-catch (err) {
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(err);
-}
-
-__webpack_async_result__();
-} catch(e) { __webpack_async_result__(e); } }, 1);
-
-/***/ }),
-
-/***/ 6511:
-/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
-
-
-// EXPORTS
-__nccwpck_require__.d(__webpack_exports__, {
-  "G": () => (/* binding */ getInputs)
-});
-
-// EXTERNAL MODULE: ../../../.yarn/berry/cache/@actions-core-npm-1.10.1-3cb1000b4d-10c0.zip/node_modules/@actions/core/lib/core.js
-var core = __nccwpck_require__(2340);
-;// CONCATENATED MODULE: external "node:path"
-const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
-var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_namespaceObject);
-;// CONCATENATED MODULE: ./src/inputs.ts
-
-
-function getInputs() {
-    const sourceDir = (0,core.getInput)("source-dir");
-    return {
-        sourceDir,
-        buildDir: (0,core.getInput)("build-dir") || external_node_path_default().join(sourceDir, "build"),
-        generator: (0,core.getInput)("generator"),
-        cCompiler: (0,core.getInput)("c-compiler"),
-        cxxCompiler: (0,core.getInput)("cxx-compiler"),
-        cFlags: (0,core.getMultilineInput)("c-flags").join(" "),
-        cxxFlags: (0,core.getMultilineInput)("cxx-flags").join(" "),
-        options: (0,core.getMultilineInput)("options").flatMap((opts) => opts.split(" ")),
-        args: (0,core.getMultilineInput)("args").flatMap((args) => args.split(" ")),
-        runBuild: (0,core.getBooleanInput)("run-build"),
-        buildArgs: (0,core.getMultilineInput)("build-args").flatMap((args) => args.split(" ")),
-    };
-}
-
-
-/***/ }),
-
 /***/ 9491:
 /***/ ((module) => {
 
@@ -26779,75 +26658,6 @@ module.exports = parseParams
 /******/ }
 /******/ 
 /************************************************************************/
-/******/ /* webpack/runtime/async module */
-/******/ (() => {
-/******/ 	var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
-/******/ 	var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
-/******/ 	var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
-/******/ 	var resolveQueue = (queue) => {
-/******/ 		if(queue && !queue.d) {
-/******/ 			queue.d = 1;
-/******/ 			queue.forEach((fn) => (fn.r--));
-/******/ 			queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
-/******/ 		}
-/******/ 	}
-/******/ 	var wrapDeps = (deps) => (deps.map((dep) => {
-/******/ 		if(dep !== null && typeof dep === "object") {
-/******/ 			if(dep[webpackQueues]) return dep;
-/******/ 			if(dep.then) {
-/******/ 				var queue = [];
-/******/ 				queue.d = 0;
-/******/ 				dep.then((r) => {
-/******/ 					obj[webpackExports] = r;
-/******/ 					resolveQueue(queue);
-/******/ 				}, (e) => {
-/******/ 					obj[webpackError] = e;
-/******/ 					resolveQueue(queue);
-/******/ 				});
-/******/ 				var obj = {};
-/******/ 				obj[webpackQueues] = (fn) => (fn(queue));
-/******/ 				return obj;
-/******/ 			}
-/******/ 		}
-/******/ 		var ret = {};
-/******/ 		ret[webpackQueues] = x => {};
-/******/ 		ret[webpackExports] = dep;
-/******/ 		return ret;
-/******/ 	}));
-/******/ 	__nccwpck_require__.a = (module, body, hasAwait) => {
-/******/ 		var queue;
-/******/ 		hasAwait && ((queue = []).d = 1);
-/******/ 		var depQueues = new Set();
-/******/ 		var exports = module.exports;
-/******/ 		var currentDeps;
-/******/ 		var outerResolve;
-/******/ 		var reject;
-/******/ 		var promise = new Promise((resolve, rej) => {
-/******/ 			reject = rej;
-/******/ 			outerResolve = resolve;
-/******/ 		});
-/******/ 		promise[webpackExports] = exports;
-/******/ 		promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
-/******/ 		module.exports = promise;
-/******/ 		body((deps) => {
-/******/ 			currentDeps = wrapDeps(deps);
-/******/ 			var fn;
-/******/ 			var getResult = () => (currentDeps.map((d) => {
-/******/ 				if(d[webpackError]) throw d[webpackError];
-/******/ 				return d[webpackExports];
-/******/ 			}))
-/******/ 			var promise = new Promise((resolve) => {
-/******/ 				fn = () => (resolve(getResult));
-/******/ 				fn.r = 0;
-/******/ 				var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
-/******/ 				currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
-/******/ 			});
-/******/ 			return fn.r ? promise : getResult();
-/******/ 		}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
-/******/ 		queue && (queue.d = 0);
-/******/ 	};
-/******/ })();
-/******/ 
 /******/ /* webpack/runtime/compat get default export */
 /******/ (() => {
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -26882,10 +26692,93 @@ module.exports = parseParams
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
 /******/ 
 /************************************************************************/
-/******/ 
-/******/ // startup
-/******/ // Load entry module and return exports
-/******/ // This entry module used 'module' so it can't be inlined
-/******/ var __webpack_exports__ = __nccwpck_require__(8510);
-/******/ __webpack_exports__ = await __webpack_exports__;
-/******/ 
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+
+// EXTERNAL MODULE: ../../../.yarn/berry/cache/@actions-core-npm-1.10.1-3cb1000b4d-10c0.zip/node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(2340);
+;// CONCATENATED MODULE: external "node:child_process"
+const external_node_child_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:child_process");
+;// CONCATENATED MODULE: ./src/cmake.ts
+
+/**
+ * Configures the build system of a CMake project.
+ *
+ * @param inputs - The action inputs.
+ */
+function configureProject(inputs) {
+    const configureArgs = [];
+    if (inputs.sourceDir) {
+        configureArgs.push(inputs.sourceDir);
+    }
+    configureArgs.push("-B", inputs.buildDir);
+    if (inputs.generator) {
+        configureArgs.push(...["-G", inputs.generator]);
+    }
+    if (inputs.cCompiler) {
+        configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);
+    }
+    if (inputs.cxxCompiler) {
+        configureArgs.push("-DCMAKE_CXX_COMPILER=" + inputs.cxxCompiler);
+    }
+    if (inputs.cFlags) {
+        configureArgs.push("-DCMAKE_C_FLAGS=" + inputs.cFlags);
+    }
+    if (inputs.cxxFlags) {
+        configureArgs.push("-DCMAKE_CXX_FLAGS=" + inputs.cxxFlags);
+    }
+    configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
+    configureArgs.push(...inputs.args);
+    (0,external_node_child_process_namespaceObject.execFileSync)("cmake", configureArgs);
+}
+/**
+ * Build a CMake project.
+ *
+ * @param inputs - The action inputs.
+ */
+function buildProject(inputs) {
+    (0,external_node_child_process_namespaceObject.execFileSync)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
+}
+
+;// CONCATENATED MODULE: external "node:path"
+const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
+var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_namespaceObject);
+;// CONCATENATED MODULE: ./src/inputs.ts
+
+
+function getInputs() {
+    const sourceDir = (0,core.getInput)("source-dir");
+    return {
+        sourceDir,
+        buildDir: (0,core.getInput)("build-dir") || external_node_path_default().join(sourceDir, "build"),
+        generator: (0,core.getInput)("generator"),
+        cCompiler: (0,core.getInput)("c-compiler"),
+        cxxCompiler: (0,core.getInput)("cxx-compiler"),
+        cFlags: (0,core.getMultilineInput)("c-flags").join(" "),
+        cxxFlags: (0,core.getMultilineInput)("cxx-flags").join(" "),
+        options: (0,core.getMultilineInput)("options").flatMap((opts) => opts.split(" ")),
+        args: (0,core.getMultilineInput)("args").flatMap((args) => args.split(" ")),
+        runBuild: (0,core.getBooleanInput)("run-build"),
+        buildArgs: (0,core.getMultilineInput)("build-args").flatMap((args) => args.split(" ")),
+    };
+}
+
+;// CONCATENATED MODULE: ./src/index.ts
+
+
+
+try {
+    const inputs = getInputs();
+    configureProject(inputs);
+    core.setOutput("build-dir", inputs.buildDir);
+    if (inputs.runBuild) {
+        buildProject(inputs);
+    }
+}
+catch (err) {
+    core.setFailed(err);
+}
+
+})();
+

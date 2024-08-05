@@ -10,7 +10,7 @@ try {
   core.setOutput("build-dir", inputs.buildDir);
 
   if (inputs.runBuild) {
-    await buildProject(inputs);
+    buildProject(inputs);
   }
 } catch (err) {
   core.setFailed(err);
