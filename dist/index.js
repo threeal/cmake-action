@@ -26730,7 +26730,7 @@ function configureProject(inputs) {
     }
     configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
     configureArgs.push(...inputs.args);
-    (0,external_node_child_process_namespaceObject.execFileSync)("cmake", configureArgs);
+    (0,external_node_child_process_namespaceObject.execFileSync)("cmake", configureArgs, { stdio: "inherit" });
 }
 /**
  * Build a CMake project.
@@ -26738,7 +26738,9 @@ function configureProject(inputs) {
  * @param inputs - The action inputs.
  */
 function buildProject(inputs) {
-    (0,external_node_child_process_namespaceObject.execFileSync)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
+    (0,external_node_child_process_namespaceObject.execFileSync)("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs], {
+        stdio: "inherit",
+    });
 }
 
 ;// CONCATENATED MODULE: external "node:path"

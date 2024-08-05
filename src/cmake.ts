@@ -38,7 +38,7 @@ export function configureProject(inputs: Inputs): void {
   configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
   configureArgs.push(...inputs.args);
 
-  execFileSync("cmake", configureArgs);
+  execFileSync("cmake", configureArgs, { stdio: "inherit" });
 }
 
 /**
@@ -47,5 +47,7 @@ export function configureProject(inputs: Inputs): void {
  * @param inputs - The action inputs.
  */
 export function buildProject(inputs: Inputs): void {
-  execFileSync("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs]);
+  execFileSync("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs], {
+    stdio: "inherit",
+  });
 }

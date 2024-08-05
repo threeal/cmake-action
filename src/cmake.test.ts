@@ -125,6 +125,7 @@ describe("configure a CMake project", () => {
       expect(execFileSync).toHaveBeenLastCalledWith(
         "cmake",
         testCase.expectedArgs,
+        { stdio: "inherit" },
       );
     });
   }
@@ -169,6 +170,7 @@ describe("build a CMake project", () => {
       expect(execFileSync).toHaveBeenLastCalledWith(
         "cmake",
         testCase.expectedArgs,
+        { stdio: "inherit" },
       );
     });
   }
