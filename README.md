@@ -28,6 +28,8 @@ This action wraps the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake
 
 ## Example Usages
 
+This example demonstrates how to use this action to configure and build a CMake project in a GitHub Actions workflow:
+
 ```yaml
 name: Build
 on:
@@ -37,46 +39,64 @@ jobs:
     name: Build Project
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Project
         uses: actions/checkout@v4.1.7
 
-      - name: Configure and Build Project
-        uses: threeal/cmake-action@main
-```
-
-> **Note**: You can replace `main` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
-
-### Configure Project Without Building
-
-```yaml
-- name: Configure Project
-  uses: threeal/cmake-action@main
-  with:
-    run-build: false
+      - name: Build Project
+        uses: threeal/cmake-action@v2.0.0
 ```
 
 ### Specify the Source and Build Directories
 
+By default, this action uses the current working directory as the source directory and the `build` directory inside the source directory as the build directory. To use different directories, set the `source-dir` and/or `build-dir` inputs:
+
 ```yaml
-- name: Configure and Build Project
-  uses: threeal/cmake-action@main
+- name: Build Project
+  uses: threeal/cmake-action@v2.0.0
   with:
-    source-dir: submodules
-    build-dir: submodules/out
+    source-dir: source
+    build-dir: output
 ```
 
-### Using Ninja as the Generator and Clang as the Compiler
+### Specify Build System Generator and Compiler
+
+The following example demonstrates how to use this action to configure and build the project using [Ninja](https://ninja-build.org/) as the build system generator and [Clang](https://clang.llvm.org/) as the compiler:
 
 ```yaml
 - name: Setup Ninja
-  uses: seanmiddleditch/gha-setup-ninja@v4
+  uses: seanmiddleditch/gha-setup-ninja@v5
 
-- name: Configure and Build Project
-  uses: threeal/cmake-action@main
+- name: Build Project
+  uses: threeal/cmake-action@v2.0.0
   with:
     generator: Ninja
-    c-compiler: clang
     cxx-compiler: clang++
+```
+
+### Specify Additional Options
+
+Use the `options` input to specify additional options for configuring a project:
+
+```yaml
+- name: Build Project
+  uses: threeal/cmake-action@v2.0.0
+  with:
+    options: |
+      BUILD_TESTS=ON
+      BUILD_EXAMPLES=ON
+```
+
+The above example is equivalent to calling the `cmake` command with the `-DBUILD_TESTS=ON` and `-DBUILD_EXAMPLES=ON` arguments.
+
+### Configure Project Without Building
+
+By default, this action builds the project after configuration. To skip the build process, set the `run-build` option to `false`:
+
+```yaml
+- name: Configure Project
+  uses: threeal/cmake-action@v2.0.0
+  with:
+    run-build: false
 ```
 
 ## License
