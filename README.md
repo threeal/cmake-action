@@ -1,44 +1,34 @@
 # CMake Action
 
-Configure and build your [CMake](https://cmake.org/) project using [GitHub Actions](https://github.com/features/actions). This action simplifies the workflow for configuring the build environment of a CMake project. It can also be optionally specified to build a CMake project using the `cmake --build` command.
+Configure and build [CMake](https://cmake.org/) projects on [GitHub Actions](https://github.com/features/actions).
 
-## Features
+This action wraps the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command for configuring and building CMake projects. It provides a more streamlined syntax for specifying build options compared to calling the `cmake` command directly.
 
-- Configures a CMake project using the [`cmake`](https://cmake.org/cmake/help/latest/manual/cmake.1.html) command.
-- Optionally builds a CMake project using the `cmake --build` command.
-- Supports specifying multiple CMake options directly from the action inputs.
-
-## Usage
-
-For more information, refer to [action.yml](./action.yml) and the [GitHub Actions guide](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
-
-### Inputs
+## Available Inputs
 
 | Name | Value Type | Description |
 | --- | --- | --- |
-| `source-dir` | Path | The source directory of the CMake project. It defaults to the current directory. |
-| `build-dir` | Path | The build directory of the CMake project. It defaults to the `build` directory inside the source directory. |
-| `generator` | String | The build system generator for the CMake project. It appends the CMake configuration arguments with `-G [val]`. |
-| `c-compiler` | String | The preferred executable for compiling C language files. It appends the CMake configuration arguments with `-D CMAKE_C_COMPILER=[val]`. |
-| `cxx-compiler` | String | The preferred executable for compiling C++ language files. It appends the CMake configuration arguments with `-D CMAKE_CXX_COMPILER=[val]`. |
-| `c-flags` | Multiple strings | Additional flags to pass when compiling C language files. It appends the CMake configuration arguments with `-D CMAKE_C_FLAGS=[vals]`. |
-| `cxx-flags` | Multiple strings | Additional flags to pass when compiling C++ language files. It appends the CMake configuration arguments with `-D CMAKE_CXX_FLAGS=[vals]`. |
-| `options` | Multiple strings | Additional options to pass during the CMake configuration. It appends the CMake configuration arguments with each of `-D [val]`. |
+| `source-dir` | Path | The source directory of the CMake project. Defaults to the current working directory. |
+| `build-dir` | Path | The build directory of the CMake project. Defaults to the `build` directory inside the source directory. |
+| `generator` | String | The build system generator for the CMake project. Equivalent to setting the `-G` option. |
+| `c-compiler` | String | The preferred executable for compiling C language files. Equivalent to defining the `CMAKE_C_COMPILER` variable. |
+| `cxx-compiler` | String | The preferred executable for compiling C++ language files. Equivalent to defining the `CMAKE_CXX_COMPILER` variable. |
+| `c-flags` | Multiple strings | Additional flags to pass when compiling C language files. Equivalent to defining the `CMAKE_C_FLAGS` variable. |
+| `cxx-flags` | Multiple strings | Additional flags to pass when compiling C++ language files. Equivalent to defining the `CMAKE_CXX_FLAGS` variable. |
+| `options` | Multiple strings | Additional options to pass during the CMake configuration. Equivalent to setting the `-D` option. |
 | `args` | Multiple strings | Additional arguments to pass during the CMake configuration. |
-| `run-build` | `true` or `false` | If enabled, it builds the project using CMake. It defaults to `true`. |
+| `run-build` | `true` or `false` | If enabled, builds the project using CMake. Defaults to `true`. |
 | `build-args` | Multiple strings | Additional arguments to pass during the CMake build. |
 
-> **Note**: Multiple strings mean that the input can be specified with more than one value. Separate each value with a space or a new line.
-
-> **Note**: All inputs are optional.
-
-### Outputs
+## Available Outputs
 
 | Name | Value Type | Description |
 | --- | --- | --- |
 | `build-dir` | Path | The build directory of the CMake project. |
 
-### Examples
+## Example Usages
+
+This example demonstrates how to use this action to configure and build a CMake project in a GitHub Actions workflow:
 
 ```yaml
 name: Build
@@ -49,46 +39,64 @@ jobs:
     name: Build Project
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Project
         uses: actions/checkout@v4.1.7
 
-      - name: Configure and Build Project
-        uses: threeal/cmake-action@main
+      - name: Build Project
+        uses: threeal/cmake-action@v2.0.0
 ```
 
-> **Note**: You can replace `main` with any version you prefer. See [this](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses).
+### Specify the Source and Build Directories
 
-#### Configure Project Without Building
+By default, this action uses the current working directory as the source directory and the `build` directory inside the source directory as the build directory. To use different directories, set the `source-dir` and/or `build-dir` inputs:
 
 ```yaml
-- name: Configure Project
-  uses: threeal/cmake-action@main
+- name: Build Project
+  uses: threeal/cmake-action@v2.0.0
   with:
-    run-build: false
+    source-dir: source
+    build-dir: output
 ```
 
-#### Specify the Source and Build Directories
+### Specify Build System Generator and Compiler
 
-```yaml
-- name: Configure and Build Project
-  uses: threeal/cmake-action@main
-  with:
-    source-dir: submodules
-    build-dir: submodules/out
-```
-
-#### Using Ninja as the Generator and Clang as the Compiler
+The following example demonstrates how to use this action to configure and build the project using [Ninja](https://ninja-build.org/) as the build system generator and [Clang](https://clang.llvm.org/) as the compiler:
 
 ```yaml
 - name: Setup Ninja
-  uses: seanmiddleditch/gha-setup-ninja@v4
+  uses: seanmiddleditch/gha-setup-ninja@v5
 
-- name: Configure and Build Project
-  uses: threeal/cmake-action@main
+- name: Build Project
+  uses: threeal/cmake-action@v2.0.0
   with:
     generator: Ninja
-    c-compiler: clang
     cxx-compiler: clang++
+```
+
+### Specify Additional Options
+
+Use the `options` input to specify additional options for configuring a project:
+
+```yaml
+- name: Build Project
+  uses: threeal/cmake-action@v2.0.0
+  with:
+    options: |
+      BUILD_TESTS=ON
+      BUILD_EXAMPLES=ON
+```
+
+The above example is equivalent to calling the `cmake` command with the `-DBUILD_TESTS=ON` and `-DBUILD_EXAMPLES=ON` arguments.
+
+### Configure Project Without Building
+
+By default, this action builds the project after configuration. To skip the build process, set the `run-build` option to `false`:
+
+```yaml
+- name: Configure Project
+  uses: threeal/cmake-action@v2.0.0
+  with:
+    run-build: false
 ```
 
 ## License
