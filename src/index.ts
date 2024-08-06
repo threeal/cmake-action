@@ -1,4 +1,3 @@
-import * as core from "@actions/core";
 import { getErrorMessage } from "catched-error-message";
 import fs from "node:fs";
 import os from "node:os";
@@ -19,5 +18,6 @@ try {
     buildProject(inputs);
   }
 } catch (err) {
-  core.setFailed(getErrorMessage(err));
+  process.exitCode = 1;
+  process.stdout.write(`::error::${getErrorMessage(err)}${os.EOL}`);
 }
