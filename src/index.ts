@@ -5,12 +5,12 @@ import { getInputs } from "./inputs.js";
 try {
   const inputs = getInputs();
 
-  await configureProject(inputs);
+  configureProject(inputs);
 
   core.setOutput("build-dir", inputs.buildDir);
 
   if (inputs.runBuild) {
-    await buildProject(inputs);
+    buildProject(inputs);
   }
 } catch (err) {
   core.setFailed(err);
