@@ -1,16 +1,10 @@
-import { jest } from "@jest/globals";
 import path from "node:path";
-import type { Inputs } from "./inputs.js";
-
-jest.unstable_mockModule("@actions/core", () => ({
-  getMultilineInput: jest.fn(),
-}));
+import { Inputs, getInputs } from "./inputs.js";
 
 describe("get action inputs", () => {
   interface TestCase {
     name: string;
     env?: Record<string, string>;
-    multilineInputs?: Record<string, string[]>;
     expectedInputs?: Partial<Inputs>;
   }
 
@@ -59,18 +53,18 @@ describe("get action inputs", () => {
     },
     {
       name: "with C flags specified",
-      multilineInputs: { "c-flags": ["-Werror -Wall", "-Wextra"] },
+      env: { "INPUT_C-FLAGS": "-Werror -Wall\n-Wextra" },
       expectedInputs: { cFlags: "-Werror -Wall -Wextra" },
     },
     {
       name: "with C++ flags specified",
-      multilineInputs: { "cxx-flags": ["-Werror -Wall", "-Wextra -Wpedantic"] },
+      env: { "INPUT_CXX-FLAGS": "-Werror -Wall\n-Wextra  -Wpedantic" },
       expectedInputs: { cxxFlags: "-Werror -Wall -Wextra -Wpedantic" },
     },
     {
       name: "with additional options specified",
-      multilineInputs: {
-        options: ["BUILD_TESTING=ON BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+      env: {
+        INPUT_OPTIONS: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
       },
       expectedInputs: {
         options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
@@ -78,7 +72,7 @@ describe("get action inputs", () => {
     },
     {
       name: "with additional arguments specified",
-      multilineInputs: { args: ["-Wdev -Wdeprecated", "--fresh"] },
+      env: { INPUT_ARGS: "-Wdev -Wdeprecated\n--fresh" },
       expectedInputs: { args: ["-Wdev", "-Wdeprecated", "--fresh"] },
     },
     {
@@ -88,7 +82,7 @@ describe("get action inputs", () => {
     },
     {
       name: "with additional build arguments specified",
-      multilineInputs: { "build-args": ["--target foo", "--parallel 8"] },
+      env: { "INPUT_BUILD-ARGS": "--target foo\n--parallel  8" },
       expectedInputs: { buildArgs: ["--target", "foo", "--parallel", "8"] },
     },
     {
@@ -99,14 +93,12 @@ describe("get action inputs", () => {
         INPUT_GENERATOR: "Ninja",
         "INPUT_C-COMPILER": "clang",
         "INPUT_CXX-COMPILER": "clang++",
+        "INPUT_C-FLAGS": "-Werror -Wall\n-Wextra",
+        "INPUT_CXX-FLAGS": "-Werror -Wall\n-Wextra  -Wpedantic",
+        INPUT_OPTIONS: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
+        INPUT_ARGS: "-Wdev -Wdeprecated\n--fresh",
         "INPUT_RUN-BUILD": "true",
-      },
-      multilineInputs: {
-        "c-flags": ["-Werror -Wall", "-Wextra"],
-        "cxx-flags": ["-Werror -Wall", "-Wextra -Wpedantic"],
-        options: ["BUILD_TESTING=ON BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
-        args: ["-Wdev -Wdeprecated", "--fresh"],
-        "build-args": ["--target foo", "--parallel 8"],
+        "INPUT_BUILD-ARGS": "--target foo\n--parallel  8",
       },
       expectedInputs: {
         sourceDir: "project",
@@ -126,19 +118,11 @@ describe("get action inputs", () => {
 
   for (const testCase of testCases) {
     it(`should get the action inputs ${testCase.name}`, async () => {
-      const { getInputs } = await import("./inputs.js");
-      const core = await import("@actions/core");
-
       const prevEnv = process.env;
       process.env = {
         ...process.env,
         ...testCase.env,
       };
-
-      const multilineInputs = { ...testCase.multilineInputs };
-      jest.mocked(core.getMultilineInput).mockImplementation((name) => {
-        return multilineInputs[name] ?? [];
-      });
 
       expect(getInputs()).toStrictEqual({
         sourceDir: "",

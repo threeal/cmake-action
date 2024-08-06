@@ -26752,7 +26752,6 @@ const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(impo
 var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_namespaceObject);
 ;// CONCATENATED MODULE: ./src/inputs.ts
 
-
 /**
  * Retrieves an action input.
  * @param key - The key of the action input.
@@ -26770,12 +26769,18 @@ function getInputs() {
         generator: getInput("generator"),
         cCompiler: getInput("c-compiler"),
         cxxCompiler: getInput("cxx-compiler"),
-        cFlags: (0,core.getMultilineInput)("c-flags").join(" "),
-        cxxFlags: (0,core.getMultilineInput)("cxx-flags").join(" "),
-        options: (0,core.getMultilineInput)("options").flatMap((opts) => opts.split(" ")),
-        args: (0,core.getMultilineInput)("args").flatMap((args) => args.split(" ")),
+        cFlags: getInput("c-flags").replaceAll(/\s+/g, " "),
+        cxxFlags: getInput("cxx-flags").replaceAll(/\s+/g, " "),
+        options: getInput("options")
+            .split(/\s+/)
+            .filter((arg) => arg != ""),
+        args: getInput("args")
+            .split(/\s+/)
+            .filter((arg) => arg != ""),
         runBuild: getInput("run-build") == "true",
-        buildArgs: (0,core.getMultilineInput)("build-args").flatMap((args) => args.split(" ")),
+        buildArgs: getInput("build-args")
+            .split(/\s+/)
+            .filter((arg) => arg != ""),
     };
 }
 
