@@ -134,7 +134,10 @@ describe("get action inputs", () => {
       const { getInputs } = await import("./inputs.js");
       const core = await import("@actions/core");
 
-      const booleanInputs = { "run-build": true, ...testCase.booleanInputs };
+      const booleanInputs: Record<string, boolean> = {
+        "run-build": true,
+        ...testCase.booleanInputs,
+      };
       jest.mocked(core.getBooleanInput).mockImplementation((name) => {
         return booleanInputs[name] ?? false;
       });
