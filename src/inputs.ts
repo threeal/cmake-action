@@ -1,4 +1,4 @@
-import { getBooleanInput, getMultilineInput } from "@actions/core";
+import { getMultilineInput } from "@actions/core";
 import path from "node:path";
 
 export interface Inputs {
@@ -37,7 +37,7 @@ export function getInputs(): Inputs {
     cxxFlags: getMultilineInput("cxx-flags").join(" "),
     options: getMultilineInput("options").flatMap((opts) => opts.split(" ")),
     args: getMultilineInput("args").flatMap((args) => args.split(" ")),
-    runBuild: getBooleanInput("run-build"),
+    runBuild: getInput("run-build") == "true",
     buildArgs: getMultilineInput("build-args").flatMap((args) =>
       args.split(" "),
     ),

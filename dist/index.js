@@ -26774,7 +26774,7 @@ function getInputs() {
         cxxFlags: (0,core.getMultilineInput)("cxx-flags").join(" "),
         options: (0,core.getMultilineInput)("options").flatMap((opts) => opts.split(" ")),
         args: (0,core.getMultilineInput)("args").flatMap((args) => args.split(" ")),
-        runBuild: (0,core.getBooleanInput)("run-build"),
+        runBuild: getInput("run-build") == "true",
         buildArgs: (0,core.getMultilineInput)("build-args").flatMap((args) => args.split(" ")),
     };
 }

@@ -3,7 +3,6 @@ import path from "node:path";
 import type { Inputs } from "./inputs.js";
 
 jest.unstable_mockModule("@actions/core", () => ({
-  getBooleanInput: jest.fn(),
   getMultilineInput: jest.fn(),
 }));
 
@@ -11,7 +10,6 @@ describe("get action inputs", () => {
   interface TestCase {
     name: string;
     env?: Record<string, string>;
-    booleanInputs?: Record<string, boolean>;
     multilineInputs?: Record<string, string[]>;
     expectedInputs?: Partial<Inputs>;
   }
@@ -85,8 +83,8 @@ describe("get action inputs", () => {
     },
     {
       name: "with run build specified",
-      booleanInputs: { "run-build": false },
-      expectedInputs: { runBuild: false },
+      env: { "INPUT_RUN-BUILD": "true" },
+      expectedInputs: { runBuild: true },
     },
     {
       name: "with additional build arguments specified",
@@ -95,15 +93,13 @@ describe("get action inputs", () => {
     },
     {
       name: "with all specified",
-      booleanInputs: {
-        "run-build": false,
-      },
       env: {
         "INPUT_SOURCE-DIR": "project",
         "INPUT_BUILD-DIR": "output",
         INPUT_GENERATOR: "Ninja",
         "INPUT_C-COMPILER": "clang",
         "INPUT_CXX-COMPILER": "clang++",
+        "INPUT_RUN-BUILD": "true",
       },
       multilineInputs: {
         "c-flags": ["-Werror -Wall", "-Wextra"],
@@ -122,7 +118,7 @@ describe("get action inputs", () => {
         cxxFlags: "-Werror -Wall -Wextra -Wpedantic",
         options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
         args: ["-Wdev", "-Wdeprecated", "--fresh"],
-        runBuild: false,
+        runBuild: true,
         buildArgs: ["--target", "foo", "--parallel", "8"],
       },
     },
@@ -132,14 +128,6 @@ describe("get action inputs", () => {
     it(`should get the action inputs ${testCase.name}`, async () => {
       const { getInputs } = await import("./inputs.js");
       const core = await import("@actions/core");
-
-      const booleanInputs: Record<string, boolean> = {
-        "run-build": true,
-        ...testCase.booleanInputs,
-      };
-      jest.mocked(core.getBooleanInput).mockImplementation((name) => {
-        return booleanInputs[name] ?? false;
-      });
 
       const prevEnv = process.env;
       process.env = {
@@ -162,7 +150,7 @@ describe("get action inputs", () => {
         cxxFlags: "",
         options: [],
         args: [],
-        runBuild: true,
+        runBuild: false,
         buildArgs: [],
         ...testCase.expectedInputs,
       });
