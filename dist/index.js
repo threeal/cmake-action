@@ -26698,6 +26698,10 @@ var __webpack_exports__ = {};
 
 // EXTERNAL MODULE: ../../../.yarn/berry/cache/@actions-core-npm-1.10.1-3cb1000b4d-10c0.zip/node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2340);
+;// CONCATENATED MODULE: ../../../.yarn/berry/cache/catched-error-message-npm-0.0.1-9126a73d25-10c0.zip/node_modules/catched-error-message/dist/index.esm.js
+function r(r){return function(r){if("object"==typeof(e=r)&&null!==e&&"message"in e&&"string"==typeof e.message)return r;var e;try{return new Error(JSON.stringify(r))}catch(e){return new Error(String(r))}}(r).message}
+//# sourceMappingURL=index.esm.js.map
+
 ;// CONCATENATED MODULE: external "node:child_process"
 const external_node_child_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:child_process");
 ;// CONCATENATED MODULE: ./src/cmake.ts
@@ -26770,6 +26774,7 @@ function getInputs() {
 
 
 
+
 try {
     const inputs = getInputs();
     configureProject(inputs);
@@ -26779,7 +26784,7 @@ try {
     }
 }
 catch (err) {
-    core.setFailed(err);
+    core.setFailed(r(err));
 }
 
 })();
