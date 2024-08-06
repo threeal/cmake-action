@@ -26702,6 +26702,12 @@ var core = __nccwpck_require__(2340);
 function r(r){return function(r){if("object"==typeof(e=r)&&null!==e&&"message"in e&&"string"==typeof e.message)return r;var e;try{return new Error(JSON.stringify(r))}catch(e){return new Error(String(r))}}(r).message}
 //# sourceMappingURL=index.esm.js.map
 
+;// CONCATENATED MODULE: external "node:fs"
+const external_node_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs");
+var external_node_fs_default = /*#__PURE__*/__nccwpck_require__.n(external_node_fs_namespaceObject);
+;// CONCATENATED MODULE: external "node:os"
+const external_node_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:os");
+var external_node_os_default = /*#__PURE__*/__nccwpck_require__.n(external_node_os_namespaceObject);
 ;// CONCATENATED MODULE: external "node:child_process"
 const external_node_child_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:child_process");
 ;// CONCATENATED MODULE: ./src/cmake.ts
@@ -26789,10 +26795,15 @@ function getInputs() {
 
 
 
+
+
 try {
     const inputs = getInputs();
     configureProject(inputs);
-    core.setOutput("build-dir", inputs.buildDir);
+    const output = process.env["GITHUB_OUTPUT"];
+    if (output !== undefined) {
+        external_node_fs_default().appendFileSync(output, `build-dir=${inputs.buildDir}${(external_node_os_default()).EOL}`);
+    }
     if (inputs.runBuild) {
         buildProject(inputs);
     }
