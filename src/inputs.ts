@@ -1,4 +1,4 @@
-import { getBooleanInput, getInput, getMultilineInput } from "@actions/core";
+import { getBooleanInput, getMultilineInput } from "@actions/core";
 import path from "node:path";
 
 export interface Inputs {
@@ -13,6 +13,16 @@ export interface Inputs {
   args: string[];
   runBuild: boolean;
   buildArgs: string[];
+}
+
+/**
+ * Retrieves an action input.
+ * @param key - The key of the action input.
+ * @returns The action input value as a string.
+ */
+function getInput(key: string): string {
+  const value = process.env[`INPUT_${key.toUpperCase()}`] || "";
+  return value.trim();
 }
 
 export function getInputs(): Inputs {

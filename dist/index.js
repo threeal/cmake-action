@@ -26753,14 +26753,23 @@ var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_nod
 ;// CONCATENATED MODULE: ./src/inputs.ts
 
 
+/**
+ * Retrieves an action input.
+ * @param key - The key of the action input.
+ * @returns The action input value as a string.
+ */
+function getInput(key) {
+    const value = process.env[`INPUT_${key.toUpperCase()}`] || "";
+    return value.trim();
+}
 function getInputs() {
-    const sourceDir = (0,core.getInput)("source-dir");
+    const sourceDir = getInput("source-dir");
     return {
         sourceDir,
-        buildDir: (0,core.getInput)("build-dir") || external_node_path_default().join(sourceDir, "build"),
-        generator: (0,core.getInput)("generator"),
-        cCompiler: (0,core.getInput)("c-compiler"),
-        cxxCompiler: (0,core.getInput)("cxx-compiler"),
+        buildDir: getInput("build-dir") || external_node_path_default().join(sourceDir, "build"),
+        generator: getInput("generator"),
+        cCompiler: getInput("c-compiler"),
+        cxxCompiler: getInput("cxx-compiler"),
         cFlags: (0,core.getMultilineInput)("c-flags").join(" "),
         cxxFlags: (0,core.getMultilineInput)("cxx-flags").join(" "),
         options: (0,core.getMultilineInput)("options").flatMap((opts) => opts.split(" ")),

@@ -4,15 +4,14 @@ import type { Inputs } from "./inputs.js";
 
 jest.unstable_mockModule("@actions/core", () => ({
   getBooleanInput: jest.fn(),
-  getInput: jest.fn(),
   getMultilineInput: jest.fn(),
 }));
 
 describe("get action inputs", () => {
   interface TestCase {
     name: string;
+    env?: Record<string, string>;
     booleanInputs?: Record<string, boolean>;
-    stringInputs?: Record<string, string>;
     multilineInputs?: Record<string, string[]>;
     expectedInputs?: Partial<Inputs>;
   }
@@ -23,7 +22,7 @@ describe("get action inputs", () => {
     },
     {
       name: "with source directory specified",
-      stringInputs: { "source-dir": "project" },
+      env: { "INPUT_SOURCE-DIR": "project" },
       expectedInputs: {
         sourceDir: "project",
         buildDir: path.join("project", "build"),
@@ -31,14 +30,14 @@ describe("get action inputs", () => {
     },
     {
       name: "with build directory specified",
-      stringInputs: { "build-dir": "output" },
+      env: { "INPUT_BUILD-DIR": "output" },
       expectedInputs: { buildDir: "output" },
     },
     {
       name: "with source and build directories specified",
-      stringInputs: {
-        "source-dir": "project",
-        "build-dir": "output",
+      env: {
+        "INPUT_SOURCE-DIR": "project",
+        "INPUT_BUILD-DIR": "output",
       },
       expectedInputs: {
         sourceDir: "project",
@@ -47,17 +46,17 @@ describe("get action inputs", () => {
     },
     {
       name: "with generator specified",
-      stringInputs: { generator: "Ninja" },
+      env: { INPUT_GENERATOR: "Ninja" },
       expectedInputs: { generator: "Ninja" },
     },
     {
       name: "with C compiler specified",
-      stringInputs: { "c-compiler": "clang" },
+      env: { "INPUT_C-COMPILER": "clang" },
       expectedInputs: { cCompiler: "clang" },
     },
     {
       name: "with C++ compiler specified",
-      stringInputs: { "cxx-compiler": "clang++" },
+      env: { "INPUT_CXX-COMPILER": "clang++" },
       expectedInputs: { cxxCompiler: "clang++" },
     },
     {
@@ -99,12 +98,12 @@ describe("get action inputs", () => {
       booleanInputs: {
         "run-build": false,
       },
-      stringInputs: {
-        "source-dir": "project",
-        "build-dir": "output",
-        generator: "Ninja",
-        "c-compiler": "clang",
-        "cxx-compiler": "clang++",
+      env: {
+        "INPUT_SOURCE-DIR": "project",
+        "INPUT_BUILD-DIR": "output",
+        INPUT_GENERATOR: "Ninja",
+        "INPUT_C-COMPILER": "clang",
+        "INPUT_CXX-COMPILER": "clang++",
       },
       multilineInputs: {
         "c-flags": ["-Werror -Wall", "-Wextra"],
@@ -142,10 +141,11 @@ describe("get action inputs", () => {
         return booleanInputs[name] ?? false;
       });
 
-      const stringInputs = { ...testCase.stringInputs };
-      jest.mocked(core.getInput).mockImplementation((name) => {
-        return stringInputs[name] ?? "";
-      });
+      const prevEnv = process.env;
+      process.env = {
+        ...process.env,
+        ...testCase.env,
+      };
 
       const multilineInputs = { ...testCase.multilineInputs };
       jest.mocked(core.getMultilineInput).mockImplementation((name) => {
@@ -166,6 +166,8 @@ describe("get action inputs", () => {
         buildArgs: [],
         ...testCase.expectedInputs,
       });
+
+      process.env = prevEnv;
     });
   }
 });
