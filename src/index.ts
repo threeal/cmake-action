@@ -1,5 +1,6 @@
-import * as core from "@actions/core";
 import { getErrorMessage } from "catched-error-message";
+import fs from "node:fs";
+import os from "node:os";
 import { buildProject, configureProject } from "./cmake.js";
 import { getInputs } from "./inputs.js";
 
@@ -8,11 +9,15 @@ try {
 
   configureProject(inputs);
 
-  core.setOutput("build-dir", inputs.buildDir);
+  fs.appendFileSync(
+    process.env["GITHUB_OUTPUT"] as string,
+    `build-dir=${inputs.buildDir}${os.EOL}`,
+  );
 
   if (inputs.runBuild) {
     buildProject(inputs);
   }
 } catch (err) {
-  core.setFailed(getErrorMessage(err));
+  process.exitCode = 1;
+  process.stdout.write(`::error::${getErrorMessage(err)}${os.EOL}`);
 }
