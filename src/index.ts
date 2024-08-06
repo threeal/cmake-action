@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import { getErrorMessage } from "catched-error-message";
 import { buildProject, configureProject } from "./cmake.js";
 import { getInputs } from "./inputs.js";
 
@@ -13,5 +14,5 @@ try {
     buildProject(inputs);
   }
 } catch (err) {
-  core.setFailed(err);
+  core.setFailed(getErrorMessage(err));
 }
