@@ -1,4 +1,6 @@
 {
+  "include": ["src"],
+  "exclude": ["**/*.test.ts"],
   "compilerOptions": {
     "module": "node16",
     "moduleResolution": "node16",
