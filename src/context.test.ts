@@ -39,28 +39,56 @@ describe("get action context", () => {
     {
       name: "with generator specified",
       env: { INPUT_GENERATOR: "Ninja" },
-      expectedContext: { generator: "Ninja" },
+      expectedContext: {
+        configure: {
+          generator: "Ninja",
+          options: [],
+          args: [],
+        },
+      },
     },
     {
       name: "with C compiler specified",
       env: { "INPUT_C-COMPILER": "clang" },
-      expectedContext: { options: ["CMAKE_C_COMPILER=clang"] },
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: ["CMAKE_C_COMPILER=clang"],
+          args: [],
+        },
+      },
     },
     {
       name: "with C++ compiler specified",
       env: { "INPUT_CXX-COMPILER": "clang++" },
-      expectedContext: { options: ["CMAKE_CXX_COMPILER=clang++"] },
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: ["CMAKE_CXX_COMPILER=clang++"],
+          args: [],
+        },
+      },
     },
     {
       name: "with C flags specified",
       env: { "INPUT_C-FLAGS": "-Werror -Wall\n-Wextra" },
-      expectedContext: { options: ["CMAKE_C_FLAGS=-Werror -Wall -Wextra"] },
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: ["CMAKE_C_FLAGS=-Werror -Wall -Wextra"],
+          args: [],
+        },
+      },
     },
     {
       name: "with C++ flags specified",
       env: { "INPUT_CXX-FLAGS": "-Werror -Wall\n-Wextra  -Wpedantic" },
       expectedContext: {
-        options: ["CMAKE_CXX_FLAGS=-Werror -Wall -Wextra -Wpedantic"],
+        configure: {
+          generator: "",
+          options: ["CMAKE_CXX_FLAGS=-Werror -Wall -Wextra -Wpedantic"],
+          args: [],
+        },
       },
     },
     {
@@ -69,23 +97,38 @@ describe("get action context", () => {
         INPUT_OPTIONS: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
       },
       expectedContext: {
-        options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+        configure: {
+          generator: "",
+          options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+          args: [],
+        },
       },
     },
     {
       name: "with additional arguments specified",
       env: { INPUT_ARGS: "-Wdev -Wdeprecated\n--fresh" },
-      expectedContext: { args: ["-Wdev", "-Wdeprecated", "--fresh"] },
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: [],
+          args: ["-Wdev", "-Wdeprecated", "--fresh"],
+        },
+      },
     },
     {
       name: "with run build specified",
       env: { "INPUT_RUN-BUILD": "true" },
-      expectedContext: { runBuild: true },
+      expectedContext: { build: { enabled: true, args: [] } },
     },
     {
       name: "with additional build arguments specified",
       env: { "INPUT_BUILD-ARGS": "--target foo\n--parallel  8" },
-      expectedContext: { buildArgs: ["--target", "foo", "--parallel", "8"] },
+      expectedContext: {
+        build: {
+          enabled: false,
+          args: ["--target", "foo", "--parallel", "8"],
+        },
+      },
     },
     {
       name: "with all specified",
@@ -105,19 +148,23 @@ describe("get action context", () => {
       expectedContext: {
         sourceDir: "project",
         buildDir: "output",
-        generator: "Ninja",
-        options: [
-          "CMAKE_C_COMPILER=clang",
-          "CMAKE_CXX_COMPILER=clang++",
-          "CMAKE_C_FLAGS=-Werror -Wall -Wextra",
-          "CMAKE_CXX_FLAGS=-Werror -Wall -Wextra -Wpedantic",
-          "BUILD_TESTING=ON",
-          "BUILD_EXAMPLES=ON",
-          "BUILD_DOCS=ON",
-        ],
-        args: ["-Wdev", "-Wdeprecated", "--fresh"],
-        runBuild: true,
-        buildArgs: ["--target", "foo", "--parallel", "8"],
+        configure: {
+          generator: "Ninja",
+          options: [
+            "CMAKE_C_COMPILER=clang",
+            "CMAKE_CXX_COMPILER=clang++",
+            "CMAKE_C_FLAGS=-Werror -Wall -Wextra",
+            "CMAKE_CXX_FLAGS=-Werror -Wall -Wextra -Wpedantic",
+            "BUILD_TESTING=ON",
+            "BUILD_EXAMPLES=ON",
+            "BUILD_DOCS=ON",
+          ],
+          args: ["-Wdev", "-Wdeprecated", "--fresh"],
+        },
+        build: {
+          enabled: true,
+          args: ["--target", "foo", "--parallel", "8"],
+        },
       },
     },
   ];
@@ -133,11 +180,15 @@ describe("get action context", () => {
       expect(getContext()).toStrictEqual({
         sourceDir: "",
         buildDir: "build",
-        generator: "",
-        options: [],
-        args: [],
-        runBuild: false,
-        buildArgs: [],
+        configure: {
+          generator: "",
+          options: [],
+          args: [],
+        },
+        build: {
+          enabled: false,
+          args: [],
+        },
         ...testCase.expectedContext,
       });
 

@@ -15,12 +15,12 @@ export function configureProject(context: Context): void {
 
   configureArgs.push("-B", context.buildDir);
 
-  if (context.generator) {
-    configureArgs.push(...["-G", context.generator]);
+  if (context.configure.generator) {
+    configureArgs.push(...["-G", context.configure.generator]);
   }
 
-  configureArgs.push(...context.options.map((opt) => "-D" + opt));
-  configureArgs.push(...context.args);
+  configureArgs.push(...context.configure.options.map((opt) => "-D" + opt));
+  configureArgs.push(...context.configure.args);
 
   execFileSync("cmake", configureArgs, { stdio: "inherit" });
 }
@@ -31,7 +31,7 @@ export function configureProject(context: Context): void {
  * @param context - The action context.
  */
 export function buildProject(context: Context): void {
-  execFileSync("cmake", ["--build", context.buildDir, ...context.buildArgs], {
+  execFileSync("cmake", ["--build", context.buildDir, ...context.build.args], {
     stdio: "inherit",
   });
 }

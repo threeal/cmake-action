@@ -3,11 +3,15 @@ import path from "node:path";
 export interface Context {
   sourceDir: string;
   buildDir: string;
-  generator: string;
-  options: string[];
-  args: string[];
-  runBuild: boolean;
-  buildArgs: string[];
+  configure: {
+    generator: string;
+    options: string[];
+    args: string[];
+  };
+  build: {
+    enabled: boolean;
+    args: string[];
+  };
 }
 
 /**
@@ -53,14 +57,18 @@ export function getContext(): Context {
   return {
     sourceDir,
     buildDir: getInput("build-dir") || path.join(sourceDir, "build"),
-    generator: getInput("generator"),
-    options,
-    args: getInput("args")
-      .split(/\s+/)
-      .filter((arg) => arg != ""),
-    runBuild: getInput("run-build") == "true",
-    buildArgs: getInput("build-args")
-      .split(/\s+/)
-      .filter((arg) => arg != ""),
+    configure: {
+      generator: getInput("generator"),
+      options,
+      args: getInput("args")
+        .split(/\s+/)
+        .filter((arg) => arg != ""),
+    },
+    build: {
+      enabled: getInput("run-build") == "true",
+      args: getInput("build-args")
+        .split(/\s+/)
+        .filter((arg) => arg != ""),
+    },
   };
 }

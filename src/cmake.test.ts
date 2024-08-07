@@ -10,11 +10,15 @@ interface TestCase {
 const defaultContext: Context = {
   sourceDir: "",
   buildDir: "build",
-  generator: "",
-  options: [],
-  args: [],
-  runBuild: true,
-  buildArgs: [],
+  configure: {
+    generator: "",
+    options: [],
+    args: [],
+  },
+  build: {
+    enabled: true,
+    args: [],
+  },
 };
 
 jest.unstable_mockModule("node:child_process", () => ({
@@ -39,12 +43,18 @@ describe("configure a CMake project", () => {
     },
     {
       name: "with generator specified",
-      context: { generator: "Ninja" },
+      context: { configure: { generator: "Ninja", options: [], args: [] } },
       expectedArgs: ["-B", "build", "-G", "Ninja"],
     },
     {
       name: "with additional options specified",
-      context: { options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"] },
+      context: {
+        configure: {
+          generator: "",
+          options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"],
+          args: [],
+        },
+      },
       expectedArgs: [
         "-B",
         "build",
@@ -54,7 +64,13 @@ describe("configure a CMake project", () => {
     },
     {
       name: "with additional arguments specified",
-      context: { args: ["-Wdev", "-Wdeprecated"] },
+      context: {
+        configure: {
+          generator: "",
+          options: [],
+          args: ["-Wdev", "-Wdeprecated"],
+        },
+      },
       expectedArgs: ["-B", "build", "-Wdev", "-Wdeprecated"],
     },
     {
@@ -62,9 +78,11 @@ describe("configure a CMake project", () => {
       context: {
         sourceDir: "project",
         buildDir: "output",
-        generator: "Ninja",
-        options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"],
-        args: ["-Wdev", "-Wdeprecated"],
+        configure: {
+          generator: "Ninja",
+          options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"],
+          args: ["-Wdev", "-Wdeprecated"],
+        },
       },
       expectedArgs: [
         "project",
@@ -112,14 +130,17 @@ describe("build a CMake project", () => {
     },
     {
       name: "with additional arguments specified",
-      context: { buildArgs: ["--target", "foo"] },
+      context: { build: { enabled: true, args: ["--target", "foo"] } },
       expectedArgs: ["--build", "build", "--target", "foo"],
     },
     {
       name: "with all specified",
       context: {
         buildDir: "output",
-        buildArgs: ["--target", "foo"],
+        build: {
+          enabled: true,
+          args: ["--target", "foo"],
+        },
       },
       expectedArgs: ["--build", "output", "--target", "foo"],
     },

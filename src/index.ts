@@ -14,7 +14,7 @@ try {
     `build-dir=${context.buildDir}${os.EOL}`,
   );
 
-  if (context.runBuild) {
+  if (context.build.enabled) {
     buildProject(context);
   }
 } catch (err) {

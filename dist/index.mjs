@@ -16,11 +16,11 @@ function configureProject(context) {
         configureArgs.push(context.sourceDir);
     }
     configureArgs.push("-B", context.buildDir);
-    if (context.generator) {
-        configureArgs.push(...["-G", context.generator]);
+    if (context.configure.generator) {
+        configureArgs.push(...["-G", context.configure.generator]);
     }
-    configureArgs.push(...context.options.map((opt) => "-D" + opt));
-    configureArgs.push(...context.args);
+    configureArgs.push(...context.configure.options.map((opt) => "-D" + opt));
+    configureArgs.push(...context.configure.args);
     execFileSync("cmake", configureArgs, { stdio: "inherit" });
 }
 /**
@@ -29,7 +29,7 @@ function configureProject(context) {
  * @param context - The action context.
  */
 function buildProject(context) {
-    execFileSync("cmake", ["--build", context.buildDir, ...context.buildArgs], {
+    execFileSync("cmake", ["--build", context.buildDir, ...context.build.args], {
         stdio: "inherit",
     });
 }
@@ -72,15 +72,19 @@ function getContext() {
     return {
         sourceDir,
         buildDir: getInput("build-dir") || path.join(sourceDir, "build"),
-        generator: getInput("generator"),
-        options,
-        args: getInput("args")
-            .split(/\s+/)
-            .filter((arg) => arg != ""),
-        runBuild: getInput("run-build") == "true",
-        buildArgs: getInput("build-args")
-            .split(/\s+/)
-            .filter((arg) => arg != ""),
+        configure: {
+            generator: getInput("generator"),
+            options,
+            args: getInput("args")
+                .split(/\s+/)
+                .filter((arg) => arg != ""),
+        },
+        build: {
+            enabled: getInput("run-build") == "true",
+            args: getInput("build-args")
+                .split(/\s+/)
+                .filter((arg) => arg != ""),
+        },
     };
 }
 
@@ -88,7 +92,7 @@ try {
     const context = getContext();
     configureProject(context);
     fs.appendFileSync(process.env["GITHUB_OUTPUT"], `build-dir=${context.buildDir}${os.EOL}`);
-    if (context.runBuild) {
+    if (context.build.enabled) {
         buildProject(context);
     }
 }
