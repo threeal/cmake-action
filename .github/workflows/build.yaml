@@ -23,6 +23,7 @@ jobs:
           version: stable
 
       - name: Build Package
-        run: |
-          yarn build
-          git diff --exit-code HEAD
+        run: yarn build
+
+      - name: Check Diff
+        run: git diff --exit-code HEAD

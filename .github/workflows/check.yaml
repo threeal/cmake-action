@@ -23,9 +23,10 @@ jobs:
           version: stable
 
       - name: Check Formatting
-        run: |
-          yarn format
-          git diff --exit-code HEAD
+        run: yarn format
+
+      - name: Check Diff
+        run: git diff --exit-code HEAD
 
       - name: Check Lint
         run: yarn lint
