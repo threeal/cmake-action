@@ -26,4 +26,4 @@ jobs:
         run: yarn build
 
       - name: Check Diff
-        run: git diff --exit-code HEAD
+        run: git diff && git diff-index --quiet --exit-code HEAD

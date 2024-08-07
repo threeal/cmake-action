@@ -26,7 +26,7 @@ jobs:
         run: yarn format
 
       - name: Check Diff
-        run: git diff --exit-code HEAD
+        run: git diff && git diff-index --quiet --exit-code HEAD
 
       - name: Check Lint
         run: yarn lint
