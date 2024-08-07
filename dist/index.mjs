@@ -8,40 +8,40 @@ function r(r){return function(r){if("object"==typeof(e=r)&&null!==e&&"message"in
 /**
  * Configures the build system of a CMake project.
  *
- * @param inputs - The action inputs.
+ * @param context - The action context.
  */
-function configureProject(inputs) {
+function configureProject(context) {
     const configureArgs = [];
-    if (inputs.sourceDir) {
-        configureArgs.push(inputs.sourceDir);
+    if (context.sourceDir) {
+        configureArgs.push(context.sourceDir);
     }
-    configureArgs.push("-B", inputs.buildDir);
-    if (inputs.generator) {
-        configureArgs.push(...["-G", inputs.generator]);
+    configureArgs.push("-B", context.buildDir);
+    if (context.generator) {
+        configureArgs.push(...["-G", context.generator]);
     }
-    if (inputs.cCompiler) {
-        configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);
+    if (context.cCompiler) {
+        configureArgs.push("-DCMAKE_C_COMPILER=" + context.cCompiler);
     }
-    if (inputs.cxxCompiler) {
-        configureArgs.push("-DCMAKE_CXX_COMPILER=" + inputs.cxxCompiler);
+    if (context.cxxCompiler) {
+        configureArgs.push("-DCMAKE_CXX_COMPILER=" + context.cxxCompiler);
     }
-    if (inputs.cFlags) {
-        configureArgs.push("-DCMAKE_C_FLAGS=" + inputs.cFlags);
+    if (context.cFlags) {
+        configureArgs.push("-DCMAKE_C_FLAGS=" + context.cFlags);
     }
-    if (inputs.cxxFlags) {
-        configureArgs.push("-DCMAKE_CXX_FLAGS=" + inputs.cxxFlags);
+    if (context.cxxFlags) {
+        configureArgs.push("-DCMAKE_CXX_FLAGS=" + context.cxxFlags);
     }
-    configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
-    configureArgs.push(...inputs.args);
+    configureArgs.push(...context.options.map((opt) => "-D" + opt));
+    configureArgs.push(...context.args);
     execFileSync("cmake", configureArgs, { stdio: "inherit" });
 }
 /**
  * Build a CMake project.
  *
- * @param inputs - The action inputs.
+ * @param context - The action context.
  */
-function buildProject(inputs) {
-    execFileSync("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs], {
+function buildProject(context) {
+    execFileSync("cmake", ["--build", context.buildDir, ...context.buildArgs], {
         stdio: "inherit",
     });
 }
@@ -55,7 +55,7 @@ function getInput(key) {
     const value = process.env[`INPUT_${key.toUpperCase()}`] || "";
     return value.trim();
 }
-function getInputs() {
+function getContext() {
     const sourceDir = getInput("source-dir");
     return {
         sourceDir,
@@ -79,11 +79,11 @@ function getInputs() {
 }
 
 try {
-    const inputs = getInputs();
-    configureProject(inputs);
-    fs.appendFileSync(process.env["GITHUB_OUTPUT"], `build-dir=${inputs.buildDir}${os.EOL}`);
-    if (inputs.runBuild) {
-        buildProject(inputs);
+    const context = getContext();
+    configureProject(context);
+    fs.appendFileSync(process.env["GITHUB_OUTPUT"], `build-dir=${context.buildDir}${os.EOL}`);
+    if (context.runBuild) {
+        buildProject(context);
     }
 }
 catch (err) {

@@ -1,11 +1,11 @@
 import path from "node:path";
-import { Inputs, getInputs } from "./inputs.js";
+import { Context, getContext } from "./context.js";
 
-describe("get action inputs", () => {
+describe("get action context", () => {
   interface TestCase {
     name: string;
     env?: Record<string, string>;
-    expectedInputs?: Partial<Inputs>;
+    expectedContext?: Partial<Context>;
   }
 
   const testCases: TestCase[] = [
@@ -15,7 +15,7 @@ describe("get action inputs", () => {
     {
       name: "with source directory specified",
       env: { "INPUT_SOURCE-DIR": "project" },
-      expectedInputs: {
+      expectedContext: {
         sourceDir: "project",
         buildDir: path.join("project", "build"),
       },
@@ -23,7 +23,7 @@ describe("get action inputs", () => {
     {
       name: "with build directory specified",
       env: { "INPUT_BUILD-DIR": "output" },
-      expectedInputs: { buildDir: "output" },
+      expectedContext: { buildDir: "output" },
     },
     {
       name: "with source and build directories specified",
@@ -31,7 +31,7 @@ describe("get action inputs", () => {
         "INPUT_SOURCE-DIR": "project",
         "INPUT_BUILD-DIR": "output",
       },
-      expectedInputs: {
+      expectedContext: {
         sourceDir: "project",
         buildDir: "output",
       },
@@ -39,51 +39,51 @@ describe("get action inputs", () => {
     {
       name: "with generator specified",
       env: { INPUT_GENERATOR: "Ninja" },
-      expectedInputs: { generator: "Ninja" },
+      expectedContext: { generator: "Ninja" },
     },
     {
       name: "with C compiler specified",
       env: { "INPUT_C-COMPILER": "clang" },
-      expectedInputs: { cCompiler: "clang" },
+      expectedContext: { cCompiler: "clang" },
     },
     {
       name: "with C++ compiler specified",
       env: { "INPUT_CXX-COMPILER": "clang++" },
-      expectedInputs: { cxxCompiler: "clang++" },
+      expectedContext: { cxxCompiler: "clang++" },
     },
     {
       name: "with C flags specified",
       env: { "INPUT_C-FLAGS": "-Werror -Wall\n-Wextra" },
-      expectedInputs: { cFlags: "-Werror -Wall -Wextra" },
+      expectedContext: { cFlags: "-Werror -Wall -Wextra" },
     },
     {
       name: "with C++ flags specified",
       env: { "INPUT_CXX-FLAGS": "-Werror -Wall\n-Wextra  -Wpedantic" },
-      expectedInputs: { cxxFlags: "-Werror -Wall -Wextra -Wpedantic" },
+      expectedContext: { cxxFlags: "-Werror -Wall -Wextra -Wpedantic" },
     },
     {
       name: "with additional options specified",
       env: {
         INPUT_OPTIONS: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
       },
-      expectedInputs: {
+      expectedContext: {
         options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
       },
     },
     {
       name: "with additional arguments specified",
       env: { INPUT_ARGS: "-Wdev -Wdeprecated\n--fresh" },
-      expectedInputs: { args: ["-Wdev", "-Wdeprecated", "--fresh"] },
+      expectedContext: { args: ["-Wdev", "-Wdeprecated", "--fresh"] },
     },
     {
       name: "with run build specified",
       env: { "INPUT_RUN-BUILD": "true" },
-      expectedInputs: { runBuild: true },
+      expectedContext: { runBuild: true },
     },
     {
       name: "with additional build arguments specified",
       env: { "INPUT_BUILD-ARGS": "--target foo\n--parallel  8" },
-      expectedInputs: { buildArgs: ["--target", "foo", "--parallel", "8"] },
+      expectedContext: { buildArgs: ["--target", "foo", "--parallel", "8"] },
     },
     {
       name: "with all specified",
@@ -100,7 +100,7 @@ describe("get action inputs", () => {
         "INPUT_RUN-BUILD": "true",
         "INPUT_BUILD-ARGS": "--target foo\n--parallel  8",
       },
-      expectedInputs: {
+      expectedContext: {
         sourceDir: "project",
         buildDir: "output",
         generator: "Ninja",
@@ -117,14 +117,14 @@ describe("get action inputs", () => {
   ];
 
   for (const testCase of testCases) {
-    it(`should get the action inputs ${testCase.name}`, async () => {
+    it(`should get the action context ${testCase.name}`, async () => {
       const prevEnv = process.env;
       process.env = {
         ...process.env,
         ...testCase.env,
       };
 
-      expect(getInputs()).toStrictEqual({
+      expect(getContext()).toStrictEqual({
         sourceDir: "",
         buildDir: "build",
         generator: "",
@@ -136,7 +136,7 @@ describe("get action inputs", () => {
         args: [],
         runBuild: false,
         buildArgs: [],
-        ...testCase.expectedInputs,
+        ...testCase.expectedContext,
       });
 
       process.env = prevEnv;

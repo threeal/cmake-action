@@ -1,6 +1,6 @@
 import path from "node:path";
 
-export interface Inputs {
+export interface Context {
   sourceDir: string;
   buildDir: string;
   generator: string;
@@ -24,7 +24,7 @@ function getInput(key: string): string {
   return value.trim();
 }
 
-export function getInputs(): Inputs {
+export function getContext(): Context {
   const sourceDir = getInput("source-dir");
   return {
     sourceDir,

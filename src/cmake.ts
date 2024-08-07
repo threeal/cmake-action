@@ -1,42 +1,42 @@
 import { execFileSync } from "node:child_process";
-import type { Inputs } from "./inputs.js";
+import type { Context } from "./context.js";
 
 /**
  * Configures the build system of a CMake project.
  *
- * @param inputs - The action inputs.
+ * @param context - The action context.
  */
-export function configureProject(inputs: Inputs): void {
+export function configureProject(context: Context): void {
   const configureArgs = [];
 
-  if (inputs.sourceDir) {
-    configureArgs.push(inputs.sourceDir);
+  if (context.sourceDir) {
+    configureArgs.push(context.sourceDir);
   }
 
-  configureArgs.push("-B", inputs.buildDir);
+  configureArgs.push("-B", context.buildDir);
 
-  if (inputs.generator) {
-    configureArgs.push(...["-G", inputs.generator]);
+  if (context.generator) {
+    configureArgs.push(...["-G", context.generator]);
   }
 
-  if (inputs.cCompiler) {
-    configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);
+  if (context.cCompiler) {
+    configureArgs.push("-DCMAKE_C_COMPILER=" + context.cCompiler);
   }
 
-  if (inputs.cxxCompiler) {
-    configureArgs.push("-DCMAKE_CXX_COMPILER=" + inputs.cxxCompiler);
+  if (context.cxxCompiler) {
+    configureArgs.push("-DCMAKE_CXX_COMPILER=" + context.cxxCompiler);
   }
 
-  if (inputs.cFlags) {
-    configureArgs.push("-DCMAKE_C_FLAGS=" + inputs.cFlags);
+  if (context.cFlags) {
+    configureArgs.push("-DCMAKE_C_FLAGS=" + context.cFlags);
   }
 
-  if (inputs.cxxFlags) {
-    configureArgs.push("-DCMAKE_CXX_FLAGS=" + inputs.cxxFlags);
+  if (context.cxxFlags) {
+    configureArgs.push("-DCMAKE_CXX_FLAGS=" + context.cxxFlags);
   }
 
-  configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
-  configureArgs.push(...inputs.args);
+  configureArgs.push(...context.options.map((opt) => "-D" + opt));
+  configureArgs.push(...context.args);
 
   execFileSync("cmake", configureArgs, { stdio: "inherit" });
 }
@@ -44,10 +44,10 @@ export function configureProject(inputs: Inputs): void {
 /**
  * Build a CMake project.
  *
- * @param inputs - The action inputs.
+ * @param context - The action context.
  */
-export function buildProject(inputs: Inputs): void {
-  execFileSync("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs], {
+export function buildProject(context: Context): void {
+  execFileSync("cmake", ["--build", context.buildDir, ...context.buildArgs], {
     stdio: "inherit",
   });
 }
