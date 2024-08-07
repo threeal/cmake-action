@@ -4,10 +4,6 @@ export interface Context {
   sourceDir: string;
   buildDir: string;
   generator: string;
-  cCompiler: string;
-  cxxCompiler: string;
-  cFlags: string;
-  cxxFlags: string;
   options: string[];
   args: string[];
   runBuild: boolean;
@@ -26,17 +22,39 @@ function getInput(key: string): string {
 
 export function getContext(): Context {
   const sourceDir = getInput("source-dir");
+  const options: string[] = [];
+
+  let input = getInput("c-compiler");
+  if (input) options.push(`CMAKE_C_COMPILER=${input}`);
+
+  input = getInput("cxx-compiler");
+  if (input) options.push(`CMAKE_CXX_COMPILER=${input}`);
+
+  input = getInput("c-flags");
+  if (input) {
+    const flags = input.replaceAll(/\s+/g, " ");
+    options.push(`CMAKE_C_FLAGS=${flags}`);
+  }
+
+  input = getInput("cxx-flags");
+  if (input) {
+    const flags = input.replaceAll(/\s+/g, " ");
+    options.push(`CMAKE_CXX_FLAGS=${flags}`);
+  }
+
+  input = getInput("options");
+  if (input) {
+    const opts = input.split(/\s+/).filter((arg) => arg != "");
+    for (const opt of opts) {
+      options.push(opt);
+    }
+  }
+
   return {
     sourceDir,
     buildDir: getInput("build-dir") || path.join(sourceDir, "build"),
     generator: getInput("generator"),
-    cCompiler: getInput("c-compiler"),
-    cxxCompiler: getInput("cxx-compiler"),
-    cFlags: getInput("c-flags").replaceAll(/\s+/g, " "),
-    cxxFlags: getInput("cxx-flags").replaceAll(/\s+/g, " "),
-    options: getInput("options")
-      .split(/\s+/)
-      .filter((arg) => arg != ""),
+    options,
     args: getInput("args")
       .split(/\s+/)
       .filter((arg) => arg != ""),

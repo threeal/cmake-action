@@ -19,22 +19,6 @@ export function configureProject(context: Context): void {
     configureArgs.push(...["-G", context.generator]);
   }
 
-  if (context.cCompiler) {
-    configureArgs.push("-DCMAKE_C_COMPILER=" + context.cCompiler);
-  }
-
-  if (context.cxxCompiler) {
-    configureArgs.push("-DCMAKE_CXX_COMPILER=" + context.cxxCompiler);
-  }
-
-  if (context.cFlags) {
-    configureArgs.push("-DCMAKE_C_FLAGS=" + context.cFlags);
-  }
-
-  if (context.cxxFlags) {
-    configureArgs.push("-DCMAKE_CXX_FLAGS=" + context.cxxFlags);
-  }
-
   configureArgs.push(...context.options.map((opt) => "-D" + opt));
   configureArgs.push(...context.args);
 

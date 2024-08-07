@@ -19,18 +19,6 @@ function configureProject(context) {
     if (context.generator) {
         configureArgs.push(...["-G", context.generator]);
     }
-    if (context.cCompiler) {
-        configureArgs.push("-DCMAKE_C_COMPILER=" + context.cCompiler);
-    }
-    if (context.cxxCompiler) {
-        configureArgs.push("-DCMAKE_CXX_COMPILER=" + context.cxxCompiler);
-    }
-    if (context.cFlags) {
-        configureArgs.push("-DCMAKE_C_FLAGS=" + context.cFlags);
-    }
-    if (context.cxxFlags) {
-        configureArgs.push("-DCMAKE_CXX_FLAGS=" + context.cxxFlags);
-    }
     configureArgs.push(...context.options.map((opt) => "-D" + opt));
     configureArgs.push(...context.args);
     execFileSync("cmake", configureArgs, { stdio: "inherit" });
@@ -57,17 +45,35 @@ function getInput(key) {
 }
 function getContext() {
     const sourceDir = getInput("source-dir");
+    const options = [];
+    let input = getInput("c-compiler");
+    if (input)
+        options.push(`CMAKE_C_COMPILER=${input}`);
+    input = getInput("cxx-compiler");
+    if (input)
+        options.push(`CMAKE_CXX_COMPILER=${input}`);
+    input = getInput("c-flags");
+    if (input) {
+        const flags = input.replaceAll(/\s+/g, " ");
+        options.push(`CMAKE_C_FLAGS=${flags}`);
+    }
+    input = getInput("cxx-flags");
+    if (input) {
+        const flags = input.replaceAll(/\s+/g, " ");
+        options.push(`CMAKE_CXX_FLAGS=${flags}`);
+    }
+    input = getInput("options");
+    if (input) {
+        const opts = input.split(/\s+/).filter((arg) => arg != "");
+        for (const opt of opts) {
+            options.push(opt);
+        }
+    }
     return {
         sourceDir,
         buildDir: getInput("build-dir") || path.join(sourceDir, "build"),
         generator: getInput("generator"),
-        cCompiler: getInput("c-compiler"),
-        cxxCompiler: getInput("cxx-compiler"),
-        cFlags: getInput("c-flags").replaceAll(/\s+/g, " "),
-        cxxFlags: getInput("cxx-flags").replaceAll(/\s+/g, " "),
-        options: getInput("options")
-            .split(/\s+/)
-            .filter((arg) => arg != ""),
+        options,
         args: getInput("args")
             .split(/\s+/)
             .filter((arg) => arg != ""),
