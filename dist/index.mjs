@@ -8,40 +8,28 @@ function r(r){return function(r){if("object"==typeof(e=r)&&null!==e&&"message"in
 /**
  * Configures the build system of a CMake project.
  *
- * @param inputs - The action inputs.
+ * @param context - The action context.
  */
-function configureProject(inputs) {
+function configureProject(context) {
     const configureArgs = [];
-    if (inputs.sourceDir) {
-        configureArgs.push(inputs.sourceDir);
+    if (context.sourceDir) {
+        configureArgs.push(context.sourceDir);
     }
-    configureArgs.push("-B", inputs.buildDir);
-    if (inputs.generator) {
-        configureArgs.push(...["-G", inputs.generator]);
+    configureArgs.push("-B", context.buildDir);
+    if (context.configure.generator) {
+        configureArgs.push(...["-G", context.configure.generator]);
     }
-    if (inputs.cCompiler) {
-        configureArgs.push("-DCMAKE_C_COMPILER=" + inputs.cCompiler);
-    }
-    if (inputs.cxxCompiler) {
-        configureArgs.push("-DCMAKE_CXX_COMPILER=" + inputs.cxxCompiler);
-    }
-    if (inputs.cFlags) {
-        configureArgs.push("-DCMAKE_C_FLAGS=" + inputs.cFlags);
-    }
-    if (inputs.cxxFlags) {
-        configureArgs.push("-DCMAKE_CXX_FLAGS=" + inputs.cxxFlags);
-    }
-    configureArgs.push(...inputs.options.map((opt) => "-D" + opt));
-    configureArgs.push(...inputs.args);
+    configureArgs.push(...context.configure.options.map((opt) => "-D" + opt));
+    configureArgs.push(...context.configure.args);
     execFileSync("cmake", configureArgs, { stdio: "inherit" });
 }
 /**
  * Build a CMake project.
  *
- * @param inputs - The action inputs.
+ * @param context - The action context.
  */
-function buildProject(inputs) {
-    execFileSync("cmake", ["--build", inputs.buildDir, ...inputs.buildArgs], {
+function buildProject(context) {
+    execFileSync("cmake", ["--build", context.buildDir, ...context.build.args], {
         stdio: "inherit",
     });
 }
@@ -55,35 +43,57 @@ function getInput(key) {
     const value = process.env[`INPUT_${key.toUpperCase()}`] || "";
     return value.trim();
 }
-function getInputs() {
+function getContext() {
     const sourceDir = getInput("source-dir");
+    const options = [];
+    let input = getInput("c-compiler");
+    if (input)
+        options.push(`CMAKE_C_COMPILER=${input}`);
+    input = getInput("cxx-compiler");
+    if (input)
+        options.push(`CMAKE_CXX_COMPILER=${input}`);
+    input = getInput("c-flags");
+    if (input) {
+        const flags = input.replaceAll(/\s+/g, " ");
+        options.push(`CMAKE_C_FLAGS=${flags}`);
+    }
+    input = getInput("cxx-flags");
+    if (input) {
+        const flags = input.replaceAll(/\s+/g, " ");
+        options.push(`CMAKE_CXX_FLAGS=${flags}`);
+    }
+    input = getInput("options");
+    if (input) {
+        const opts = input.split(/\s+/).filter((arg) => arg != "");
+        for (const opt of opts) {
+            options.push(opt);
+        }
+    }
     return {
         sourceDir,
         buildDir: getInput("build-dir") || path.join(sourceDir, "build"),
-        generator: getInput("generator"),
-        cCompiler: getInput("c-compiler"),
-        cxxCompiler: getInput("cxx-compiler"),
-        cFlags: getInput("c-flags").replaceAll(/\s+/g, " "),
-        cxxFlags: getInput("cxx-flags").replaceAll(/\s+/g, " "),
-        options: getInput("options")
-            .split(/\s+/)
-            .filter((arg) => arg != ""),
-        args: getInput("args")
-            .split(/\s+/)
-            .filter((arg) => arg != ""),
-        runBuild: getInput("run-build") == "true",
-        buildArgs: getInput("build-args")
-            .split(/\s+/)
-            .filter((arg) => arg != ""),
+        configure: {
+            generator: getInput("generator"),
+            options,
+            args: getInput("args")
+                .split(/\s+/)
+                .filter((arg) => arg != ""),
+        },
+        build: {
+            enabled: getInput("run-build") == "true",
+            args: getInput("build-args")
+                .split(/\s+/)
+                .filter((arg) => arg != ""),
+        },
     };
 }
 
 try {
-    const inputs = getInputs();
-    configureProject(inputs);
-    fs.appendFileSync(process.env["GITHUB_OUTPUT"], `build-dir=${inputs.buildDir}${os.EOL}`);
-    if (inputs.runBuild) {
-        buildProject(inputs);
+    const context = getContext();
+    configureProject(context);
+    fs.appendFileSync(process.env["GITHUB_OUTPUT"], `build-dir=${context.buildDir}${os.EOL}`);
+    if (context.build.enabled) {
+        buildProject(context);
     }
 }
 catch (err) {

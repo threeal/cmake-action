@@ -1,11 +1,11 @@
 import path from "node:path";
-import { Inputs, getInputs } from "./inputs.js";
+import { Context, getContext } from "./context.js";
 
-describe("get action inputs", () => {
+describe("get action context", () => {
   interface TestCase {
     name: string;
     env?: Record<string, string>;
-    expectedInputs?: Partial<Inputs>;
+    expectedContext?: Partial<Context>;
   }
 
   const testCases: TestCase[] = [
@@ -15,7 +15,7 @@ describe("get action inputs", () => {
     {
       name: "with source directory specified",
       env: { "INPUT_SOURCE-DIR": "project" },
-      expectedInputs: {
+      expectedContext: {
         sourceDir: "project",
         buildDir: path.join("project", "build"),
       },
@@ -23,7 +23,7 @@ describe("get action inputs", () => {
     {
       name: "with build directory specified",
       env: { "INPUT_BUILD-DIR": "output" },
-      expectedInputs: { buildDir: "output" },
+      expectedContext: { buildDir: "output" },
     },
     {
       name: "with source and build directories specified",
@@ -31,7 +31,7 @@ describe("get action inputs", () => {
         "INPUT_SOURCE-DIR": "project",
         "INPUT_BUILD-DIR": "output",
       },
-      expectedInputs: {
+      expectedContext: {
         sourceDir: "project",
         buildDir: "output",
       },
@@ -39,51 +39,96 @@ describe("get action inputs", () => {
     {
       name: "with generator specified",
       env: { INPUT_GENERATOR: "Ninja" },
-      expectedInputs: { generator: "Ninja" },
+      expectedContext: {
+        configure: {
+          generator: "Ninja",
+          options: [],
+          args: [],
+        },
+      },
     },
     {
       name: "with C compiler specified",
       env: { "INPUT_C-COMPILER": "clang" },
-      expectedInputs: { cCompiler: "clang" },
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: ["CMAKE_C_COMPILER=clang"],
+          args: [],
+        },
+      },
     },
     {
       name: "with C++ compiler specified",
       env: { "INPUT_CXX-COMPILER": "clang++" },
-      expectedInputs: { cxxCompiler: "clang++" },
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: ["CMAKE_CXX_COMPILER=clang++"],
+          args: [],
+        },
+      },
     },
     {
       name: "with C flags specified",
       env: { "INPUT_C-FLAGS": "-Werror -Wall\n-Wextra" },
-      expectedInputs: { cFlags: "-Werror -Wall -Wextra" },
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: ["CMAKE_C_FLAGS=-Werror -Wall -Wextra"],
+          args: [],
+        },
+      },
     },
     {
       name: "with C++ flags specified",
       env: { "INPUT_CXX-FLAGS": "-Werror -Wall\n-Wextra  -Wpedantic" },
-      expectedInputs: { cxxFlags: "-Werror -Wall -Wextra -Wpedantic" },
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: ["CMAKE_CXX_FLAGS=-Werror -Wall -Wextra -Wpedantic"],
+          args: [],
+        },
+      },
     },
     {
       name: "with additional options specified",
       env: {
         INPUT_OPTIONS: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
       },
-      expectedInputs: {
-        options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+          args: [],
+        },
       },
     },
     {
       name: "with additional arguments specified",
       env: { INPUT_ARGS: "-Wdev -Wdeprecated\n--fresh" },
-      expectedInputs: { args: ["-Wdev", "-Wdeprecated", "--fresh"] },
+      expectedContext: {
+        configure: {
+          generator: "",
+          options: [],
+          args: ["-Wdev", "-Wdeprecated", "--fresh"],
+        },
+      },
     },
     {
       name: "with run build specified",
       env: { "INPUT_RUN-BUILD": "true" },
-      expectedInputs: { runBuild: true },
+      expectedContext: { build: { enabled: true, args: [] } },
     },
     {
       name: "with additional build arguments specified",
       env: { "INPUT_BUILD-ARGS": "--target foo\n--parallel  8" },
-      expectedInputs: { buildArgs: ["--target", "foo", "--parallel", "8"] },
+      expectedContext: {
+        build: {
+          enabled: false,
+          args: ["--target", "foo", "--parallel", "8"],
+        },
+      },
     },
     {
       name: "with all specified",
@@ -100,43 +145,51 @@ describe("get action inputs", () => {
         "INPUT_RUN-BUILD": "true",
         "INPUT_BUILD-ARGS": "--target foo\n--parallel  8",
       },
-      expectedInputs: {
+      expectedContext: {
         sourceDir: "project",
         buildDir: "output",
-        generator: "Ninja",
-        cCompiler: "clang",
-        cxxCompiler: "clang++",
-        cFlags: "-Werror -Wall -Wextra",
-        cxxFlags: "-Werror -Wall -Wextra -Wpedantic",
-        options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
-        args: ["-Wdev", "-Wdeprecated", "--fresh"],
-        runBuild: true,
-        buildArgs: ["--target", "foo", "--parallel", "8"],
+        configure: {
+          generator: "Ninja",
+          options: [
+            "CMAKE_C_COMPILER=clang",
+            "CMAKE_CXX_COMPILER=clang++",
+            "CMAKE_C_FLAGS=-Werror -Wall -Wextra",
+            "CMAKE_CXX_FLAGS=-Werror -Wall -Wextra -Wpedantic",
+            "BUILD_TESTING=ON",
+            "BUILD_EXAMPLES=ON",
+            "BUILD_DOCS=ON",
+          ],
+          args: ["-Wdev", "-Wdeprecated", "--fresh"],
+        },
+        build: {
+          enabled: true,
+          args: ["--target", "foo", "--parallel", "8"],
+        },
       },
     },
   ];
 
   for (const testCase of testCases) {
-    it(`should get the action inputs ${testCase.name}`, async () => {
+    it(`should get the action context ${testCase.name}`, async () => {
       const prevEnv = process.env;
       process.env = {
         ...process.env,
         ...testCase.env,
       };
 
-      expect(getInputs()).toStrictEqual({
+      expect(getContext()).toStrictEqual({
         sourceDir: "",
         buildDir: "build",
-        generator: "",
-        cCompiler: "",
-        cxxCompiler: "",
-        cFlags: "",
-        cxxFlags: "",
-        options: [],
-        args: [],
-        runBuild: false,
-        buildArgs: [],
-        ...testCase.expectedInputs,
+        configure: {
+          generator: "",
+          options: [],
+          args: [],
+        },
+        build: {
+          enabled: false,
+          args: [],
+        },
+        ...testCase.expectedContext,
       });
 
       process.env = prevEnv;

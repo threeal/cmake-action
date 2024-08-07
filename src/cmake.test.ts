@@ -1,24 +1,24 @@
 import { jest } from "@jest/globals";
-import type { Inputs } from "./inputs.js";
+import type { Context } from "./context.js";
 
 interface TestCase {
   name: string;
-  inputs?: Partial<Inputs>;
+  context?: Partial<Context>;
   expectedArgs: string[];
 }
 
-const defaultInputs: Inputs = {
+const defaultContext: Context = {
   sourceDir: "",
   buildDir: "build",
-  generator: "",
-  cCompiler: "",
-  cxxCompiler: "",
-  cFlags: "",
-  cxxFlags: "",
-  options: [],
-  args: [],
-  runBuild: true,
-  buildArgs: [],
+  configure: {
+    generator: "",
+    options: [],
+    args: [],
+  },
+  build: {
+    enabled: true,
+    args: [],
+  },
 };
 
 jest.unstable_mockModule("node:child_process", () => ({
@@ -33,42 +33,28 @@ describe("configure a CMake project", () => {
     },
     {
       name: "with source directory specified",
-      inputs: { sourceDir: "project" },
+      context: { sourceDir: "project" },
       expectedArgs: ["project", "-B", "build"],
     },
     {
       name: "with build directory specified",
-      inputs: { buildDir: "output" },
+      context: { buildDir: "output" },
       expectedArgs: ["-B", "output"],
     },
     {
       name: "with generator specified",
-      inputs: { generator: "Ninja" },
+      context: { configure: { generator: "Ninja", options: [], args: [] } },
       expectedArgs: ["-B", "build", "-G", "Ninja"],
     },
     {
-      name: "with C compiler specified",
-      inputs: { cCompiler: "clang" },
-      expectedArgs: ["-B", "build", "-DCMAKE_C_COMPILER=clang"],
-    },
-    {
-      name: "with C++ compiler specified",
-      inputs: { cxxCompiler: "clang++" },
-      expectedArgs: ["-B", "build", "-DCMAKE_CXX_COMPILER=clang++"],
-    },
-    {
-      name: "with C flags specified",
-      inputs: { cFlags: "-Werror -Wall" },
-      expectedArgs: ["-B", "build", "-DCMAKE_C_FLAGS=-Werror -Wall"],
-    },
-    {
-      name: "with C++ flags specified",
-      inputs: { cxxFlags: "-Werror -Wall -Wextra" },
-      expectedArgs: ["-B", "build", "-DCMAKE_CXX_FLAGS=-Werror -Wall -Wextra"],
-    },
-    {
       name: "with additional options specified",
-      inputs: { options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"] },
+      context: {
+        configure: {
+          generator: "",
+          options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"],
+          args: [],
+        },
+      },
       expectedArgs: [
         "-B",
         "build",
@@ -78,21 +64,25 @@ describe("configure a CMake project", () => {
     },
     {
       name: "with additional arguments specified",
-      inputs: { args: ["-Wdev", "-Wdeprecated"] },
+      context: {
+        configure: {
+          generator: "",
+          options: [],
+          args: ["-Wdev", "-Wdeprecated"],
+        },
+      },
       expectedArgs: ["-B", "build", "-Wdev", "-Wdeprecated"],
     },
     {
       name: "with all specified",
-      inputs: {
+      context: {
         sourceDir: "project",
         buildDir: "output",
-        generator: "Ninja",
-        cCompiler: "clang",
-        cxxCompiler: "clang++",
-        cFlags: "-Werror -Wall",
-        cxxFlags: "-Werror -Wall -Wextra",
-        options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"],
-        args: ["-Wdev", "-Wdeprecated"],
+        configure: {
+          generator: "Ninja",
+          options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON"],
+          args: ["-Wdev", "-Wdeprecated"],
+        },
       },
       expectedArgs: [
         "project",
@@ -100,10 +90,6 @@ describe("configure a CMake project", () => {
         "output",
         "-G",
         "Ninja",
-        "-DCMAKE_C_COMPILER=clang",
-        "-DCMAKE_CXX_COMPILER=clang++",
-        "-DCMAKE_C_FLAGS=-Werror -Wall",
-        "-DCMAKE_CXX_FLAGS=-Werror -Wall -Wextra",
         "-DBUILD_TESTING=ON",
         "-DBUILD_EXAMPLES=ON",
         "-Wdev",
@@ -119,7 +105,7 @@ describe("configure a CMake project", () => {
 
       jest.mocked(execFileSync).mockReset();
 
-      configureProject({ ...defaultInputs, ...testCase.inputs });
+      configureProject({ ...defaultContext, ...testCase.context });
 
       expect(execFileSync).toHaveBeenCalledTimes(1);
       expect(execFileSync).toHaveBeenLastCalledWith(
@@ -139,19 +125,22 @@ describe("build a CMake project", () => {
     },
     {
       name: "with build directory specified",
-      inputs: { buildDir: "output" },
+      context: { buildDir: "output" },
       expectedArgs: ["--build", "output"],
     },
     {
       name: "with additional arguments specified",
-      inputs: { buildArgs: ["--target", "foo"] },
+      context: { build: { enabled: true, args: ["--target", "foo"] } },
       expectedArgs: ["--build", "build", "--target", "foo"],
     },
     {
       name: "with all specified",
-      inputs: {
+      context: {
         buildDir: "output",
-        buildArgs: ["--target", "foo"],
+        build: {
+          enabled: true,
+          args: ["--target", "foo"],
+        },
       },
       expectedArgs: ["--build", "output", "--target", "foo"],
     },
@@ -164,7 +153,7 @@ describe("build a CMake project", () => {
 
       jest.mocked(execFileSync).mockReset();
 
-      buildProject({ ...defaultInputs, ...testCase.inputs });
+      buildProject({ ...defaultContext, ...testCase.context });
 
       expect(execFileSync).toHaveBeenCalledTimes(1);
       expect(execFileSync).toHaveBeenLastCalledWith(
