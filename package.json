@@ -9,7 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "catched-error-message": "^0.0.1"
+    "gha-utils": "^0.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",

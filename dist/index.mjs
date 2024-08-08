@@ -3,7 +3,34 @@ import os from 'node:os';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
-function r(r){return function(r){if("object"==typeof(e=r)&&null!==e&&"message"in e&&"string"==typeof e.message)return r;var e;try{return new Error(JSON.stringify(r))}catch(e){return new Error(String(r))}}(r).message}
+/**
+ * Retrieves the value of a GitHub Actions input.
+ *
+ * @param name - The name of the GitHub Actions input.
+ * @returns The value of the GitHub Actions input, or an empty string if not found.
+ */
+function getInput(name) {
+    const value = process.env[`INPUT_${name.toUpperCase()}`] || "";
+    return value.trim();
+}
+/**
+ * Sets the value of a GitHub Actions output.
+ *
+ * @param name - The name of the GitHub Actions output.
+ * @param value - The value of the GitHub Actions output
+ */
+function setOutput(name, value) {
+    fs.appendFileSync(process.env["GITHUB_OUTPUT"], `${name}=${value}${os.EOL}`);
+}
+/**
+ * Logs an error message on GitHub Actions.
+ *
+ * @param err - The error, which can be of any type.
+ */
+function error(err) {
+    const message = err instanceof Error ? err.message : String(err);
+    process.stdout.write(`::error::${message}${os.EOL}`);
+}
 
 /**
  * Configures the build system of a CMake project.
@@ -34,15 +61,6 @@ function buildProject(context) {
     });
 }
 
-/**
- * Retrieves an action input.
- * @param key - The key of the action input.
- * @returns The action input value as a string.
- */
-function getInput(key) {
-    const value = process.env[`INPUT_${key.toUpperCase()}`] || "";
-    return value.trim();
-}
 function getContext() {
     const sourceDir = getInput("source-dir");
     const options = [];
@@ -91,12 +109,12 @@ function getContext() {
 try {
     const context = getContext();
     configureProject(context);
-    fs.appendFileSync(process.env["GITHUB_OUTPUT"], `build-dir=${context.buildDir}${os.EOL}`);
+    setOutput("build-dir", context.buildDir);
     if (context.build.enabled) {
         buildProject(context);
     }
 }
 catch (err) {
-    process.exitCode = 1;
-    process.stdout.write(`::error::${r(err)}${os.EOL}`);
+    error(err);
+    process.exit(1);
 }

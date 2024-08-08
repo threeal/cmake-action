@@ -1,3 +1,4 @@
+import { getInput } from "gha-utils";
 import path from "node:path";
 
 export interface Context {
@@ -12,16 +13,6 @@ export interface Context {
     enabled: boolean;
     args: string[];
   };
-}
-
-/**
- * Retrieves an action input.
- * @param key - The key of the action input.
- * @returns The action input value as a string.
- */
-function getInput(key: string): string {
-  const value = process.env[`INPUT_${key.toUpperCase()}`] || "";
-  return value.trim();
 }
 
 export function getContext(): Context {

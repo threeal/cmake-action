@@ -1670,13 +1670,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"catched-error-message@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "catched-error-message@npm:0.0.1"
-  checksum: 10c0/1f10cd4323a73bec7a57b7495730e5dad9995120b04e85b5f654f7b40dc6a36320d95cc55e49cdf78753158e18790ef725e2ec7309ebced3acd6c9a557ac075b
-  languageName: node
-  linkType: hard
-
 "chalk@npm:^2.4.2":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
@@ -2384,6 +2377,13 @@ __metadata:
   version: 6.0.1
   resolution: "get-stream@npm:6.0.1"
   checksum: 10c0/49825d57d3fd6964228e6200a58169464b8e8970489b3acdc24906c782fb7f01f9f56f8e6653c4a50713771d6658f7cfe051e5eb8c12e334138c9c918b296341
+  languageName: node
+  linkType: hard
+
+"gha-utils@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "gha-utils@npm:0.1.0"
+  checksum: 10c0/8c1cc68e89434a8af8a64d71a2dae9a9248ce581b522718ba51f78b5447cad9c16b8d70097a885f797d547bbafdb7bc481d9d41ac1ce0b2db084d500ebfbc838
   languageName: node
   linkType: hard
 
@@ -4132,8 +4132,8 @@ __metadata:
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^22.1.0"
-    catched-error-message: "npm:^0.0.1"
     eslint: "npm:^9.8.0"
+    gha-utils: "npm:^0.1.0"
     jest: "npm:^29.7.0"
     prettier: "npm:^3.3.3"
     rollup: "npm:^4.20.0"
