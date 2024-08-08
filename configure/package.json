@@ -1,7 +1,10 @@
 {
-  "name": "cmake-action",
+  "name": "cmake-action-configure",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "lib/*"
+  ],
   "scripts": {
     "build": "rollup -c",
     "format": "prettier --write --cache . !dist !README.md",
