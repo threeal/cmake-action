@@ -1,6 +1,4 @@
-import { getErrorMessage } from "catched-error-message";
-import fs from "node:fs";
-import os from "node:os";
+import { error, setOutput } from "gha-utils";
 import { buildProject, configureProject } from "./cmake.js";
 import { getContext } from "./context.js";
 
@@ -9,15 +7,12 @@ try {
 
   configureProject(context);
 
-  fs.appendFileSync(
-    process.env["GITHUB_OUTPUT"] as string,
-    `build-dir=${context.buildDir}${os.EOL}`,
-  );
+  setOutput("build-dir", context.buildDir);
 
   if (context.build.enabled) {
     buildProject(context);
   }
 } catch (err) {
-  process.exitCode = 1;
-  process.stdout.write(`::error::${getErrorMessage(err)}${os.EOL}`);
+  error(err);
+  process.exit(1);
 }
