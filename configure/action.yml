@@ -1,0 +1,32 @@
+name: Configure CMake Action
+description: Configure CMake projects
+author: Alfi Maulana
+branding:
+  color: gray-dark
+  icon: terminal
+inputs:
+  source-dir:
+    description: The source directory of the CMake project
+  build-dir:
+    description: The build directory of the CMake project
+  generator:
+    description: The build system generator for the CMake project
+  c-compiler:
+    description: The preferred executable for compiling C language files
+  cxx-compiler:
+    description: The preferred executable for compiling C++ language files
+  c-flags:
+    description: Additional flags to pass when compiling C language files
+  cxx-flags:
+    description: Additional flags to pass when compiling C++ language files
+  options:
+    description: Additional options to pass during the CMake configuration
+  args:
+    description: Additional arguments to pass during the CMake configuration
+outputs:
+  build-dir:
+    description: The build directory of the CMake project
+    value: ${{ steps.process-inputs.outputs.build-dir }}
+runs:
+  using: node20
+  main: dist/action.mjs
