@@ -1,10 +1,15 @@
+import { jest } from "@jest/globals";
 import path from "node:path";
-import { Context, getContext } from "./context.js";
+import type { Context } from "./context.js";
+
+jest.unstable_mockModule("gha-utils", () => ({
+  getInput: jest.fn(),
+}));
 
 describe("get action context", () => {
   interface TestCase {
     name: string;
-    env?: Record<string, string>;
+    inputs?: Record<string, string>;
     expectedContext?: Partial<Context>;
   }
 
@@ -14,7 +19,7 @@ describe("get action context", () => {
     },
     {
       name: "with source directory specified",
-      env: { "INPUT_SOURCE-DIR": "project" },
+      inputs: { "source-dir": "project" },
       expectedContext: {
         sourceDir: "project",
         buildDir: path.join("project", "build"),
@@ -22,14 +27,14 @@ describe("get action context", () => {
     },
     {
       name: "with build directory specified",
-      env: { "INPUT_BUILD-DIR": "output" },
+      inputs: { "build-dir": "output" },
       expectedContext: { buildDir: "output" },
     },
     {
       name: "with source and build directories specified",
-      env: {
-        "INPUT_SOURCE-DIR": "project",
-        "INPUT_BUILD-DIR": "output",
+      inputs: {
+        "source-dir": "project",
+        "build-dir": "output",
       },
       expectedContext: {
         sourceDir: "project",
@@ -38,7 +43,7 @@ describe("get action context", () => {
     },
     {
       name: "with generator specified",
-      env: { INPUT_GENERATOR: "Ninja" },
+      inputs: { generator: "Ninja" },
       expectedContext: {
         configure: {
           generator: "Ninja",
@@ -49,7 +54,7 @@ describe("get action context", () => {
     },
     {
       name: "with C compiler specified",
-      env: { "INPUT_C-COMPILER": "clang" },
+      inputs: { "c-compiler": "clang" },
       expectedContext: {
         configure: {
           generator: "",
@@ -60,7 +65,7 @@ describe("get action context", () => {
     },
     {
       name: "with C++ compiler specified",
-      env: { "INPUT_CXX-COMPILER": "clang++" },
+      inputs: { "cxx-compiler": "clang++" },
       expectedContext: {
         configure: {
           generator: "",
@@ -71,7 +76,7 @@ describe("get action context", () => {
     },
     {
       name: "with C flags specified",
-      env: { "INPUT_C-FLAGS": "-Werror -Wall\n-Wextra" },
+      inputs: { "c-flags": "-Werror -Wall\n-Wextra" },
       expectedContext: {
         configure: {
           generator: "",
@@ -82,7 +87,7 @@ describe("get action context", () => {
     },
     {
       name: "with C++ flags specified",
-      env: { "INPUT_CXX-FLAGS": "-Werror -Wall\n-Wextra  -Wpedantic" },
+      inputs: { "cxx-flags": "-Werror -Wall\n-Wextra  -Wpedantic" },
       expectedContext: {
         configure: {
           generator: "",
@@ -93,8 +98,8 @@ describe("get action context", () => {
     },
     {
       name: "with additional options specified",
-      env: {
-        INPUT_OPTIONS: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
+      inputs: {
+        options: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
       },
       expectedContext: {
         configure: {
@@ -106,7 +111,7 @@ describe("get action context", () => {
     },
     {
       name: "with additional arguments specified",
-      env: { INPUT_ARGS: "-Wdev -Wdeprecated\n--fresh" },
+      inputs: { args: "-Wdev -Wdeprecated\n--fresh" },
       expectedContext: {
         configure: {
           generator: "",
@@ -117,12 +122,12 @@ describe("get action context", () => {
     },
     {
       name: "with run build specified",
-      env: { "INPUT_RUN-BUILD": "true" },
+      inputs: { "run-build": "true" },
       expectedContext: { build: { enabled: true, args: [] } },
     },
     {
       name: "with additional build arguments specified",
-      env: { "INPUT_BUILD-ARGS": "--target foo\n--parallel  8" },
+      inputs: { "build-args": "--target foo\n--parallel  8" },
       expectedContext: {
         build: {
           enabled: false,
@@ -132,18 +137,18 @@ describe("get action context", () => {
     },
     {
       name: "with all specified",
-      env: {
-        "INPUT_SOURCE-DIR": "project",
-        "INPUT_BUILD-DIR": "output",
-        INPUT_GENERATOR: "Ninja",
-        "INPUT_C-COMPILER": "clang",
-        "INPUT_CXX-COMPILER": "clang++",
-        "INPUT_C-FLAGS": "-Werror -Wall\n-Wextra",
-        "INPUT_CXX-FLAGS": "-Werror -Wall\n-Wextra  -Wpedantic",
-        INPUT_OPTIONS: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
-        INPUT_ARGS: "-Wdev -Wdeprecated\n--fresh",
-        "INPUT_RUN-BUILD": "true",
-        "INPUT_BUILD-ARGS": "--target foo\n--parallel  8",
+      inputs: {
+        "source-dir": "project",
+        "build-dir": "output",
+        generator: "Ninja",
+        "c-compiler": "clang",
+        "cxx-compiler": "clang++",
+        "c-flags": "-Werror -Wall\n-Wextra",
+        "cxx-flags": "-Werror -Wall\n-Wextra  -Wpedantic",
+        options: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
+        args: "-Wdev -Wdeprecated\n--fresh",
+        "run-build": "true",
+        "build-args": "--target foo\n--parallel  8",
       },
       expectedContext: {
         sourceDir: "project",
@@ -171,11 +176,13 @@ describe("get action context", () => {
 
   for (const testCase of testCases) {
     it(`should get the action context ${testCase.name}`, async () => {
-      const prevEnv = process.env;
-      process.env = {
-        ...process.env,
-        ...testCase.env,
-      };
+      const { getInput } = await import("gha-utils");
+      const { getContext } = await import("./context.js");
+
+      const inputs = testCase.inputs || {};
+      jest.mocked(getInput).mockImplementation((name) => {
+        return inputs[name] || "";
+      });
 
       expect(getContext()).toStrictEqual({
         sourceDir: "",
@@ -191,8 +198,6 @@ describe("get action context", () => {
         },
         ...testCase.expectedContext,
       });
-
-      process.env = prevEnv;
     });
   }
 });
