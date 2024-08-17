@@ -1,4 +1,4 @@
-import { error, setOutput } from "gha-utils";
+import { logError, setOutput } from "gha-utils";
 import { buildProject, configureProject } from "./cmake.js";
 import { getContext } from "./context.js";
 
@@ -13,6 +13,6 @@ try {
     buildProject(context);
   }
 } catch (err) {
-  error(err);
+  logError(err);
   process.exit(1);
 }
