@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
-import { execFileSync } from 'node:child_process';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 /**
  * Retrieves the value of a GitHub Actions input.
@@ -23,11 +23,11 @@ function setOutput(name, value) {
     fs.appendFileSync(process.env["GITHUB_OUTPUT"], `${name}=${value}${os.EOL}`);
 }
 /**
- * Logs an error message on GitHub Actions.
+ * Logs an error message in GitHub Actions.
  *
  * @param err - The error, which can be of any type.
  */
-function error(err) {
+function logError(err) {
     const message = err instanceof Error ? err.message : String(err);
     process.stdout.write(`::error::${message}${os.EOL}`);
 }
@@ -115,6 +115,6 @@ try {
     }
 }
 catch (err) {
-    error(err);
+    logError(err);
     process.exit(1);
 }
