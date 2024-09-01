@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.3
         with:
-          node-version: latest
+          node-version-file: .nvmrc
 
       - name: Setup Yarn
         uses: threeal/setup-yarn-action@v2.0.0
