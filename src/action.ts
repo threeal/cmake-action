@@ -7,7 +7,7 @@ try {
 
   configureProject(context);
 
-  setOutput("build-dir", context.buildDir);
+  await setOutput("build-dir", context.buildDir);
 
   if (context.build.enabled) {
     buildProject(context);
