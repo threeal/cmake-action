@@ -37,7 +37,7 @@ on:
 jobs:
   build-project:
     name: Build Project
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Project
         uses: actions/checkout@v4.1.7
