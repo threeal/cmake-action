@@ -5,6 +5,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 /**
+ * @internal
  * Retrieves the value of an environment variable.
  *
  * @param name - The name of the environment variable.
@@ -25,7 +26,7 @@ function mustGetEnvironment(name) {
  * @returns The value of the GitHub Actions input, or an empty string if not found.
  */
 function getInput(name) {
-    const value = process.env[`INPUT_${name.toUpperCase()}`] || "";
+    const value = process.env[`INPUT_${name.toUpperCase()}`] ?? "";
     return value.trim();
 }
 /**
