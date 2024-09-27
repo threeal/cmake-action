@@ -892,9 +892,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-typescript@npm:^11.1.6":
-  version: 11.1.6
-  resolution: "@rollup/plugin-typescript@npm:11.1.6"
+"@rollup/plugin-typescript@npm:^12.1.0":
+  version: 12.1.0
+  resolution: "@rollup/plugin-typescript@npm:12.1.0"
   dependencies:
     "@rollup/pluginutils": "npm:^5.1.0"
     resolve: "npm:^1.22.1"
@@ -907,7 +907,7 @@ __metadata:
       optional: true
     tslib:
       optional: true
-  checksum: 10c0/5347cd73ac28d4cf2401a3e689864a1a0df8f3ae029abd9c38525cbc84bcfa16c3a32a0ac5698dac65ec531ba7cf8332e14f5fc7f8fa501193da23320a134c5c
+  checksum: 10c0/46ebb87e52e1aac334f80cfa601096e25a8ce97cf43c68d42e72c8d5f9b7acd074d185c3ef98274930b3f56f47d7370a2837e4c909dc4e320a09bf6e48fc100d
   languageName: node
   linkType: hard
 
@@ -4113,7 +4113,7 @@ __metadata:
     "@eslint/js": "npm:^9.11.1"
     "@jest/globals": "npm:^29.7.0"
     "@rollup/plugin-node-resolve": "npm:^15.3.0"
-    "@rollup/plugin-typescript": "npm:^11.1.6"
+    "@rollup/plugin-typescript": "npm:^12.1.0"
     "@types/jest": "npm:^29.5.13"
     "@types/node": "npm:^22.5.5"
     eslint: "npm:^9.11.1"
