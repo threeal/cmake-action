@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.4
@@ -32,13 +32,13 @@ jobs:
         os: [ubuntu-22.04, macos-14, windows-2022]
     steps:
       - name: Checkout Sample Project
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           repository: threeal/cpp-starter
           ref: v1.0.0
 
       - name: Checkout Action
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           path: cmake-action
           sparse-checkout: |
@@ -58,14 +58,14 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Sample Project
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           repository: threeal/cpp-starter
           ref: v1.0.0
           path: project
 
       - name: Checkout Action
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           path: cmake-action
           sparse-checkout: |
@@ -88,13 +88,13 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Sample Project
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           repository: threeal/cpp-starter
           ref: v1.0.0
 
       - name: Checkout Action
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           path: cmake-action
           sparse-checkout: |
@@ -115,13 +115,13 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Sample Project
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           repository: threeal/cpp-starter
           ref: v1.0.0
 
       - name: Checkout Action
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           path: cmake-action
           sparse-checkout: |
@@ -142,13 +142,13 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Sample Project
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           repository: threeal/cpp-starter
           ref: v1.0.0
 
       - name: Checkout Action
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
         with:
           path: cmake-action
           sparse-checkout: |
