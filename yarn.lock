@@ -475,10 +475,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.11.1, @eslint/js@npm:^9.11.1":
+"@eslint/js@npm:9.11.1":
   version: 9.11.1
   resolution: "@eslint/js@npm:9.11.1"
   checksum: 10c0/22916ef7b09c6f60c62635d897c66e1e3e38d90b5a5cf5e62769033472ecbcfb6ec7c886090a4b32fe65d6ce371da54384e46c26a899e38184dfc152c6152f7b
+  languageName: node
+  linkType: hard
+
+"@eslint/js@npm:^9.12.0":
+  version: 9.12.0
+  resolution: "@eslint/js@npm:9.12.0"
+  checksum: 10c0/325650a59a1ce3d97c69441501ebaf415607248bacbe8c8ca35adc7cb73b524f592f266a75772f496b06f3239e3ee1996722a242148085f0ee5fb3dd7065897c
   languageName: node
   linkType: hard
 
@@ -4110,7 +4117,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root@workspace:."
   dependencies:
-    "@eslint/js": "npm:^9.11.1"
+    "@eslint/js": "npm:^9.12.0"
     "@jest/globals": "npm:^29.7.0"
     "@rollup/plugin-node-resolve": "npm:^15.3.0"
     "@rollup/plugin-typescript": "npm:^12.1.0"
