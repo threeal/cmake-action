@@ -2437,10 +2437,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gha-utils@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "gha-utils@npm:0.4.0"
-  checksum: 10c0/8ea206e160ee8f67eb1aa2422bfe07d67f609fa294447da1a39d5ce1fc677fd1f5d44386a04aa6d0304f042cf8c430553cd13a7df6e2dabbe07932f5738bb29a
+"gha-utils@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "gha-utils@npm:0.4.1"
+  checksum: 10c0/410823a971ac5d6cb2249e4e7e2f112cf4362fad26f01644877b2756e4e9e81814e005c1adf9622c6c8d228d36c32fdc47f31b041088012688848b621c0323d7
   languageName: node
   linkType: hard
 
@@ -4159,7 +4159,7 @@ __metadata:
     "@types/jest": "npm:^29.5.14"
     "@types/node": "npm:^22.8.6"
     eslint: "npm:^9.13.0"
-    gha-utils: "npm:^0.4.0"
+    gha-utils: "npm:^0.4.1"
     jest: "npm:^29.7.0"
     prettier: "npm:^3.3.3"
     rollup: "npm:^4.24.3"
