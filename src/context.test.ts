@@ -132,11 +132,11 @@ describe("get action context", () => {
     },
     {
       name: "with additional build arguments specified",
-      inputs: { "build-args": "--target foo\n--parallel  8" },
+      inputs: { "build-args": `--target foo\n--parallel  8 --foo "bar baz"` },
       expectedContext: {
         build: {
           enabled: false,
-          args: ["--target", "foo", "--parallel", "8"],
+          args: ["--target", "foo", "--parallel", "8", "--foo", "bar baz"],
         },
       },
     },
@@ -153,7 +153,7 @@ describe("get action context", () => {
         options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON FOO="BAR BAZ"`,
         args: `-Wdev -Wdeprecated\n--fresh --foo "bar baz"`,
         "run-build": "true",
-        "build-args": "--target foo\n--parallel  8",
+        "build-args": `--target foo\n--parallel  8 --foo "bar baz"`,
       },
       expectedContext: {
         sourceDir: "project",
@@ -174,7 +174,7 @@ describe("get action context", () => {
         },
         build: {
           enabled: true,
-          args: ["--target", "foo", "--parallel", "8"],
+          args: ["--target", "foo", "--parallel", "8", "--foo", "bar baz"],
         },
       },
     },

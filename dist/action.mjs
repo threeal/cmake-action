@@ -386,9 +386,7 @@ function getContext() {
         },
         build: {
             enabled: getInput("run-build") == "true",
-            args: getInput("build-args")
-                .split(/\s+/)
-                .filter((arg) => arg != ""),
+            args: shellQuoteExports.parse(getInput("build-args")).map((arg) => arg.toString()),
         },
     };
 }

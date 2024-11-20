@@ -53,9 +53,7 @@ export function getContext(): Context {
     },
     build: {
       enabled: getInput("run-build") == "true",
-      args: getInput("build-args")
-        .split(/\s+/)
-        .filter((arg) => arg != ""),
+      args: parse(getInput("build-args")).map((arg) => arg.toString()),
     },
   };
 }
