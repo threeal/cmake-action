@@ -99,12 +99,17 @@ describe("get action context", () => {
     {
       name: "with additional options specified",
       inputs: {
-        options: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
+        options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON FOO="BAR BAZ"`,
       },
       expectedContext: {
         configure: {
           generator: "",
-          options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+          options: [
+            "BUILD_TESTING=ON",
+            "BUILD_EXAMPLES=ON",
+            "BUILD_DOCS=ON",
+            "FOO=BAR BAZ",
+          ],
           args: [],
         },
       },
@@ -145,7 +150,7 @@ describe("get action context", () => {
         "cxx-compiler": "clang++",
         "c-flags": "-Werror -Wall\n-Wextra",
         "cxx-flags": "-Werror -Wall\n-Wextra  -Wpedantic",
-        options: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
+        options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON FOO="BAR BAZ"`,
         args: "-Wdev -Wdeprecated\n--fresh",
         "run-build": "true",
         "build-args": "--target foo\n--parallel  8",
@@ -163,6 +168,7 @@ describe("get action context", () => {
             "BUILD_TESTING=ON",
             "BUILD_EXAMPLES=ON",
             "BUILD_DOCS=ON",
+            "FOO=BAR BAZ",
           ],
           args: ["-Wdev", "-Wdeprecated", "--fresh"],
         },

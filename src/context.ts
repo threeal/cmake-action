@@ -1,5 +1,6 @@
 import { getInput } from "gha-utils";
 import path from "node:path";
+import { parse } from "shell-quote";
 
 export interface Context {
   sourceDir: string;
@@ -39,10 +40,7 @@ export function getContext(): Context {
 
   input = getInput("options");
   if (input) {
-    const opts = input.split(/\s+/).filter((arg) => arg != "");
-    for (const opt of opts) {
-      options.push(opt);
-    }
+    options.push(...parse(input).map((opt) => opt.toString()));
   }
 
   return {
