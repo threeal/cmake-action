@@ -116,12 +116,12 @@ describe("get action context", () => {
     },
     {
       name: "with additional arguments specified",
-      inputs: { args: "-Wdev -Wdeprecated\n--fresh" },
+      inputs: { args: `-Wdev -Wdeprecated\n--fresh --foo "bar baz"` },
       expectedContext: {
         configure: {
           generator: "",
           options: [],
-          args: ["-Wdev", "-Wdeprecated", "--fresh"],
+          args: ["-Wdev", "-Wdeprecated", "--fresh", "--foo", "bar baz"],
         },
       },
     },
@@ -151,7 +151,7 @@ describe("get action context", () => {
         "c-flags": "-Werror -Wall\n-Wextra",
         "cxx-flags": "-Werror -Wall\n-Wextra  -Wpedantic",
         options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON FOO="BAR BAZ"`,
-        args: "-Wdev -Wdeprecated\n--fresh",
+        args: `-Wdev -Wdeprecated\n--fresh --foo "bar baz"`,
         "run-build": "true",
         "build-args": "--target foo\n--parallel  8",
       },
@@ -170,7 +170,7 @@ describe("get action context", () => {
             "BUILD_DOCS=ON",
             "FOO=BAR BAZ",
           ],
-          args: ["-Wdev", "-Wdeprecated", "--fresh"],
+          args: ["-Wdev", "-Wdeprecated", "--fresh", "--foo", "bar baz"],
         },
         build: {
           enabled: true,

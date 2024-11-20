@@ -49,9 +49,7 @@ export function getContext(): Context {
     configure: {
       generator: getInput("generator"),
       options,
-      args: getInput("args")
-        .split(/\s+/)
-        .filter((arg) => arg != ""),
+      args: parse(getInput("args")).map((arg) => arg.toString()),
     },
     build: {
       enabled: getInput("run-build") == "true",

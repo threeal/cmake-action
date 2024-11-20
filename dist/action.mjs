@@ -382,9 +382,7 @@ function getContext() {
         configure: {
             generator: getInput("generator"),
             options,
-            args: getInput("args")
-                .split(/\s+/)
-                .filter((arg) => arg != ""),
+            args: shellQuoteExports.parse(getInput("args")).map((arg) => arg.toString()),
         },
         build: {
             enabled: getInput("run-build") == "true",
