@@ -21,8 +21,8 @@ const defaultContext: Context = {
   },
 };
 
-jest.unstable_mockModule("node:child_process", () => ({
-  execFileSync: jest.fn(),
+jest.unstable_mockModule("./exec.js", () => ({
+  exec: jest.fn(),
 }));
 
 describe("configure a CMake project", () => {
@@ -101,18 +101,14 @@ describe("configure a CMake project", () => {
   for (const testCase of testCases) {
     it(`should execute the correct command ${testCase.name}`, async () => {
       const { configureProject } = await import("./cmake.js");
-      const { execFileSync } = await import("node:child_process");
+      const { exec } = await import("./exec.js");
 
-      jest.mocked(execFileSync).mockReset();
+      jest.mocked(exec).mockReset();
 
-      configureProject({ ...defaultContext, ...testCase.context });
+      await configureProject({ ...defaultContext, ...testCase.context });
 
-      expect(execFileSync).toHaveBeenCalledTimes(1);
-      expect(execFileSync).toHaveBeenLastCalledWith(
-        "cmake",
-        testCase.expectedArgs,
-        { stdio: "inherit" },
-      );
+      expect(exec).toHaveBeenCalledTimes(1);
+      expect(exec).toHaveBeenLastCalledWith("cmake", testCase.expectedArgs);
     });
   }
 });
@@ -149,18 +145,14 @@ describe("build a CMake project", () => {
   for (const testCase of testCases) {
     it(`should execute the correct command ${testCase.name}`, async () => {
       const { buildProject } = await import("./cmake.js");
-      const { execFileSync } = await import("node:child_process");
+      const { exec } = await import("./exec.js");
 
-      jest.mocked(execFileSync).mockReset();
+      jest.mocked(exec).mockReset();
 
-      buildProject({ ...defaultContext, ...testCase.context });
+      await buildProject({ ...defaultContext, ...testCase.context });
 
-      expect(execFileSync).toHaveBeenCalledTimes(1);
-      expect(execFileSync).toHaveBeenLastCalledWith(
-        "cmake",
-        testCase.expectedArgs,
-        { stdio: "inherit" },
-      );
+      expect(exec).toHaveBeenCalledTimes(1);
+      expect(exec).toHaveBeenLastCalledWith("cmake", testCase.expectedArgs);
     });
   }
 });
