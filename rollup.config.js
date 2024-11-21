@@ -1,3 +1,4 @@
+import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 
@@ -7,5 +8,5 @@ export default {
     dir: "dist",
     entryFileNames: "[name].mjs",
   },
-  plugins: [nodeResolve(), typescript()],
+  plugins: [commonjs(), nodeResolve(), typescript()],
 };

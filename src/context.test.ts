@@ -99,24 +99,29 @@ describe("get action context", () => {
     {
       name: "with additional options specified",
       inputs: {
-        options: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
+        options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON FOO="BAR BAZ"`,
       },
       expectedContext: {
         configure: {
           generator: "",
-          options: ["BUILD_TESTING=ON", "BUILD_EXAMPLES=ON", "BUILD_DOCS=ON"],
+          options: [
+            "BUILD_TESTING=ON",
+            "BUILD_EXAMPLES=ON",
+            "BUILD_DOCS=ON",
+            "FOO=BAR BAZ",
+          ],
           args: [],
         },
       },
     },
     {
       name: "with additional arguments specified",
-      inputs: { args: "-Wdev -Wdeprecated\n--fresh" },
+      inputs: { args: `-Wdev -Wdeprecated\n--fresh --foo "bar baz"` },
       expectedContext: {
         configure: {
           generator: "",
           options: [],
-          args: ["-Wdev", "-Wdeprecated", "--fresh"],
+          args: ["-Wdev", "-Wdeprecated", "--fresh", "--foo", "bar baz"],
         },
       },
     },
@@ -127,11 +132,11 @@ describe("get action context", () => {
     },
     {
       name: "with additional build arguments specified",
-      inputs: { "build-args": "--target foo\n--parallel  8" },
+      inputs: { "build-args": `--target foo\n--parallel  8 --foo "bar baz"` },
       expectedContext: {
         build: {
           enabled: false,
-          args: ["--target", "foo", "--parallel", "8"],
+          args: ["--target", "foo", "--parallel", "8", "--foo", "bar baz"],
         },
       },
     },
@@ -145,10 +150,10 @@ describe("get action context", () => {
         "cxx-compiler": "clang++",
         "c-flags": "-Werror -Wall\n-Wextra",
         "cxx-flags": "-Werror -Wall\n-Wextra  -Wpedantic",
-        options: "BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON",
-        args: "-Wdev -Wdeprecated\n--fresh",
+        options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON FOO="BAR BAZ"`,
+        args: `-Wdev -Wdeprecated\n--fresh --foo "bar baz"`,
         "run-build": "true",
-        "build-args": "--target foo\n--parallel  8",
+        "build-args": `--target foo\n--parallel  8 --foo "bar baz"`,
       },
       expectedContext: {
         sourceDir: "project",
@@ -163,12 +168,13 @@ describe("get action context", () => {
             "BUILD_TESTING=ON",
             "BUILD_EXAMPLES=ON",
             "BUILD_DOCS=ON",
+            "FOO=BAR BAZ",
           ],
-          args: ["-Wdev", "-Wdeprecated", "--fresh"],
+          args: ["-Wdev", "-Wdeprecated", "--fresh", "--foo", "bar baz"],
         },
         build: {
           enabled: true,
-          args: ["--target", "foo", "--parallel", "8"],
+          args: ["--target", "foo", "--parallel", "8", "--foo", "bar baz"],
         },
       },
     },
