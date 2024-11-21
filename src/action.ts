@@ -5,12 +5,12 @@ import { getContext } from "./context.js";
 try {
   const context = getContext();
 
-  configureProject(context);
+  await configureProject(context);
 
   await setOutput("build-dir", context.buildDir);
 
   if (context.build.enabled) {
-    buildProject(context);
+    await buildProject(context);
   }
 } catch (err) {
   logError(err);

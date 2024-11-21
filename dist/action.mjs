@@ -2,7 +2,7 @@ import 'node:fs';
 import fsPromises from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 
 /**
  * @internal
@@ -52,32 +52,64 @@ function logError(err) {
 }
 
 /**
- * Configures the build system of a CMake project.
+ * Executes a command with the given arguments.
  *
- * @param context - The action context.
+ * The command is executed with `stdin` ignored and both `stdout` and `stderr` inherited by the parent process.
+ *
+ * @param command The command to execute.
+ * @param args The arguments to pass to the command.
+ * @returns A promise that resolves when the command exits successfully or rejects if it exits with a non-zero status code or encounters an error.
  */
-function configureProject(context) {
+async function exec(command, args) {
+    return new Promise((resolve, reject) => {
+        const proc = spawn(command, args, {
+            stdio: ["ignore", "inherit", "inherit"],
+        });
+        proc.on("error", reject);
+        proc.on("close", (code) => {
+            if (code === 0) {
+                resolve();
+            }
+            else {
+                reject(new Error(`Command exited with status code ${code}`));
+            }
+        });
+    });
+}
+
+/**
+ * Configures the build system for a CMake project.
+ *
+ * Constructs and runs the `cmake` command to configure the project with the specified
+ * source directory, build directory, generator, options, and additional arguments.
+ *
+ * @param context - The action context containing configuration details.
+ * @returns A promise that resolves when the build system is successfully configured.
+ */
+async function configureProject(context) {
     const configureArgs = [];
     if (context.sourceDir) {
         configureArgs.push(context.sourceDir);
     }
     configureArgs.push("-B", context.buildDir);
     if (context.configure.generator) {
-        configureArgs.push(...["-G", context.configure.generator]);
+        configureArgs.push("-G", context.configure.generator);
     }
     configureArgs.push(...context.configure.options.map((opt) => "-D" + opt));
     configureArgs.push(...context.configure.args);
-    execFileSync("cmake", configureArgs, { stdio: "inherit" });
+    await exec("cmake", configureArgs);
 }
 /**
- * Build a CMake project.
+ * Builds a CMake project.
  *
- * @param context - The action context.
+ * Runs the `cmake --build` command to build the project using the specified
+ * build directory and additional arguments.
+ *
+ * @param context - The action context containing build details.
+ * @returns A promise that resolves when the project is successfully built.
  */
-function buildProject(context) {
-    execFileSync("cmake", ["--build", context.buildDir, ...context.build.args], {
-        stdio: "inherit",
-    });
+async function buildProject(context) {
+    await exec("cmake", ["--build", context.buildDir, ...context.build.args]);
 }
 
 var shellQuote = {};
@@ -393,10 +425,10 @@ function getContext() {
 
 try {
     const context = getContext();
-    configureProject(context);
+    await configureProject(context);
     await setOutput("build-dir", context.buildDir);
     if (context.build.enabled) {
-        buildProject(context);
+        await buildProject(context);
     }
 }
 catch (err) {
