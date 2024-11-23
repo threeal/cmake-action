@@ -50,6 +50,16 @@ function logError(err) {
     const message = err instanceof Error ? err.message : String(err);
     process.stdout.write(`::error::${message}${os.EOL}`);
 }
+/**
+ * Logs a command along with its arguments in GitHub Actions.
+ *
+ * @param command - The command to log.
+ * @param args - The arguments of the command.
+ */
+function logCommand(command, ...args) {
+    const message = [command, ...args].join(" ");
+    process.stdout.write(`[command]${message}${os.EOL}`);
+}
 
 /**
  * Executes a command with the given arguments.
@@ -62,6 +72,7 @@ function logError(err) {
  */
 async function exec(command, args) {
     return new Promise((resolve, reject) => {
+        logCommand(command, ...args);
         const proc = spawn(command, args, {
             stdio: ["ignore", "inherit", "inherit"],
         });

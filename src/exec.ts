@@ -1,3 +1,4 @@
+import { logCommand } from "gha-utils";
 import { spawn } from "node:child_process";
 
 /**
@@ -11,6 +12,7 @@ import { spawn } from "node:child_process";
  */
 export async function exec(command: string, args: string[]): Promise<void> {
   return new Promise<void>((resolve, reject) => {
+    logCommand(command, ...args);
     const proc = spawn(command, args, {
       stdio: ["ignore", "inherit", "inherit"],
     });
