@@ -72,10 +72,10 @@ function logCommand(command, ...args) {
  */
 async function exec(command, args) {
     return new Promise((resolve, reject) => {
-        logCommand(command, ...args);
         const proc = spawn(command, args, {
             stdio: ["ignore", "inherit", "inherit"],
         });
+        logCommand(proc.spawnfile, ...proc.spawnargs.splice(1));
         proc.on("error", reject);
         proc.on("close", (code) => {
             if (code === 0) {
