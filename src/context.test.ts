@@ -99,7 +99,7 @@ describe("get action context", () => {
     {
       name: "with additional options specified",
       inputs: {
-        options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON FOO="BAR BAZ"`,
+        options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON "FOO=BAR BAZ"`,
       },
       expectedContext: {
         configure: {
@@ -150,7 +150,7 @@ describe("get action context", () => {
         "cxx-compiler": "clang++",
         "c-flags": "-Werror -Wall\n-Wextra",
         "cxx-flags": "-Werror -Wall\n-Wextra  -Wpedantic",
-        options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON FOO="BAR BAZ"`,
+        options: `BUILD_TESTING=ON BUILD_EXAMPLES=ON\nBUILD_DOCS=ON "FOO=BAR BAZ"`,
         args: `-Wdev -Wdeprecated\n--fresh --foo "bar baz"`,
         "run-build": "true",
         "build-args": `--target foo\n--parallel  8 --foo "bar baz"`,
