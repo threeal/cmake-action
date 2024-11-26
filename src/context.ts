@@ -1,6 +1,6 @@
 import { getInput } from "gha-utils";
 import path from "node:path";
-import { parse } from "shell-quote";
+import { parse } from "./utils.js";
 
 export interface Context {
   sourceDir: string;
