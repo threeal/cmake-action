@@ -1217,12 +1217,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.10.0":
-  version: 22.10.0
-  resolution: "@types/node@npm:22.10.0"
+"@types/node@npm:^22.10.1":
+  version: 22.10.1
+  resolution: "@types/node@npm:22.10.1"
   dependencies:
     undici-types: "npm:~6.20.0"
-  checksum: 10c0/efb3783b6fe74b4300c5bdd4f245f1025887d9b1d0950edae584af58a30d95cc058c10b4b3428f8300e4318468b605240c2ede8fcfb6ead2e0f05bca31e54c1b
+  checksum: 10c0/0fbb6d29fa35d807f0223a4db709c598ac08d66820240a2cd6a8a69b8f0bc921d65b339d850a666b43b4e779f967e6ed6cf6f0fca3575e08241e6b900364c234
   languageName: node
   linkType: hard
 
@@ -4172,7 +4172,7 @@ __metadata:
     "@rollup/plugin-node-resolve": "npm:^15.3.0"
     "@rollup/plugin-typescript": "npm:^12.1.1"
     "@types/jest": "npm:^29.5.14"
-    "@types/node": "npm:^22.10.0"
+    "@types/node": "npm:^22.10.1"
     eslint: "npm:^9.15.0"
     gha-utils: "npm:^0.4.1"
     jest: "npm:^29.7.0"
