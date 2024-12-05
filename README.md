@@ -40,10 +40,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v4.2.1
+        uses: actions/checkout@v4.2.2
 
       - name: Build Project
-        uses: threeal/cmake-action@v2.0.0
+        uses: threeal/cmake-action@v2.1.0
 ```
 
 ### Specify the Source and Build Directories
@@ -52,7 +52,7 @@ By default, this action uses the current working directory as the source directo
 
 ```yaml
 - name: Build Project
-  uses: threeal/cmake-action@v2.0.0
+  uses: threeal/cmake-action@v2.1.0
   with:
     source-dir: source
     build-dir: output
@@ -67,7 +67,7 @@ The following example demonstrates how to use this action to configure and build
   uses: seanmiddleditch/gha-setup-ninja@v5
 
 - name: Build Project
-  uses: threeal/cmake-action@v2.0.0
+  uses: threeal/cmake-action@v2.1.0
   with:
     generator: Ninja
     cxx-compiler: clang++
@@ -79,7 +79,7 @@ Use the `options` input to specify additional options for configuring a project:
 
 ```yaml
 - name: Build Project
-  uses: threeal/cmake-action@v2.0.0
+  uses: threeal/cmake-action@v2.1.0
   with:
     options: |
       BUILD_TESTS=ON
@@ -94,7 +94,7 @@ By default, this action builds the project after configuration. To skip the buil
 
 ```yaml
 - name: Configure Project
-  uses: threeal/cmake-action@v2.0.0
+  uses: threeal/cmake-action@v2.1.0
   with:
     run-build: false
 ```
