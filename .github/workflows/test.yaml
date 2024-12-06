@@ -7,7 +7,7 @@ on:
 jobs:
   test-package:
     name: Test Package
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Project
         uses: actions/checkout@v4.2.2
@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, macos-14, windows-2022]
+        os: [ubuntu-24.04, macos-14, windows-2022]
     steps:
       - name: Checkout Sample Project
         uses: actions/checkout@v4.2.2
@@ -55,7 +55,7 @@ jobs:
 
   test-action-with-specified-dirs:
     name: Test Action With Specified Directories
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Sample Project
         uses: actions/checkout@v4.2.2
@@ -85,7 +85,7 @@ jobs:
 
   test-action-without-run-build:
     name: Test Action Without Run Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Sample Project
         uses: actions/checkout@v4.2.2
@@ -112,7 +112,7 @@ jobs:
 
   test-action-with-additional-options:
     name: Test Action With Additional Options
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Sample Project
         uses: actions/checkout@v4.2.2
@@ -139,7 +139,7 @@ jobs:
 
   test-action-with-custom-generator:
     name: Test Action With Custom Generator
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Sample Project
         uses: actions/checkout@v4.2.2
