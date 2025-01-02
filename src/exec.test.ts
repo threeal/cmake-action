@@ -1,16 +1,17 @@
-import { jest } from "@jest/globals";
+import { logCommand } from "gha-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { exec } from "./exec.js";
 
 describe("execute commands", () => {
-  const logCommand = jest.fn<(command: string, ...args: string[]) => void>();
-  jest.unstable_mockModule("gha-utils", () => ({ logCommand }));
+  vi.mock("gha-utils", () => ({
+    logCommand: vi.fn<(command: string, ...args: string[]) => void>(),
+  }));
 
   beforeEach(() => {
-    logCommand.mockClear();
+    vi.mocked(logCommand).mockClear();
   });
 
   it("should successfully execute a command", async () => {
-    const { exec } = await import("./exec.js");
-
     await exec("node", ["--version"]);
 
     expect(logCommand).toHaveBeenCalledTimes(1);
@@ -18,8 +19,6 @@ describe("execute commands", () => {
   });
 
   it("should fail to execute a command", async () => {
-    const { exec } = await import("./exec.js");
-
     await expect(exec("node", ["--invalid"])).rejects.toThrow(
       "Command exited with status code 9",
     );

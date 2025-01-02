@@ -1,10 +1,8 @@
-import { jest } from "@jest/globals";
 import path from "node:path";
+import { describe, expect, it, vi } from "vitest";
 import type { Context } from "./context.js";
 
-jest.unstable_mockModule("gha-utils", () => ({
-  getInput: jest.fn(),
-}));
+vi.mock("gha-utils", () => ({ getInput: vi.fn() }));
 
 describe("get action context", () => {
   interface TestCase {
@@ -186,9 +184,7 @@ describe("get action context", () => {
       const { getContext } = await import("./context.js");
 
       const inputs = testCase.inputs || {};
-      jest.mocked(getInput).mockImplementation((name) => {
-        return inputs[name] || "";
-      });
+      vi.mocked(getInput).mockImplementation((name) => inputs[name] ?? "");
 
       expect(getContext()).toStrictEqual({
         sourceDir: "",
