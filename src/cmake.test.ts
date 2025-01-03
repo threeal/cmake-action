@@ -1,5 +1,7 @@
-import { jest } from "@jest/globals";
+import { describe, expect, it, vi } from "vitest";
+import { buildProject, configureProject } from "./cmake.js";
 import type { Context } from "./context.js";
+import { exec } from "./exec.js";
 
 interface TestCase {
   name: string;
@@ -21,9 +23,7 @@ const defaultContext: Context = {
   },
 };
 
-jest.unstable_mockModule("./exec.js", () => ({
-  exec: jest.fn(),
-}));
+vi.mock("./exec.js", () => ({ exec: vi.fn() }));
 
 describe("configure a CMake project", () => {
   const testCases: TestCase[] = [
@@ -100,10 +100,7 @@ describe("configure a CMake project", () => {
 
   for (const testCase of testCases) {
     it(`should execute the correct command ${testCase.name}`, async () => {
-      const { configureProject } = await import("./cmake.js");
-      const { exec } = await import("./exec.js");
-
-      jest.mocked(exec).mockReset();
+      vi.mocked(exec).mockReset();
 
       await configureProject({ ...defaultContext, ...testCase.context });
 
@@ -144,10 +141,7 @@ describe("build a CMake project", () => {
 
   for (const testCase of testCases) {
     it(`should execute the correct command ${testCase.name}`, async () => {
-      const { buildProject } = await import("./cmake.js");
-      const { exec } = await import("./exec.js");
-
-      jest.mocked(exec).mockReset();
+      vi.mocked(exec).mockReset();
 
       await buildProject({ ...defaultContext, ...testCase.context });
 
