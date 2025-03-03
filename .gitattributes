@@ -1,2 +1,2 @@
 dist/** -diff linguist-generated
-yarn.lock -diff linguist-generated
+pnpm-lock.yaml -diff linguist-generated

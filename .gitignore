@@ -2,5 +2,6 @@
 !.env.yarn
 !.git*
 !.nvmrc
+!.prettierignore
 
 node_modules/
