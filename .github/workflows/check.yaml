@@ -12,11 +12,6 @@ jobs:
       - name: Checkout Project
         uses: actions/checkout@v4.2.2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4.2.0
-        with:
-          node-version-file: .nvmrc
-
       - name: Setup pnpm
         uses: threeal/setup-pnpm-action@v1.0.0
 
