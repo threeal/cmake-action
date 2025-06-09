@@ -5,8 +5,8 @@ on:
   push:
     branches: [main]
 jobs:
-  build-package:
-    name: Build Package
+  build-action:
+    name: Build Action
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout Project
@@ -18,8 +18,14 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Build Package
-        run: pnpm build
+      - name: Check Formatting
+        run: pnpm format && git diff --exit-code HEAD
 
-      - name: Check Diff
-        run: git diff && git diff-index --quiet --exit-code HEAD
+      - name: Check Lint
+        run: pnpm lint
+
+      - name: Test Action
+        run: pnpm test
+
+      - name: Build Action
+        run: pnpm build && git diff --exit-code HEAD

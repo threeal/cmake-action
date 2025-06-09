@@ -5,22 +5,6 @@ on:
   push:
     branches: [main]
 jobs:
-  test-package:
-    name: Test Package
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v4.2.2
-
-      - name: Setup pnpm
-        uses: threeal/setup-pnpm-action@v1.0.0
-
-      - name: Install Dependencies
-        run: pnpm install
-
-      - name: Test Package
-        run: pnpm test
-
   test-action:
     name: Test Action
     runs-on: ${{ matrix.os }}
