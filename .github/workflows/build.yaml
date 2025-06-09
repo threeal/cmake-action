@@ -24,5 +24,8 @@ jobs:
       - name: Check Lint
         run: pnpm lint
 
+      - name: Test Package
+        run: pnpm test
+
       - name: Build Package
         run: pnpm build && git diff --exit-code HEAD
