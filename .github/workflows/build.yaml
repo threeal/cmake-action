@@ -18,8 +18,11 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Build Package
-        run: pnpm build
+      - name: Check Formatting
+        run: pnpm format && git diff --exit-code HEAD
 
-      - name: Check Diff
-        run: git diff && git diff-index --quiet --exit-code HEAD
+      - name: Check Lint
+        run: pnpm lint
+
+      - name: Build Package
+        run: pnpm build && git diff --exit-code HEAD
