@@ -1,7 +1,5 @@
 {
   "extends": "@tsconfig/node20",
-  "include": ["src"],
-  "exclude": ["**/*.test.ts"],
   "compilerOptions": {
     "module": "node16"
   }

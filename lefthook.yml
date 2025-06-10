@@ -17,12 +17,10 @@ pre-commit:
     - name: check types
       run: pnpm tsc --noEmit
       glob:
-        - src/*.ts
+        - "*.ts"
         - .npmrc
         - pnpm-lock.yaml
         - tsconfig.json
-      exclude:
-        - src/*.test.ts
 
     - name: build action
       run: pnpm rollup -c
