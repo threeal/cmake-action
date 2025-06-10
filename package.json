@@ -3,9 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
-    "format": "prettier --write --cache .",
-    "lint": "eslint",
     "test": "vitest run"
   },
   "dependencies": {
