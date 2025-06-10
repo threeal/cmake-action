@@ -15,7 +15,7 @@ pre-commit:
       run: pnpm eslint --no-warn-ignored --fix {staged_files}
 
     - name: check types
-      run: pnpm tsc --noEmit
+      run: pnpm tsc
       glob:
         - "*.ts"
         - .npmrc
