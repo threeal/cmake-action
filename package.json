@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "rollup -c",
-    "format": "prettier --write --cache . !dist !README.md",
+    "format": "prettier --write --cache .",
     "lint": "eslint",
     "test": "vitest run"
   },
