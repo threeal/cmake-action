@@ -17,11 +17,11 @@ export async function exec(command: string, args: string[]): Promise<void> {
     });
     logCommand(proc.spawnfile, ...proc.spawnargs.splice(1));
     proc.on("error", reject);
-    proc.on("close", (code) => {
+    proc.on("close", (code: number) => {
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`Command exited with status code ${code}`));
+        reject(new Error(`Command exited with status code ${code.toString()}`));
       }
     });
   });

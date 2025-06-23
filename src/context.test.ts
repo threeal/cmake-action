@@ -183,7 +183,7 @@ describe("get action context", () => {
       const { getInput } = await import("gha-utils");
       const { getContext } = await import("./context.js");
 
-      const inputs = testCase.inputs || {};
+      const inputs = testCase.inputs ?? {};
       vi.mocked(getInput).mockImplementation((name) => inputs[name] ?? "");
 
       expect(getContext()).toStrictEqual({
