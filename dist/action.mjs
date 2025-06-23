@@ -82,7 +82,7 @@ async function exec(command, args) {
                 resolve();
             }
             else {
-                reject(new Error(`Command exited with status code ${code}`));
+                reject(new Error(`Command exited with status code ${code.toString()}`));
             }
         });
     });
@@ -136,7 +136,7 @@ function parse(str) {
     const args = [];
     let match;
     while ((match = regex.exec(str)) !== null) {
-        args.push(match[1] ?? match[2] ?? match[3] ?? match[4]);
+        args.push(match[1] || match[2] || match[3] || match[4]);
     }
     return args;
 }
