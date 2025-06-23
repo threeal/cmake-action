@@ -11,7 +11,7 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ["eslint.config.js", "rollup.config.js"],
+          allowDefaultProject: ["rollup.config.js"],
         },
         tsconfigRootDir: import.meta.dirname,
       },
