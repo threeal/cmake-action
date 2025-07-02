@@ -63,9 +63,6 @@ By default, this action uses the current working directory as the source directo
 The following example demonstrates how to use this action to configure and build the project using [Ninja](https://ninja-build.org/) as the build system generator and [Clang](https://clang.llvm.org/) as the compiler:
 
 ```yaml
-- name: Setup Ninja
-  uses: seanmiddleditch/gha-setup-ninja@v5
-
 - name: Build Project
   uses: threeal/cmake-action@v2.1.0
   with:
