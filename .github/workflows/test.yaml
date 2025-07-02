@@ -138,9 +138,6 @@ jobs:
             dist
           sparse-checkout-cone-mode: false
 
-      - name: Setup Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v6
-
       - name: Configure Sample Project
         id: cmake-action
         uses: ./cmake-action
