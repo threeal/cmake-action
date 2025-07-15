@@ -8,12 +8,6 @@ pre-commit:
         - pnpm-lock.yaml
         - pnpm-workspace.yaml
 
-    - name: fix formatting
-      run: pnpm prettier --write --ignore-unknown {staged_files}
-
-    - name: fix lint
-      run: pnpm eslint --no-warn-ignored --fix {staged_files}
-
     - name: check types
       run: pnpm tsc
       glob:
@@ -21,6 +15,12 @@ pre-commit:
         - .npmrc
         - pnpm-lock.yaml
         - tsconfig.json
+
+    - name: fix formatting
+      run: pnpm prettier --write --ignore-unknown {staged_files}
+
+    - name: fix lint
+      run: pnpm eslint --no-warn-ignored --fix {staged_files}
 
     - name: build action
       run: pnpm rollup -c

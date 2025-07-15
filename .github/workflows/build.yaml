@@ -18,17 +18,17 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Check Formatting
-        run: pnpm prettier --check .
-
-      - name: Check Lint
-        run: pnpm eslint
-
       - name: Check Types
         run: pnpm tsc
 
       - name: Test Action
         run: pnpm test
+
+      - name: Check Formatting
+        run: pnpm prettier --check .
+
+      - name: Check Lint
+        run: pnpm eslint
 
       - name: Build Action
         run: pnpm rollup -c && git diff --exit-code dist
