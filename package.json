@@ -17,7 +17,7 @@
     "@vitest/coverage-v8": "^3.1.4",
     "eslint": "^9.29.0",
     "jiti": "^2.4.2",
-    "lefthook": "^1.11.14",
+    "lefthook": "^1.12.2",
     "prettier": "^3.6.2",
     "rollup": "^4.44.1",
     "typescript": "^5.8.3",
