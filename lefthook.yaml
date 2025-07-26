@@ -3,18 +3,9 @@ pre-commit:
   jobs:
     - name: install dependencies
       run: pnpm install
-      glob:
-        - package.json
-        - pnpm-lock.yaml
-        - pnpm-workspace.yaml
 
     - name: check types
       run: pnpm tsc
-      glob:
-        - "*.ts"
-        - .npmrc
-        - pnpm-lock.yaml
-        - tsconfig.json
 
     - name: fix formatting
       run: pnpm prettier --write --ignore-unknown {staged_files}
@@ -24,14 +15,6 @@ pre-commit:
 
     - name: build action
       run: pnpm rollup -c
-      glob:
-        - dist/*
-        - src/*.ts
-        - .npmrc
-        - pnpm-lock.yaml
-        - tsconfig.json
-      exclude:
-        - src/*.test.ts
 
     - name: check diff
       run: git diff --exit-code dist {staged_files}
