@@ -8,10 +8,10 @@ pre-commit:
       run: pnpm tsc
 
     - name: fix formatting
-      run: pnpm prettier --write --ignore-unknown {staged_files}
+      run: pnpm prettier --write .
 
     - name: fix lint
-      run: pnpm eslint --no-warn-ignored --fix {staged_files}
+      run: pnpm eslint --fix
 
     - name: build action
       run: pnpm rollup -c
