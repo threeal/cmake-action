@@ -19,7 +19,7 @@
     "jiti": "^2.4.2",
     "lefthook": "^1.11.14",
     "prettier": "^3.6.2",
-    "rollup": "^4.44.1",
+    "rollup": "^4.46.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1",
     "vitest": "^3.1.4"
