@@ -1,6 +1,6 @@
 .*
 !.git*
 !.npmrc
-!.prettierignore
+!.prettier*
 
 node_modules/
