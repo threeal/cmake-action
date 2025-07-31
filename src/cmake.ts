@@ -1,5 +1,5 @@
-import { exec } from "./exec.js";
 import type { Context } from "./context.js";
+import { exec } from "./exec.js";
 
 /**
  * Configures the build system for a CMake project.
