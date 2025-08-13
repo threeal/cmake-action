@@ -33,5 +33,5 @@ outputs:
     description: The build directory of the CMake project
     value: ${{ steps.process-inputs.outputs.build-dir }}
 runs:
-  using: node20
+  using: node24
   main: dist/action.mjs
