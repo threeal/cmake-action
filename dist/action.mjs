@@ -162,7 +162,7 @@ function getContext() {
     }
     input = getInput("options");
     if (input) {
-        options.push(...parse(input).map((opt) => opt.toString()));
+        options.push(...parse(input).map((opt) => opt));
     }
     return {
         sourceDir,
@@ -170,11 +170,11 @@ function getContext() {
         configure: {
             generator: getInput("generator"),
             options,
-            args: parse(getInput("args")).map((arg) => arg.toString()),
+            args: parse(getInput("args")).map((arg) => arg),
         },
         build: {
             enabled: getInput("run-build") == "true",
-            args: parse(getInput("build-args")).map((arg) => arg.toString()),
+            args: parse(getInput("build-args")).map((arg) => arg),
         },
     };
 }
