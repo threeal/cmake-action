@@ -1,8 +1,8 @@
 import eslint from "@eslint/js";
-import { globalIgnores } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config(
+export default defineConfig(
   globalIgnores(["dist"]),
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
