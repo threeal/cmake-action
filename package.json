@@ -13,7 +13,7 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
     "@tsconfig/node24": "^24.0.1",
-    "@types/node": "^24.3.0",
+    "@types/node": "^24.3.1",
     "@vitest/coverage-v8": "^3.1.4",
     "eslint": "^9.34.0",
     "jiti": "^2.5.1",
