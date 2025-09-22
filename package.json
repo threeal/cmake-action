@@ -15,7 +15,7 @@
     "@tsconfig/node24": "^24.0.1",
     "@types/node": "^24.3.0",
     "@vitest/coverage-v8": "^3.1.4",
-    "eslint": "^9.34.0",
+    "eslint": "^9.36.0",
     "jiti": "^2.5.1",
     "lefthook": "^1.12.3",
     "prettier": "^3.6.2",
