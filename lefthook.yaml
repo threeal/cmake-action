@@ -1,5 +1,7 @@
 pre-commit:
   piped: true
+  fail_on_changes: always
+  fail_on_changes_diff: true
   jobs:
     - name: install dependencies
       run: pnpm install
@@ -15,6 +17,3 @@ pre-commit:
 
     - name: build action
       run: pnpm rollup -c
-
-    - name: check diff
-      run: git diff --exit-code dist pnpm-lock.yaml {staged_files}
