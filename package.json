@@ -9,7 +9,7 @@
     "gha-utils": "^0.4.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.35.0",
+    "@eslint/js": "^9.39.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.3.0",
     "@tsconfig/node24": "^24.0.1",
