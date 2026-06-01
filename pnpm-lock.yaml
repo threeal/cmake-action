@@ -40,11 +40,11 @@ importers:
         specifier: ^2.0.16
         version: 2.0.16
       prettier:
-        specifier: ^3.6.2
-        version: 3.6.2
+        specifier: ^3.8.3
+        version: 3.8.3
       prettier-plugin-organize-imports:
         specifier: ^4.2.0
-        version: 4.2.0(prettier@3.6.2)(typescript@5.9.3)
+        version: 4.2.0(prettier@3.8.3)(typescript@5.9.3)
       rollup:
         specifier: ^4.59.0
         version: 4.59.0
@@ -861,6 +861,7 @@ packages:
 
   gha-utils@0.4.1:
     resolution: {integrity: sha512-KHWQj6SQWFfsTt4epwcyx/LfLUU/3bFFkGhfkzpFKV/77w46Nm5vt8O+3KVk10sfON+3Ca578RZk0hQnLMUtCw==}
+    deprecated: Package renamed to ghakit. Please use ghakit instead.
 
   glob-parent@6.0.2:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
@@ -1144,8 +1145,8 @@ packages:
       vue-tsc:
         optional: true
 
-  prettier@3.6.2:
-    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+  prettier@3.8.3:
+    resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -2341,12 +2342,12 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-organize-imports@4.2.0(prettier@3.6.2)(typescript@5.9.3):
+  prettier-plugin-organize-imports@4.2.0(prettier@3.8.3)(typescript@5.9.3):
     dependencies:
-      prettier: 3.6.2
+      prettier: 3.8.3
       typescript: 5.9.3
 
-  prettier@3.6.2: {}
+  prettier@3.8.3: {}
 
   punycode@2.3.1: {}
 
