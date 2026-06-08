@@ -23,7 +23,7 @@
     "rollup": "^4.59.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.59.3",
-    "vitest": "^3.1.4"
+    "vitest": "^3.2.6"
   },
   "packageManager": "pnpm@10.33.4"
 }
