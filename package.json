@@ -17,7 +17,7 @@
     "@vitest/coverage-v8": "^3.1.4",
     "eslint": "^9.39.2",
     "jiti": "^2.5.1",
-    "lefthook": "^2.0.16",
+    "lefthook": "^2.1.9",
     "prettier": "^3.8.4",
     "prettier-plugin-organize-imports": "^4.2.0",
     "rollup": "^4.59.0",
