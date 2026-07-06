@@ -9,4 +9,6 @@ updates:
     directory: /
     schedule:
       interval: daily
+    cooldown:
+      default-days: 1
     versioning-strategy: increase
