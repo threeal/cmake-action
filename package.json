@@ -16,7 +16,7 @@
     "@types/node": "^26.0.1",
     "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^9.39.2",
-    "jiti": "^2.5.1",
+    "jiti": "^2.7.0",
     "lefthook": "^2.1.10",
     "prettier": "^3.8.4",
     "prettier-plugin-organize-imports": "^4.2.0",
