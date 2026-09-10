@@ -23,7 +23,7 @@
     "rollup": "^4.62.2",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.64.0",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.11"
   },
   "devEngines": {
     "runtime": {
